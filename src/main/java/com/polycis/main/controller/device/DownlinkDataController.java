@@ -1,3 +1,4 @@
+/*
 package com.polycis.main.controller.device;
 
 
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 
+*/
 /**
  * <p>
  * 设备下行数据表 前端控制器
@@ -35,7 +37,8 @@ import java.util.Map;
  *
  * @author ${author}
  * @since 2019-04-19
- */
+ *//*
+
 @RestController
 @RequestMapping("/downlinkData")
 public class DownlinkDataController {
@@ -155,3 +158,4 @@ public class DownlinkDataController {
 }
 
 
+*/

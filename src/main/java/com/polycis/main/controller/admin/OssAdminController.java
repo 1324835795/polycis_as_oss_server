@@ -1,4 +1,3 @@
-/*
 package com.polycis.main.controller.admin;
 
 
@@ -7,6 +6,7 @@ import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.netflix.discovery.converters.Auto;
+import com.polycis.main.client.redis.RedisFeignClient;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
@@ -18,6 +18,8 @@ import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.mapper.admin.OssAdminMapper;
 import com.polycis.main.service.admin.IOssAdminService;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 
-*/
 /**
  * <p>
  * 前端控制器
@@ -40,29 +41,31 @@ import java.util.UUID;
  *
  * @author qiaokai
  * @since 2019-05-14
- *//*
-
+ */
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/ossadmin")
 public class OssAdminController {
 
+    protected static Logger LOG = LoggerFactory.getLogger(OssAdminController.class);
 
+    @Autowired
+    private RedisFeignClient redisFeignClient;
     @Autowired
     private IOssAdminService iOssAdminService;
 
     @ApiOperation(value = "oss用户登录", notes = "oss用户登录接口")
     @PostMapping("/login")
-    public ApiResult login(@RequestBody Users uss, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
+    public ApiResult login(@RequestBody Users uss, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)  {
         ApiResult apiResult = new ApiResult<>();
         OssAdmin ossAdmin = new OssAdmin();
         ossAdmin.setLoginname(uss.getLoginname());
         ossAdmin.setPassword(uss.getPassword());
-        Users userss = iUsersService.isUser(uss);
-        if (userss != null) {
+        OssAdmin ossAdmin1 = iOssAdminService.isossAdmin(ossAdmin);
+        if (ossAdmin1 != null) {
 
             String key = UUID.randomUUID().toString().substring(0, 16);
-            LOG.info("往redis里塞值key:{},value:{}", key, userss.toString());
-            ApiResult result = redisFeignClient.set(key, JSON.toJSONString(userss), MainConstants.TOKEN_LIFETIME);
+            LOG.info("往redis里塞值key:{},value:{}", key, ossAdmin1.toString());
+            ApiResult result = redisFeignClient.set(key, JSON.toJSONString(ossAdmin1), MainConstants.TOKEN_LIFETIME);
 
             if (result.getCode() == CommonCode.SUCCESS.getKey()) {
                 Cookie cookie = new Cookie(MainConstants.COOKIE_NAME, key);
@@ -77,19 +80,18 @@ public class OssAdminController {
                 apiResult.setMsg("redis服务错误,请联系管理员");
                 return apiResult;
             }
-            apiResult.setData(userss);
+            apiResult.setData(ossAdmin1);
             return apiResult;
         }
-        apiResult.setMsg(CommonCode.ERROR.getValue());
+        apiResult.setMsg("用户账号密码错误");
         apiResult.setCode(CommonCode.ERROR.getKey());
-        apiResult.setMsg("错误");
         return apiResult;
     }
 
 
     @ApiOperation(value = "用户登出", notes = "登录登出")
     @PostMapping("/logout")
-    public ApiResult logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
+    public ApiResult logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         ApiResult apiResult = new ApiResult<>();
         Cookie cookie = new Cookie(MainConstants.COOKIE_NAME, null);
         cookie.setPath("/");
@@ -100,12 +102,12 @@ public class OssAdminController {
 
     @ApiOperation(value = "用户启用/不启用", notes = "用户启用/不启用")
     @PostMapping("/active")
-    public ApiResult active(@RequestBody Users users) throws IOException {
-        Users currentUser = RequestHolder.getCurrentUser();
+    public ApiResult active(@RequestBody OssAdmin ossAdmin)  {
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
-        if (currentUser.getRole().contains(MainConstants.SYS) && currentUser.getOrg().equals(users.getOrg())) {
-            users.setIsStart(0);
-            iUsersService.updateById(users);
+        if (currentUser.getRole().contains(MainConstants.SYS) ) {
+            ossAdmin.setStart(0);
+            iOssAdminService.updateById(ossAdmin);
             return apiResult;
         }
         apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
@@ -115,15 +117,15 @@ public class OssAdminController {
 
     @ApiOperation(value = "oss添加用户", notes = "oss添加用户")
     @PostMapping("/add")
-    public ApiResult add(@RequestBody OssAdmin ossAdmin) throws IOException {
+    public ApiResult add(@RequestBody OssAdmin ossAdmin) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         // 添加的用户只是用户,不能管理员添加管理员
         if (currentUser.getRole().contains(MainConstants.SYS)) {
 
-            if(ossAdmin.getType()==1)
+            if (ossAdmin.getType() == 1)
                 ossAdmin.setRole(MainConstants.USER);
-            if(ossAdmin.getType()==2)
+            if (ossAdmin.getType() == 2)
                 ossAdmin.setRole(MainConstants.SYS);
             ossAdmin.setStart(1);
             boolean b = false;
@@ -131,7 +133,7 @@ public class OssAdminController {
                 b = iOssAdminService.insert(ossAdmin);
                 return apiResult;
             } catch (Exception e) {
-                apiResult.setMsg("用户登录名重复");
+                apiResult.setMsg("用户登录名已注册");
                 apiResult.setCode(CommonCode.ERROR.getKey());
                 return apiResult;
             }
@@ -144,10 +146,10 @@ public class OssAdminController {
 
     @ApiOperation(value = "删除oss用户", notes = "删除oss用户")
     @PostMapping("/delete")
-    public ApiResult delete(@RequestBody OssAdmin ossAdmin) throws IOException {
+    public ApiResult delete(@RequestBody OssAdmin ossAdmin)  {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
-        if(currentUser.getId().equals(ossAdmin.getId())){
+        if (currentUser.getId().equals(ossAdmin.getId())) {
             apiResult.setCode(CommonCode.ERROR.getKey());
             apiResult.setMsg("不能删除自己");
         }
@@ -156,7 +158,7 @@ public class OssAdminController {
             ossAdmin.setDelete(MainConstants.DELETETED);
             iOssAdminService.updateById(ossAdmin);
             return apiResult;
-        }else {
+        } else {
             apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
             apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
             return apiResult;
@@ -166,7 +168,7 @@ public class OssAdminController {
 
     @ApiOperation(value = "修改oss用户", notes = "修改oss用户")
     @PostMapping("/update")
-    public ApiResult update(@RequestBody OssAdmin ossAdmin) throws IOException {
+    public ApiResult update(@RequestBody OssAdmin ossAdmin)  {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         // 操作用户是管理员 且 被操作用户是type=1用户
@@ -179,7 +181,7 @@ public class OssAdminController {
             apiResult.setCode(CommonCode.ERROR.getKey());
             apiResult.setMsg(CommonCode.ERROR.getValue());
             return apiResult;
-        }else {
+        } else {
             apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
             apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
             return apiResult;
@@ -194,11 +196,9 @@ public class OssAdminController {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         EntityWrapper<OssAdmin> usersEntityWrapper = new EntityWrapper<>();
         OssAdmin ossAdmin = JSON.parseObject(JSON.toJSONString(requestVO.getData()), OssAdmin.class);
-        */
-/*if (null != ossAdmin.getLoginname() && !"".equals(ossAdmin.getLoginname())) {
+        /*if (null != ossAdmin.getLoginname() && !"".equals(ossAdmin.getLoginname())) {
             usersEntityWrapper.like("loginname", ossAdmin.getLoginname(), SqlLike.RIGHT);
-        }*//*
-
+        }*/
         usersEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
         usersEntityWrapper.orderBy("create_time desc");
         ApiResult apiResult = new ApiResult<>();
@@ -210,6 +210,26 @@ public class OssAdminController {
     }
 
 
+    @ApiOperation(value = "oss用户个人信息", notes = "oss用户个人信息")
+    @PostMapping("/selfinfo")
+    public ApiResult selfinfo(@RequestBody OssAdmin ossAdmin)  {
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
+        ApiResult apiResult = new ApiResult<>();
+        OssAdmin ossAdmin1 = iOssAdminService.selectById(ossAdmin);
+        apiResult.setData(ossAdmin1);
+        return apiResult;
+    }
+
+
+    @ApiOperation(value = "oss用户个人密码修改", notes = "oss用户个人密码修改")
+    @PostMapping("/selfpassword")
+    public ApiResult selfpassword(@RequestBody OssAdmin ossAdmin)  {
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
+        ApiResult apiResult = new ApiResult<>();
+        boolean b =iOssAdminService.update(ossAdmin, new EntityWrapper<OssAdmin>().eq("id", currentUser.getId()));
+        return apiResult;
+    }
+
+
 }
 
-*/

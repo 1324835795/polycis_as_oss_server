@@ -1,3 +1,4 @@
+/*
 package com.polycis.main.service.db1.impl;
 
 import com.baomidou.mybatisplus.enums.SqlLike;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import static com.polycis.main.common.CommonSubCode.ISV_UPLOAD_FAIL;
 
+*/
 /**
  * <p>
  * 用户表 服务实现类
@@ -30,7 +32,8 @@ import static com.polycis.main.common.CommonSubCode.ISV_UPLOAD_FAIL;
  *
  * @author ${author}
  * @since 2018-11-29
- */
+ *//*
+
 @Service
 public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements IUsersService {
 
@@ -43,12 +46,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     private UsersMapper usersMapper;
 
 
-    /**
+    */
+/**
      * 查看是否是有此账户
      *
      * @param uss
      * @return
-     */
+     *//*
+
     @Override
     public Users isUser(Users uss) {
         // 是否启用  1启用 0未启用
@@ -180,3 +185,4 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         return null;
     }
 }
+*/

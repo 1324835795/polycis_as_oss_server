@@ -1,3 +1,4 @@
+/*
 package com.polycis.main.controller.user;
 
 
@@ -28,10 +29,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
+*/
 /**
  * @author qiakai
  * @since 19/4/19
- */
+ *//*
+
 @RestController
 @RequestMapping("/user")
 @Api(value = "UsersController", description = "系统模块:用户信息")
@@ -44,19 +47,26 @@ public class UsersController {
     private RedisFeignClient redisFeignClient;
 
 
-    /*@ApiOperation(value = "设置用户头像", notes = "设置当前用户头像")
+    */
+/*@ApiOperation(value = "设置用户头像", notes = "设置当前用户头像")
     @PostMapping("/profiles")
     public String setUserProfile(@RequestParam(required = true) MultipartFile profile) {
         return iUsersService.updUserProfile(profile);
     }
-*/
-   /* @ApiOperation(value = "用户登录", notes = "登录接口")
+*//*
+
+   */
+/* @ApiOperation(value = "用户登录", notes = "登录接口")
     @GetMapping("/login2")
     public ApiResult login(@RequestParam String loginname, @RequestParam String password, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
         ApiResult apiResult = new ApiResult<>();
         Users us = new Users();
-       *//* us.setLoginname(uss.getLoginname());
+       *//*
+*/
+/* us.setLoginname(uss.getLoginname());
         us.setPassword(uss.getPassword());*//*
+*/
+/*
 
         us.setLoginname(loginname);
         us.setPassword(password);
@@ -87,7 +97,8 @@ public class UsersController {
         apiResult.setCode(CommonCode.ERROR.getKey());
         apiResult.setMsg("密码错误");
         return apiResult;
-    }*/
+    }*//*
+
 
 
     @ApiOperation(value = "用户登录", notes = "登录接口")
@@ -253,7 +264,8 @@ public class UsersController {
 
 
 
-  /*  @ApiOperation(value = "分页查询用户信息", notes = "分页查询用户信息接口")
+  */
+/*  @ApiOperation(value = "分页查询用户信息", notes = "分页查询用户信息接口")
     @PostMapping(value = "/queryuser")
     public R listUsers(@RequestBody RequestVO requestVO) {
 
@@ -280,9 +292,11 @@ public class UsersController {
         }
 
 
-    }*/
+    }*//*
 
 
+
+*/
 /*
     @ApiOperation(value = "用户详情信息", notes = "查询用户详细信息接口")
     @PostMapping(value = "/finduser")
@@ -292,12 +306,14 @@ public class UsersController {
         Users users = iUsersService.seltUserBybiInRedis(userId);
         LOG.info(users.toString());
         return R.ok().put("user", users);
-    }*/
+    }*//*
 
 
 
 
-   /* @ApiOperation(value = "更新用户信息", notes = "更新用户信息接口")
+
+   */
+/* @ApiOperation(value = "更新用户信息", notes = "更新用户信息接口")
     @PostMapping(value = "/updateUsers")
     public R updateUsers(@RequestBody RequestVO requestVO) {
         Map<String, Object> data = requestVO.getData();
@@ -322,10 +338,12 @@ public class UsersController {
         }
     }
 
-*/
+*//*
 
 
-  /*  @ApiOperation(value = "删除用户", notes = "删除用户接口")
+
+  */
+/*  @ApiOperation(value = "删除用户", notes = "删除用户接口")
     @PostMapping(value = "/deleteUsers")
     public R deleteUsers(@RequestBody RequestVO requestVO) {
         Map<String, Object> data = requestVO.getData();
@@ -354,9 +372,11 @@ public class UsersController {
             // throw new Exception("尊敬的用户您非超级管理员,无权限管理组织");
             return  rrExceptionHandler.handleAuthorizationException(new AuthorizationException());
         }
-    }*/
+    }*//*
 
-   /* @ApiOperation(value = "添加用户", notes = "添加用户接口")
+
+   */
+/* @ApiOperation(value = "添加用户", notes = "添加用户接口")
     @PostMapping(value = "/addUsers")
     public R addUsers(@RequestBody Users user) {
         Map<String, Object> data = requestVO.getData();
@@ -364,8 +384,10 @@ public class UsersController {
         Map<String, Object> params = (Map<String, Object>) data.get("users");
         Users user = JSON.parseObject(JSON.toJSONString(params), Users.class);
         return null;
-    }*/
+    }*//*
 
+
+*/
 /*
 
     @ApiOperation(value = "登录用户名唯一校验", notes = "登录用户名唯一校验接口")
@@ -381,8 +403,10 @@ public class UsersController {
           return  R.error(500,"用户名已存在");
       }
     }
-*/
+*//*
+
 
 
 }
 
+*/
