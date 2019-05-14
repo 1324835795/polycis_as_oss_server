@@ -210,53 +210,14 @@ public class DeviceController {
     @ApiOperation(value = "设备模糊查询", notes = "设备模糊查询")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public ApiResult list(@RequestBody RequestVO requestVO) {
-
-       /* // 时间有限,code都写在controller了!您瞧好了!
-        Users currentUser = RequestHolder.getCurrentUser();
-
-
-
-        Map<String, Object> data = requestVO.getData();
-        Device device = JSON.parseObject(JSON.toJSONString(data), Device.class);
-        // 查询user的app
-        List<Integer> list = iAppOrgRelationService.selecctAppId(currentUser.getOrg(),device.getDescription());
-
-
-
-        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<Device>();
-
-        if (null != device.getDescription() && !"".equals(device.getDescription())) {
-            deviceEntityWrapper.andNew().like("name", device.getDescription(), SqlLike.DEFAULT)
-                    .or().like("device_uuid", device.getDescription(), SqlLike.DEFAULT);
-        }
-
-        if (null != device.getProductId() && !"".equals(device.getProductId())) {
-
-
-            deviceEntityWrapper.andNew().eq("product_id", device.getProductId());
-
-        }
-        if (list.size() == 0) {
-            deviceEntityWrapper.in("app_id", "不存在polcis");
-        } else {
-            deviceEntityWrapper.in("app_id", list);
-        }
-
-        deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
-        deviceEntityWrapper.orderBy("create_time desc");
-        Page<Device> devicePage = new Page<>(requestVO.getPageInfo().getCurrentPage(), requestVO.getPageInfo().getPageSize());
-        Page<Device> devicePage1 = iDeviceService.selectPage(devicePage, deviceEntityWrapper);
-*/
         ApiResult apiResult = new ApiResult<>();
         Page<Device> devicePage1 = iDeviceService.selectDevicePage(requestVO);
 
-        //devicePage1.getRecords().forEach(s -> System.out.println(s.toString()));
-
-        if (null != devicePage1 && !devicePage1.getRecords().isEmpty()) {
+     /*   if (null != devicePage1 && !devicePage1.getRecords().isEmpty()) {
             Page<Device> devicePage2 = iMybatisPlusDB2Service.putDevListInfo(devicePage1);
             apiResult.setData(devicePage2);
             return apiResult;
-        }
+        }*/
         apiResult.setData(devicePage1);
         return apiResult;
     }

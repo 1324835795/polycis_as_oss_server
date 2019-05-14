@@ -19,11 +19,11 @@ import java.util.Map;
  */
 public interface IAppService extends IService<App> {
 
-    Page<App> queryAppList(Integer currentPage, Integer pageSize, Users currentUser, App app);
+    Page<App> queryAppList(Integer currentPage, Integer pageSize, App app);
 
-    List<Map<String, Object>> selectProduct(Users currentUser, App app);
+    List<Map<String, Object>> selectProduct(App app);
 
-    void deleteApp(Users currentUser, App app);
+    void deleteApp(App app);
 
     boolean addApp(App app, Users currentUser);
 

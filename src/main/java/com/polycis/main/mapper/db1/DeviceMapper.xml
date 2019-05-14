@@ -33,24 +33,28 @@
     <select id="selectDevicePage" resultType="com.polycis.main.entity.Device">
 
         SELECT id.*
-        FROM  iot_app_org_relation iaor
-        LEFT JOIN iot_app ia on ia.id=iaor.app_id and ia.is_delete=1
-        LEFT JOIN iot_device id on id.app_id =ia.id and id.is_delete=1
-        WHERE iaor.organization_id =#{org}
+        FROM iot_app_org_relation iaor
+        INNER JOIN iot_app ia on ia.id=iaor.app_id and ia.is_delete=1
+        INNER JOIN iot_device id on id.app_id =ia.id and id.is_delete=1
+        INNER JOIN iot_product ip on ip.id=id.product_id and ip.is_delete=1
+        WHERE 1=1
         <if test="query != null and query != ''">
-            AND (id.name LIKE "%"#{query}"%" or id.device_uuid LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%" )
+            AND (id.name LIKE "%"#{query}"%" or id.device_uuid LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%"
+            or.ip.name LIKE "%"#{query}"%")
         </if>
         ORDER BY id.create_time DESC
         LIMIT #{pageNumber}, #{pageSize}
     </select>
     <select id="selectAppListCount" resultType="java.lang.Integer">
         SELECT count(id.id)
-        FROM  iot_app_org_relation iaor
-        LEFT JOIN iot_app ia on ia.id=iaor.app_id and ia.is_delete=1
-        LEFT JOIN iot_device id on id.app_id =ia.id and id.is_delete=1
-        WHERE iaor.organization_id =#{org}
+        FROM iot_app_org_relation iaor
+        INNER JOIN iot_app ia on ia.id=iaor.app_id and ia.is_delete=1
+        INNER JOIN iot_device id on id.app_id =ia.id and id.is_delete=1
+        INNER JOIN iot_product ip on ip.id=id.product_id and ip.is_delete=1
+        WHERE 1=1
         <if test="query != null and query != ''">
-            AND (id.name LIKE "%"#{query}"%" or id.device_uuid LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%" )
+            AND (id.name LIKE "%"#{query}"%" or id.device_uuid LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%"
+            or.ip.name LIKE "%"#{query}"%")
         </if>
     </select>
 </mapper>

@@ -14,7 +14,6 @@ import com.polycis.main.service.db1.IDeviceService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +38,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
 
     @Override
-    public Page<Device> selectAppDeviceList(RequestVO requestVO, Users currentUser) {
+    public Page<Device> selectAppDeviceList(RequestVO requestVO) {
 
         //应该用user来过滤appid是否来源于该user,先不做
         Map<String, Object> data = requestVO.getData();
@@ -55,8 +54,6 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         wrapper.orderBy("create_time desc");
         Page<Device> page = new Page<Device>(requestVO.getPageInfo().getCurrentPage(), requestVO.getPageInfo().getPageSize());
         Page<Device> devicePage = iDeviceService.selectPage(page, wrapper);
-
-        //   devicePage.getRecords().forEach(dev->);
 
         return devicePage;
 
@@ -116,8 +113,6 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         Device device = JSON.parseObject(JSON.toJSONString(data), Device.class);
 
         Map<String, Object> param = new HashMap<String, Object>();
-
-
         PageInfoVO pageInfo = requestVO.getPageInfo();
         Page<Device> page = new Page<Device>(pageInfo.getCurrentPage(), pageInfo.getPageSize());
         param.put("pageNumber", (pageInfo.getCurrentPage() - 1) * pageInfo.getPageSize());
@@ -129,8 +124,6 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         } else {
             param.put("query", null);
         }
-        param.put("org", RequestHolder.getCurrentUser().getOrg());
-
         List<Device> list = deviceMapper.selectDevicePage(param);
         Integer count = deviceMapper.selectAppListCount(param);
         page.setTotal(count);
