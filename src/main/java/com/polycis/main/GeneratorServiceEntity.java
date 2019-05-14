@@ -26,9 +26,9 @@ public class GeneratorServiceEntity {
     @Test
     public void generateCode() {
 
-        String packageName = "com.polycis.api.nb";
+        String packageName = "com.polycis.main";
         boolean serviceNameStartWithI = true;//user -> UserService, 设置成true: user -> IUserService
-        generateByTables(serviceNameStartWithI, packageName, "iot_network_data");
+        generateByTables(serviceNameStartWithI, packageName, "iot_oss_admin");
     }
 
 
@@ -48,12 +48,12 @@ public class GeneratorServiceEntity {
         strategyConfig.setDbColumnUnderline(true); //数据库表字段采用下划线的
         strategyConfig.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         strategyConfig.setInclude(tableNames);//修改替换成你需要的表名，多个表名传数组
-        strategyConfig.setTablePrefix(new String[]{"dev_", ""});// 此处可以修改为您的表前缀
+        strategyConfig.setTablePrefix(new String[]{"iot_", ""});// 此处可以修改为您的表前缀
        // strategyConfig.entityTableFieldAnnotationEnable(true);//生成实体类属性的对应数据库字段注解
 
         config.setActiveRecord(false);
         //D:\LORA_DEVELOP\lorawan2\lorawan-service\src\main\java
-        config.setOutputDir("D:\\polycis\\polycis_iot_platform\\polycis_as_main_server\\src\\main\\java");
+        config.setOutputDir("D:\\LORA_DEVELOP\\polycis_iot_platform\\polycis_as_oss_server\\src\\main\\java\\com\\polycis\\main");
         //\LoRaWanService\lorawan-service\src\main\java
         config.setFileOverride(true);
 
@@ -86,7 +86,7 @@ public class GeneratorServiceEntity {
                             @Override
                             public String outputFile(TableInfo tableInfo) {
                                 //D:/LORA_DEVELOP/lorawan2/lorawan-service/"+"/src/main/resources/mybatis/gateway/
-                                return "D:\\polycis\\polycis_iot_platform\\polycis_as_main_server"+"/src/main/resources/mybatis/data/" + tableInfo.getEntityName() + "Mapper.xml";
+                                return "D:\\LORA_DEVELOP\\polycis_iot_platform\\polycis_as_oss_server"+"/src/main/resources/mybatis/data/" + tableInfo.getEntityName() + "Mapper.xml";
                         }
                         }))
 

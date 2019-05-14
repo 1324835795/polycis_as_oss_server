@@ -1,3 +1,4 @@
+/*
 package com.polycis.main.controller.admin;
 
 
@@ -31,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 
+*/
 /**
  * <p>
  * 前端控制器
@@ -38,7 +40,8 @@ import java.util.UUID;
  *
  * @author qiaokai
  * @since 2019-05-14
- */
+ *//*
+
 @RestController
 @RequestMapping("/admin")
 public class OssAdminController {
@@ -191,9 +194,11 @@ public class OssAdminController {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         EntityWrapper<OssAdmin> usersEntityWrapper = new EntityWrapper<>();
         OssAdmin ossAdmin = JSON.parseObject(JSON.toJSONString(requestVO.getData()), OssAdmin.class);
-        /*if (null != ossAdmin.getLoginname() && !"".equals(ossAdmin.getLoginname())) {
+        */
+/*if (null != ossAdmin.getLoginname() && !"".equals(ossAdmin.getLoginname())) {
             usersEntityWrapper.like("loginname", ossAdmin.getLoginname(), SqlLike.RIGHT);
-        }*/
+        }*//*
+
         usersEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
         usersEntityWrapper.orderBy("create_time desc");
         ApiResult apiResult = new ApiResult<>();
@@ -207,3 +212,4 @@ public class OssAdminController {
 
 }
 
+*/
