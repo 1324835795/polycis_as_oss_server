@@ -47,6 +47,13 @@ public class OssAdmin implements Serializable {
     private Date updateTime;
 
 
+    private String name;
+    /**
+     * 更新时间
+     */
+    private Integer start;
+
+
     public Integer getId() {
         return id;
     }
@@ -106,13 +113,15 @@ public class OssAdmin implements Serializable {
     @Override
     public String toString() {
         return "OssAdmin{" +
-        ", id=" + id +
-        ", loginname=" + loginname +
-        ", password=" + password +
-        ", role=" + role +
-        ", type=" + type +
-        ", createTime=" + createTime +
-        ", updateTime=" + updateTime +
-        "}";
+                "id=" + id +
+                ", loginname='" + loginname + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", type=" + type +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", name='" + name + '\'' +
+                ", start=" + start +
+                '}';
     }
 }
