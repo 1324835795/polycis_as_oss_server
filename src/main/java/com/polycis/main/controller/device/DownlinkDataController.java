@@ -1,9 +1,7 @@
-package com.polycis.main.controller;
+package com.polycis.main.controller.device;
 
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.polycis.main.client.app.AppFeignClient;
 import com.polycis.main.client.downdata.DownDataClient;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.MainConstants;
@@ -13,7 +11,6 @@ import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.*;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.entity.vo.DevDownDataPO;
-import com.polycis.main.entity.vo.DeviceQueueItemRequest;
 import com.polycis.main.entity.vo.DownDataVO;
 import com.polycis.main.service.db1.IDeviceService;
 import com.polycis.main.service.db1.IDownlinkDataService;
@@ -23,8 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;

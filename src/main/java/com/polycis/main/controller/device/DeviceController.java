@@ -1,20 +1,15 @@
-package com.polycis.main.controller;
+package com.polycis.main.controller.device;
 
 
-import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.netflix.discovery.converters.Auto;
 import com.polycis.main.client.device.DevFeignClient;
-import com.polycis.main.client.redis.RedisFeignClient;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.interceptor.RequestHolder;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.*;
-import com.polycis.main.entity.db2.DevUnionDevice;
 import com.polycis.main.entity.db3.DevDownDataPO;
 import com.polycis.main.entity.db3.DevUpDataPO;
 import com.polycis.main.entity.vo.DeviceDTO;
@@ -22,8 +17,6 @@ import com.polycis.main.service.db1.IAppOrgRelationService;
 import com.polycis.main.service.db1.IAppService;
 import com.polycis.main.service.db1.IDeviceService;
 import com.polycis.main.service.db1.IProductService;
-import com.polycis.main.service.db1.impl.AppServiceImpl;
-import com.polycis.main.service.db2.IDevUnionDeviceService;
 import com.polycis.main.service.db2.IMybatisPlusDB2Service;
 import com.polycis.main.service.db3.IMybatisPlusDB3Service;
 import io.swagger.annotations.ApiOperation;
@@ -34,11 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.spring.web.json.Json;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 
 /*

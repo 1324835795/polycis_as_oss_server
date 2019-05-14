@@ -1,4 +1,4 @@
-package com.polycis.main.controller;
+package com.polycis.main.controller.device;
 
 
 import com.baomidou.mybatisplus.plugins.Page;
