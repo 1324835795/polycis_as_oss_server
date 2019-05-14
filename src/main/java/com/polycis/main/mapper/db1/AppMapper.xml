@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.polycis.main.mapper.db1.AppMapper">
+
+
+    <select id="selectTest" resultType="java.lang.String">
+
+        SELECT id.device_uuid
+        FROM iot_app_org_relation iaor
+        LEFT JOIN iot_device id on id.app_id =iaor.app_id
+        AND id.is_delete=1
+    </select>
+
+    <!--FROM iot_app_org_relation iaor
+    LEFT JOIN iot_app  ia ON ia.id = iaor.app_id AND ia.is_delete=1-->
+    <select id="seletMonitorApp" resultType="com.polycis.main.entity.vo.AppVo">
+
+        SELECT
+        ia.create_time as createTime,
+        ia.id as id,
+        ia.name as name,
+        ia.app_eui as appEui,
+        COUNT(id.id) as devCount
+        FROM  iot_app ia
+        LEFT JOIN iot_app_org_relation iaor ON ia.id = iaor.app_id AND ia.is_delete=1
+        LEFT JOIN  iot_device id ON id.app_id = ia.id AND id.is_delete =1
+        WHERE iaor.organization_id =#{org}
+        group by ia.id
+
+    </select>
+    <select id="selectDevIsmine" resultType="java.lang.Integer">
+        SELECT COUNT(id.id)
+        FROM iot_app_org_relation iaor
+        INNER JOIN iot_device id  ON id.app_id=iaor.app_id AND  id.id=#{param1}
+        WHERE iaor.app_id IN
+        (SELECT app_id FROM iot_app_org_relation WHERE organization_id=#{param2})
+    </select>
+</mapper>

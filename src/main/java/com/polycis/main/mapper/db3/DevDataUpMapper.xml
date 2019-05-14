@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.polycis.main.mapper.db3.DevDataUpMapper">
+
+    <!-- &lt;!&ndash; 开启二级缓存 &ndash;&gt;
+     <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <select id="selectAWeekData" resultType="java.util.Map">
+
+        SELECT aa.click_date,
+        IFNULL(bb.amount,0) AS upCount,
+        IFNULL(cc.amount,0) AS downCount
+        FROM
+        (
+        SELECT CURDATE() AS click_date
+        UNION ALL
+        SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) AS click_date
+        UNION ALL
+        SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) AS click_date
+        UNION ALL
+        SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY) AS click_date
+        UNION ALL
+        SELECT DATE_SUB(CURDATE(), INTERVAL 4 DAY) AS click_date
+        UNION ALL
+        SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY) AS click_date
+        UNION ALL
+        SELECT DATE_SUB(CURDATE(), INTERVAL 6 DAY) AS click_date
+        ) AS aa
+        LEFT JOIN
+        (
+        SELECT
+        COUNT(id) AS amount,
+        any_value(DATE_FORMAT(report_time,'%Y-%m-%d')) AS click_date
+        FROM dev_data_up
+        WHERE report_time>=DATE(NOW())-INTERVAL 6 DAY
+        <if test="null!=list and list.size>0">
+            AND
+            device_uuid IN
+            <foreach collection="list" index="index" item="var" open="(" separator="," close=")">
+                #{var}
+            </foreach>
+        </if>
+        <if test="list.size==0">
+            AND
+            device_uuid = "-空"
+        </if>
+
+        GROUP BY TO_DAYS(report_time)
+        ) AS bb
+        ON aa.click_date=bb.click_date
+        LEFT JOIN
+        (
+        SELECT
+        COUNT(id) AS amount,
+        any_value(DATE_FORMAT(create_time,'%Y-%m-%d')) AS click_date
+        FROM dev_data_down
+        WHERE create_time>=DATE(NOW())-INTERVAL 7 DAY
+        <if test="null !=list  and list.size>0">
+            AND
+            device_uuid IN
+            <foreach collection="list" index="index" item="var" open="(" separator="," close=")">
+                #{var}
+            </foreach>
+        </if>
+        <if test="list.size==0">
+            AND
+            device_uuid = "-空"
+        </if>
+
+        GROUP BY TO_DAYS(create_time)
+        ) AS cc
+        ON aa.click_date=cc.click_date
+        order by aa.click_date asc
+
+    </select>
+</mapper>

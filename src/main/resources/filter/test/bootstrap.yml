@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: qcdq-news-server
+
+server:
+  port: 8084
+  tomcat:
+    #context-path: /xycar
+    #access-log-enabled: true
+    #basedir: ${logging.path}
+    uri-encoding: UTF-8
+    max-threads: 200
+    connection-timeout: 5000
+    acceptCount: 100
+
+
+
+endpoints.shutdown:
+  enabled: true
+  sensitive: false
+mybatis:
+    type-aliases-package: com.xingyuanauto.api.news.entity
+    mapper-locations: classpath:mapper/**.xml
+
+management:
+  health:
+    solr:
+      enabled: false
+    db:
+      enabled: false
+    elasticsearch:
+      enabled: false
+    jms:
+      enabled: false
+    mail:
+      enabled: false
+    mongo:
+      enabled: false
+    rabbit:
+      enabled: false
+    redis:
+      enabled: false
+
+#eureka:
+#  client:
+#    healthcheck:
+#      enable: true
+#    registryFetchIntervalSeconds: 30
+#    serviceUrl:
+#      defaultZone: http://192.168.3.133:11100/eureka/
+#  instance:
+#    lease-expiration-duration-in-seconds: 90
+#    leaseRenewalIntervalInSeconds: 30
+#    preferIpAddress: true
+#    instance-id: 192.168.3.65:12400

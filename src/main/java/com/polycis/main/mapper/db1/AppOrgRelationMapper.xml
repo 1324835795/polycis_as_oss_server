@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.polycis.main.mapper.db1.AppOrgRelationMapper">
+
+
+   <!-- <select id="selectAppEui" resultType="java.lang.String">
+        SELECT ia.app_eui AS eui
+        FROM iot_app_org_relation iaor
+        LEFT JOIN iot_app ia on ia.id =iaor.app_id AND  ia.is_delete=1
+        WHERE iaor.organization_id =#{org}
+    </select>-->
+
+   <!-- <select id="selecctAppId" resultType="java.lang.Integer">
+        SELECT app_id
+        FROM iot_app_org_relation
+        WHERE organization_id =#{org}
+    </select>-->
+</mapper>

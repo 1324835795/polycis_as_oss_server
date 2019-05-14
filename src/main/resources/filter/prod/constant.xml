@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurations>
+    <!--静态资源常量-->
+    <constant name="group1" value="http://img1.qcdqcdn.com" type="string" />
+    <constant name="group2" value="http://img2.qcdqcdn.com" type="string" />
+</configurations>

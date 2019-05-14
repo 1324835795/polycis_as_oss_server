@@ -1,0 +1,123 @@
+spring:
+  application:
+    name: qcdq-news-server
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        serviceId: QCDQ-EUREKA-CONFIG-SERVER
+      name: qcdq-news-server
+      profile: prod
+      #uri: http://localhost:8888/
+  rabbitmq:
+    host: 192.168.105.112
+    port: 5672
+    username: admin
+    password: 123.com
+  datasource:
+    newsread:
+        name: test
+        url: ${readUrl}
+        username: ${readUsername}
+        password: ${readPassword}
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        filters: stat
+        maxActive: 200
+        initialSize: 10
+        maxWait: 60000
+        minIdle: 1
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+    newswrite:
+        name: test
+        url: ${writeUrl}
+        username: ${writename}
+        password: ${writePassword}
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        filters: stat
+        maxActive: 200
+        initialSize: 10
+        maxWait: 60000
+        minIdle: 1
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+#  redis:
+#    sentinel:
+#      master: mymaster
+#      nodes: 192.168.105.106:26379,192.168.105.107:26379,192.168.105.108:26379
+
+
+server:
+  port: 8084
+  connection-timeout: 2000
+  tomcat:
+    #context-path: /xycar
+    #access-log-enabled: true
+    #basedir: ${logging.path}
+    uri-encoding: UTF-8
+    max-threads: 1000
+
+endpoints.shutdown:
+  enabled: true
+  sensitive: false
+mybatis:
+    type-aliases-package: com.xingyuanauto.api.news.entity
+    mapper-locations: classpath:mapper/**.xml
+
+mapper:
+  mappers:
+    -com.xingyuanauto.api.news.repository.mysql.dao.BaseDao
+  not-empty: false
+  identity: MYSQL
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+
+management:
+  health:
+    solr:
+      enabled: false
+    db:
+      enabled: false
+    elasticsearch:
+      enabled: false
+    jms:
+      enabled: false
+    mail:
+      enabled: false
+    mongo:
+      enabled: false
+    rabbit:
+      enabled: false
+    redis:
+      enabled: false
+
+eureka:
+  client:
+    healthcheck:
+      enable: true
+    registryFetchIntervalSeconds: 30
+    serviceUrl:
+       defaultZone: http://192.168.105.133:11100/eureka/,http://192.168.105.173:11100/eureka/,http://192.168.105.213:11100/eureka/
+  instance:
+    lease-expiration-duration-in-seconds: 90
+    leaseRenewalIntervalInSeconds: 30
+    preferIpAddress: true

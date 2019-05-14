@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.polycis.main.mapper.db1.UsersMapper">
+
+    <update id="updateByOrg">
+        UPDATE lo_users
+        <set>
+            <if test="loraNetworkId != null">
+                lora_network_id = #{loraNetworkId},
+            </if>
+            create_time = NOW(),
+            <if test="twogNetworkId != null">
+                twog_network_id = #{twogNetworkId},
+            </if>
+            <if test="nbNetworkId != null">
+                nb_network_id = #{nbNetworkId},
+            </if>
+        </set>
+        where org = #{org}
+
+
+    </update>
+    <select id="selectSysUserByOrgId" resultType="com.polycis.main.entity.Users">
+        SELECT *
+        FROM lo_users
+        WHERE
+        role like '%sys%'
+        AND org = #{organizationId}
+        and is_delete=1
+        limit 0,1
+    </select>
+
+</mapper>

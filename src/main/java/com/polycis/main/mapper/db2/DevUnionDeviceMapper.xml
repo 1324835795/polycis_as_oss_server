@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.polycis.main.mapper.db2.DevUnionDeviceMapper">
+
+    <!--CONCAT(ROUND(a.onlinCount/b.devCount*100,1),'%') AS deviceOnlineRate,-->
+    <select id="selectAppVo" resultType="com.polycis.main.entity.vo.AppVo">
+
+
+    SELECT
+       ROUND(a.onlinCount/b.devCount*100,1) AS deviceOnlineRate,
+       b.devCount as devCount
+      FROM
+       (SELECT
+        COUNT(id) AS onlinCount
+         FROM dev_union_device
+        WHERE app_eui =#{appEui}
+        AND STATUS =1) a,
+        (SELECT
+        COUNT(id) AS devCount
+        FROM dev_union_device
+        WHERE app_eui =#{appEui}
+	) b
+
+    </select>
+</mapper>
