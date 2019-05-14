@@ -64,5 +64,4 @@ public interface IUsersService extends IService<Users> {
 
     Users selectAdminByOrg(Integer orgId);
 
-   String updUserProfile(MultipartFile profile);
 }
