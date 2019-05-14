@@ -12,6 +12,7 @@ import com.polycis.main.common.interceptor.RequestHolder;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.Users;
+import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.service.db1.IUsersService;
 import com.polycis.main.client.redis.RedisFeignClient;
 import io.swagger.annotations.Api;
@@ -140,7 +141,7 @@ public class UsersController {
     @ApiOperation(value = "用户启用/不启用", notes = "用户启用/不启用")
     @PostMapping("/active")
     public ApiResult active(@RequestBody Users users) throws IOException {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         if (currentUser.getRole().contains(MainConstants.SYS) && currentUser.getOrg().equals(users.getOrg())) {
             users.setIsStart(0);
@@ -155,7 +156,7 @@ public class UsersController {
     @ApiOperation(value = "添加用户", notes = "添加用户")
     @PostMapping("/add")
     public ApiResult add(@RequestBody Users users) throws IOException {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         // 添加的用户只是用户,不能管理员添加管理员
         if (currentUser.getRole().contains(MainConstants.SYS)) {
@@ -187,7 +188,7 @@ public class UsersController {
     @ApiOperation(value = "删除用户", notes = "删除用户")
     @PostMapping("/delete")
     public ApiResult delete(@RequestBody Users users) throws IOException {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         // 操作用户是管理员 且 被操作用户是type=1用户
         Users users1 = iUsersService.selectById(users);
@@ -209,11 +210,11 @@ public class UsersController {
     @ApiOperation(value = "修改用户", notes = "修改用户")
     @PostMapping("/update")
     public ApiResult update(@RequestBody Users users) throws IOException {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         // 操作用户是管理员 且 被操作用户是type=1用户
         if (currentUser.getRole().contains(MainConstants.SYS)   ) {
-            users.setOrg(currentUser.getOrg());
+            users.setOrg(currentUser.getId());
             boolean b = iUsersService.updateById(users);
             if (b) {
                 return apiResult;
@@ -230,7 +231,7 @@ public class UsersController {
     @ApiOperation(value = "用户列表", notes = "用户列表")
     @PostMapping("/list")
     public ApiResult list(@RequestBody RequestVO requestVO) throws IOException {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         EntityWrapper<Users> usersEntityWrapper = new EntityWrapper<>();
         Users user = JSON.parseObject(JSON.toJSONString(requestVO.getData()), Users.class);
         if (null != user.getLoginname() && !"".equals(user.getLoginname())) {

@@ -10,6 +10,7 @@ import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.interceptor.RequestHolder;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.*;
+import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.entity.db3.DevDownDataPO;
 import com.polycis.main.entity.db3.DevUpDataPO;
 import com.polycis.main.entity.vo.DeviceDTO;
@@ -73,7 +74,7 @@ public class DeviceController {
         DeviceDTO deviceDTO = new DeviceDTO(device, product);
         // 给传输的包装类设置app_eui,接入层存储应用信息用的是app_eui
         deviceDTO.setAppEui(iAppService.selectById(device.getAppId()).getAppEui());
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         if (currentUser.getRole().contains(MainConstants.SYS)) {
 
@@ -121,7 +122,7 @@ public class DeviceController {
     public ApiResult update(@RequestBody Device device) {
 
         // 给传输的包装类设置app_eui,接入层存储应用信息用的是app_eui
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         ApiResult apiResult = new ApiResult<>();
         if (currentUser.getRole().contains(MainConstants.SYS)) {
@@ -149,8 +150,7 @@ public class DeviceController {
     public ApiResult info(@RequestBody Device device) {
 
         // 给传输的包装类设置app_eui,接入层存储应用信息用的是app_eui
-        Users currentUser = RequestHolder.getCurrentUser();
-
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
 
         Device device1 = iDeviceService.selectById(device);
@@ -164,7 +164,7 @@ public class DeviceController {
     public ApiResult delete(@RequestBody Device device) {
 
         // 给传输的包装类设置app_eui,接入层存储应用信息用的是app_eui
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         //应该判断这个设备属不属于这个组织
         ApiResult apiResult = new ApiResult<>();
@@ -267,7 +267,7 @@ public class DeviceController {
     public ApiResult downdata(@RequestBody RequestVO requestVO) {
 
         // 时间有限,code都写在controller了!您瞧好了!
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
 
     /*    EntityWrapper<AppOrgRelation> appOrgRelationEntityWrapper = new EntityWrapper<>();
@@ -285,7 +285,7 @@ public class DeviceController {
     public ApiResult updata(@RequestBody RequestVO requestVO) {
 
         // 时间有限,code都写在controller了!您瞧好了!
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
 
 
