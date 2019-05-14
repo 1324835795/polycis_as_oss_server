@@ -19,16 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableHystrixDashboard
 //@MapperScan("com.polycis.main.mapper*")
 @RestController
-public class MainWebStartApplication extends SpringBootServletInitializer {
+public class OSSApplication extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(
             SpringApplicationBuilder application) {
-        return application.sources(MainWebStartApplication.class);
+        return application.sources(OSSApplication.class);
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(MainWebStartApplication.class, args);
+        SpringApplication.run(OSSApplication.class, args);
     }
 
 }
