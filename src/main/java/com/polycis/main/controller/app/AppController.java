@@ -116,7 +116,6 @@ public class AppController {
         PageInfoVO pageInfo = requestVO.getPageInfo();
         Integer currentPage = pageInfo.getCurrentPage();
         Integer pageSize = pageInfo.getPageSize();
-
         Map<String, Object> data = requestVO.getData();
         App app = JSON.parseObject(JSON.toJSONString(data), App.class);
         Page<App> page = iAppService.queryAppList(currentPage, pageSize, currentUser, app);
