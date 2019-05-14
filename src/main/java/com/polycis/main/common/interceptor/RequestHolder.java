@@ -2,23 +2,24 @@ package com.polycis.main.common.interceptor;
 
 
 import com.polycis.main.entity.Users;
+import com.polycis.main.entity.admin.OssAdmin;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class RequestHolder {
-    private static final ThreadLocal<Users> userHolder = new ThreadLocal<Users>();
+    private static final ThreadLocal<OssAdmin> userHolder = new ThreadLocal<OssAdmin>();
 
     private static final ThreadLocal<HttpServletRequest> requestHolder = new ThreadLocal<>();
 
-    public static void add(Users sysUser){
-        userHolder.set(sysUser);
+    public static void add(OssAdmin ossAdmin){
+        userHolder.set(ossAdmin);
     }
 
     public static void add(HttpServletRequest request){
         requestHolder.set(request);
     }
 
-    public static Users getCurrentUser(){
+    public static OssAdmin getCurrentUser(){
         return userHolder.get();
     }
 
