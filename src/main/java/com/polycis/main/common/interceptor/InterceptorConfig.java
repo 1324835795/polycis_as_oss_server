@@ -28,9 +28,9 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
         //注册自定义拦截器，添加拦截路径和排除拦截路径
         registry.addInterceptor(new TokenIntecptor(redisFeignClient)).addPathPatterns("/**")
                 // 排除用户登录
-                .excludePathPatterns("/user/login")
-                .excludePathPatterns("/user/login2")
-                .excludePathPatterns("/user/logout")
+                .excludePathPatterns("/ossadmin/login")
+                .excludePathPatterns("/ossadmin/login2")
+                .excludePathPatterns("/ossadmin/logout")
                 // 排除swagger
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**");
     }
