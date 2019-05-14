@@ -10,6 +10,7 @@ import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.*;
 import com.polycis.main.common.CommonCode;
+import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.entity.vo.DevDownDataPO;
 import com.polycis.main.entity.vo.DownDataVO;
 import com.polycis.main.service.db1.IDeviceService;
@@ -55,7 +56,7 @@ public class DownlinkDataController {
     public ApiResult downData(@RequestBody RequestVO requestVO) {
         ApiResult apiResult = new ApiResult<>();
         try {
-            Users currentUser = RequestHolder.getCurrentUser();
+            OssAdmin currentUser = RequestHolder.getCurrentUser();
             if (currentUser.getRole().contains(MainConstants.SYS)){
                 List<String> list = new ArrayList<>();
                 boolean base64 = (boolean) requestVO.getData().get("isbase64");
@@ -91,7 +92,7 @@ public class DownlinkDataController {
     public ApiResult downDataList(@RequestBody RequestVO requestVO) {
         ApiResult apiResult = new ApiResult<>();
         try {
-            Users currentUser = RequestHolder.getCurrentUser();
+            OssAdmin currentUser = RequestHolder.getCurrentUser();
             if (currentUser.getRole().contains(MainConstants.SYS)){
                 List<String> list = new ArrayList<>();
                 boolean base64 = (boolean) requestVO.getData().get("isbase64");
@@ -132,7 +133,7 @@ public class DownlinkDataController {
     @ApiOperation(value = "查看下行数据列表", notes = "查看下行数据列表")
     @RequestMapping(value = "/downdataList", method = RequestMethod.POST)
     public ApiResult addApp(@RequestBody RequestVO requestVO) {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         PageInfoVO pageInfo = requestVO.getPageInfo();
         Integer currentPage = pageInfo.getCurrentPage();

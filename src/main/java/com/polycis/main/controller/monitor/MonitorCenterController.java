@@ -10,6 +10,7 @@ import com.polycis.main.entity.App;
 import com.polycis.main.entity.AppOrgRelation;
 import com.polycis.main.entity.Device;
 import com.polycis.main.entity.Users;
+import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.entity.vo.AppVo;
 import com.polycis.main.service.db1.IAppOrgRelationService;
 import com.polycis.main.service.db1.IAppService;
@@ -56,7 +57,7 @@ public class MonitorCenterController {
     @ApiOperation(value = "查看基本信息", notes = "查看基本信息")
     @RequestMapping(value = "/afewinfo", method = RequestMethod.POST)
     public ApiResult afewinfo() {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         ApiResult apiResult = new ApiResult<>();
 
@@ -100,7 +101,7 @@ public class MonitorCenterController {
     @ApiOperation(value = "查看应用信息集合", notes = "查看应用信息集合")
     @RequestMapping(value = "/app", method = RequestMethod.POST)
     public ApiResult app() {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         List<AppVo> list= iAppService.seletMonitorApp(currentUser.getOrg());
 
@@ -128,7 +129,7 @@ public class MonitorCenterController {
     @ApiOperation(value = "查看基本信息", notes = "查看基本信息")
     @RequestMapping(value = "/test", method = RequestMethod.POST)
     public ApiResult test() {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         ApiResult apiResult = new ApiResult<>();
         // Integer onlineCount = iDevUnionDeviceService.selectOnLineDevice(currentUser);

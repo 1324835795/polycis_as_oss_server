@@ -14,6 +14,7 @@ import com.polycis.main.entity.App;
 import com.polycis.main.entity.Device;
 import com.polycis.main.entity.Product;
 import com.polycis.main.entity.Users;
+import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.service.db1.IDeviceService;
 import com.polycis.main.service.db1.IProductService;
 import io.swagger.annotations.ApiOperation;
@@ -50,7 +51,7 @@ public class ProductController {
     @ApiOperation(value = "查看产品列表", notes = "查看产品列表")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public ApiResult addApp(@RequestBody RequestVO requestVO) {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         PageInfoVO pageInfo = requestVO.getPageInfo();
         Integer currentPage = pageInfo.getCurrentPage();
@@ -75,7 +76,7 @@ public class ProductController {
     @ApiOperation(value = "查看单个产品信息", notes = "查看单个产品信息")
     @RequestMapping(value = "/info", method = RequestMethod.POST)
     public ApiResult info(@RequestBody Product product) {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         Product product1 = iProductService.selectById(product);
         ApiResult apiResult = new ApiResult<>();
         apiResult.setData(product1);
@@ -85,7 +86,7 @@ public class ProductController {
     @ApiOperation(value = "查看产品内设备列表", notes = "查看产品设备列表")
     @RequestMapping(value = "/devlist", method = RequestMethod.POST)
     public ApiResult devlist(@RequestBody RequestVO requestVO) {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         Page<Device> page = iDeviceService.selectProductDevList(requestVO, currentUser);
         ApiResult apiResult = new ApiResult<>();
         apiResult.setData(page);
@@ -95,7 +96,7 @@ public class ProductController {
     @ApiOperation(value = "增加产品", notes = "增加产品")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ApiResult add(@RequestBody Product product) {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         ApiResult apiResult = new ApiResult<>();
         if (currentUser.getRole().contains(MainConstants.SYS)) {
@@ -112,7 +113,7 @@ public class ProductController {
     @ApiOperation(value = "修改产品", notes = "修改产品")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ApiResult update(@RequestBody Product product) {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         ApiResult apiResult = new ApiResult<>();
         if (currentUser.getRole().contains(MainConstants.SYS)) {
@@ -129,7 +130,7 @@ public class ProductController {
     @ApiOperation(value = "删除产品", notes = "删除产品")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ApiResult delete(@RequestBody Product product) {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         if (currentUser.getRole().contains(MainConstants.SYS)) {
 
@@ -155,7 +156,7 @@ public class ProductController {
     @ApiOperation(value = "产品下拉列表", notes = "产品下拉列表")
     @RequestMapping(value = "/prolist", method = RequestMethod.POST)
     public ApiResult prolist() {
-        Users currentUser = RequestHolder.getCurrentUser();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         EntityWrapper<Product> wrapper = new EntityWrapper<>();
         wrapper.eq("org",currentUser.getOrg());
@@ -164,9 +165,6 @@ public class ProductController {
         ApiResult apiResult = new ApiResult<>();
         apiResult.setData(products);
         return apiResult;
-
-
-
 
 
     }

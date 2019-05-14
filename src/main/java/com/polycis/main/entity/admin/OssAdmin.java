@@ -1,5 +1,6 @@
 package com.polycis.main.entity.admin;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -52,6 +53,17 @@ public class OssAdmin implements Serializable {
      * 更新时间
      */
     private Integer start;
+
+    @TableField(exist=false)
+    private Integer org;
+
+    public Integer getOrg() {
+        return org;
+    }
+
+    public void setOrg(Integer org) {
+        this.org = org;
+    }
 
     public String getName() {
         return name;
