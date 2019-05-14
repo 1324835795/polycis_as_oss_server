@@ -77,9 +77,23 @@ public class DevDataWarn implements Serializable {
      */
     private Date modifyTime;
 
+    /**
+     * 告警状态 0 未处理   1 处理中   2 已经处理
+     */
     private Integer status;
 
+    /**
+     *是否已读 0 未读 1 已读
+     */
+    private Integer readStatus;
 
+    public Integer getReadStatus() {
+        return readStatus;
+    }
+
+    public void setReadStatus(Integer readStatus) {
+        this.readStatus = readStatus;
+    }
 
     public Integer getStatus() {
         return status;
@@ -219,6 +233,7 @@ public class DevDataWarn implements Serializable {
                 ", createTime=" + createTime +
                 ", modifyTime=" + modifyTime +
                 ", status=" + status +
+                ", readStatus=" + readStatus +
                 '}';
     }
 }

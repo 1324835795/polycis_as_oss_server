@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface IDeviceService extends IService<Device> {
 
-    Page<Device> selectAppDeviceList(RequestVO requestVO, Users currentUser);
+    Page<Device> selectAppDeviceList(RequestVO requestVO);
 
     Page<Device> selectProductDevList(RequestVO requestVO, Users currentUser);
 

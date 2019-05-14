@@ -1,6 +1,5 @@
 package com.polycis.main.service.db1.impl;
 
-import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.polycis.main.common.MainConstants;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,29 +45,34 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements IAppS
 
 
     @Override
-    public Page<App> queryAppList(Integer currentPage, Integer pageSize, Users currentUser, App app) {
-        EntityWrapper<App> appEntityWrapper = new EntityWrapper<>();
-
-        if(null!=app && null!=app.getName() && !app.getName().equals("")){
-
-            appEntityWrapper.like("name",app.getName(), SqlLike.DEFAULT);
-        }
-        appEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
-       appEntityWrapper.eq("organization_id",currentUser.getOrg());
-        appEntityWrapper.orderBy("create_time desc");
-
-
-
+    public Page<App> queryAppList(Integer currentPage, Integer pageSize, App app) {
 
         Page<App> page = new Page<App>(currentPage, pageSize);
 
-        // aop切入
-       return  iAppService.selectPage(page,appEntityWrapper);
+        Map<String, Object> param = new HashMap<String, Object>();
+
+        param.put("pageNumber", (currentPage - 1) * pageSize);
+
+        param.put("pageSize", pageSize);
+
+        if (null != app.getDescription() && !"".equals(app.getDescription())) {
+            param.put("query", app.getDescription());
+        } else {
+            param.put("query", null);
+        }
+
+        List<App> list = appMapper.queryAppList(param);
+
+        Integer count = appMapper.queryAppListCount(param);
+        page.setTotal(count);
+        page.setRecords(list);
+        return page;
+
 
     }
 
     @Override
-    public  List<Map<String, Object>> selectProduct(Users currentUser, App app) {
+    public  List<Map<String, Object>> selectProduct(App app) {
 
       List<Map<String, Object>> list = appMapper.selectProduct(app.getId());
 
@@ -77,21 +82,12 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements IAppS
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void deleteApp(Users currentUser, App app) {
+    public void deleteApp(App app) {
 
         try {
-            EntityWrapper<App> wrapper = new EntityWrapper<>();
-            wrapper.eq("organization_id", currentUser.getOrg());
-            wrapper.eq("id", app.getId());
-            // 如果删除自己组织的,肯定能删除成功,删除别人组织的,不会成功也不会返回特殊code
-            App app1 = new App();
-            app1.setIsDelete(MainConstants.DELETETED);
-            iAppService.update(app1, wrapper);
-
-            EntityWrapper<AppOrgRelation> appOrgRelationEntityWrapper = new EntityWrapper<>();
-            appOrgRelationEntityWrapper.eq("organization_id",currentUser.getOrg());
-            appOrgRelationEntityWrapper.eq("app_id",app.getId());
-            iAppOrgRelationService.delete(appOrgRelationEntityWrapper);
+            app.setIsDelete(MainConstants.DELETETED);
+            iAppService.update(app, new EntityWrapper<App>().eq("id", app.getId()));
+            iAppOrgRelationService.delete(new EntityWrapper<AppOrgRelation>().eq("app_id",app.getId()));
         } catch (Exception e) {
             LOG.info("删除出错:{}",app.toString());
             // 用以回滚

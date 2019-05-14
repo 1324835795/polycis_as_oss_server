@@ -35,4 +35,26 @@
         WHERE iaor.app_id IN
         (SELECT app_id FROM iot_app_org_relation WHERE organization_id=#{param2})
     </select>
+    <select id="queryAppList" resultType="com.polycis.main.entity.App">
+      SELECT ia.*
+      FROM iot_app ia
+      INNER JOIN iot_app_org_relation iaor ON iaor.app_id=ia.id
+      INNER JOIN  iot_user  iu ON iu.org =iaor.organization_id AND iu.is_delete=1
+      WHERE ia.is_delete=1
+        <if test="query != null and query != ''">
+            AND (iu.name LIKE "%"#{query}"%" or ia.app_eui LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%" )
+        </if>
+        ORDER BY ia.create_time DESC
+        LIMIT #{pageNumber}, #{pageSize}
+    </select>
+    <select id="queryAppListCount" resultType="java.lang.Integer">
+        SELECT count(ia.id)
+        FROM iot_app ia
+        INNER JOIN iot_app_org_relation iaor ON iaor.app_id=ia.id
+        INNER JOIN  iot_user  iu ON iu.org =iaor.organization_id AND iu.is_delete=1
+        WHERE ia.is_delete=1
+        <if test="query != null and query != ''">
+            AND (iu.name LIKE "%"#{query}"%" or ia.app_eui LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%" )
+        </if>
+    </select>
 </mapper>

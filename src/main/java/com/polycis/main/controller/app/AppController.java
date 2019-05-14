@@ -1,4 +1,3 @@
-/*
 package com.polycis.main.controller.app;
 
 
@@ -18,10 +17,7 @@ import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.entity.db3.DevDataWarn;
 import com.polycis.main.entity.db3.DevDownDataPO;
 import com.polycis.main.entity.db3.DevUpDataPO;
-import com.polycis.main.service.db1.IAppOrgRelationService;
-import com.polycis.main.service.db1.IAppService;
-import com.polycis.main.service.db1.IDeviceService;
-import com.polycis.main.service.db1.IProductService;
+import com.polycis.main.service.db1.*;
 import com.polycis.main.service.db2.IDevHttpService;
 import com.polycis.main.service.db2.IDevMqQueueService;
 import com.polycis.main.service.db2.IMybatisPlusDB2Service;
@@ -35,13 +31,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-*/
-/**
+/*
  * @author qiaokai
  * @since 2019-04-19
- *//*
-
+*/
 @RestController
 @RequestMapping("/app")
 public class AppController {
@@ -56,12 +51,6 @@ public class AppController {
     @Autowired
     private AppFeignClient appFeignClient;
     @Autowired
-    private IDevMqQueueService iDevMqQueueService;
-
-    @Autowired
-    private IDevHttpService iDevHttpService;
-
-    @Autowired
     private IMybatisPlusDB2Service iMybatisPlusDB2Service;
 
     @Autowired
@@ -74,26 +63,34 @@ public class AppController {
     private IProductService iProductService;
 
 
+    @Autowired
+    private IUsersService iUsersService;
+
+
     @ApiOperation(value = "添加应用", notes = "添加应用接口")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ApiResult addApp(@RequestBody App app) {
+    public ApiResult addApp(@RequestBody RequestVO requestVO) {
+
         ApiResult apiResult = new ApiResult<>();
         OssAdmin currentUser = RequestHolder.getCurrentUser();
+
+
         if (currentUser.getRole().contains(MainConstants.SYS)) {
-            // 服务接口应该做应用eui唯一校验,如果让应用层做也行,但这会是个漏洞,因为应用层只是负责传递而已
-            EntityWrapper<App> appEntityWrapper = new EntityWrapper<>();
-            appEntityWrapper.eq("app_eui", app.getAppEui());
-            List<App> apps = iAppService.selectList(appEntityWrapper);
-            if (apps.size() > 0) {
-                apiResult.setMsg("应用eui已被占用");
-                apiResult.setCode(CommonCode.PARAMETER_INVALID.getKey());
-                return apiResult;
-            }
+
+            Map<String, Object> data = requestVO.getData();
+            Integer userId = (Integer) data.get("userId");
+
+            Users users = iUsersService.selectById(userId);
+
+            Map<String, Object> params = (Map<String, Object>) data.get("appInfo");
+            App app = JSON.parseObject(JSON.toJSONString(params), App.class);
+
+            app.setAppEui(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16));
             ApiResult apiResult1 = appFeignClient.create(app);
             LOG.info(apiResult1.getMsg());
             if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
                 app.setOrganizationId(currentUser.getOrg());
-                boolean b = iAppService.addApp(app, currentUser);
+                boolean b = iAppService.addApp(app, users);
                 if (b) {
                     apiResult.setSub_code(app.getId());
                     return apiResult;
@@ -113,7 +110,7 @@ public class AppController {
 
     @ApiOperation(value = "查看应用列表", notes = "查看应用列表")
     @RequestMapping(value = "/applist", method = RequestMethod.POST)
-    public ApiResult addApp(@RequestBody RequestVO requestVO) {
+    public ApiResult applist(@RequestBody RequestVO requestVO) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         PageInfoVO pageInfo = requestVO.getPageInfo();
@@ -122,7 +119,7 @@ public class AppController {
 
         Map<String, Object> data = requestVO.getData();
         App app = JSON.parseObject(JSON.toJSONString(data), App.class);
-        Page<App> page = iAppService.queryAppList(currentPage, pageSize, currentUser, app);
+        Page<App> page = iAppService.queryAppList(currentPage, pageSize, app);
         ApiResult apiResult = new ApiResult<>();
         apiResult.setData(page);
         return apiResult;
@@ -131,14 +128,13 @@ public class AppController {
     @ApiOperation(value = "查看应用详情", notes = "查看应用详情")
     @RequestMapping(value = "/info", method = RequestMethod.POST)
     public ApiResult info(@RequestBody App app) {
-        // 仿照shiro实现获取user
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         App app1 = iAppService.selectById(app);
 
-        int i = iDeviceService.selectCount(new EntityWrapper<Device>()
+       /* int i = iDeviceService.selectCount(new EntityWrapper<Device>()
                 .eq("is_delete", MainConstants.UN_DELETE)
                 .eq("app_id", app.getId()));
-        app1.setPicturepath(String.valueOf(i));
+        app1.setPicturepath(String.valueOf(i));*/
 
         // aop切入,直接用plus的service切不进去有待研究
         App app2 = iMybatisPlusDB2Service.appInfo(app1);
@@ -156,8 +152,6 @@ public class AppController {
         ApiResult apiResult = new ApiResult<>();
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         if (currentUser.getRole().contains(MainConstants.SYS)) {
-
-
             // 应用更新接口只更新 应用的http
             ApiResult apiResult1 = appFeignClient.update(app);
             if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
@@ -184,7 +178,7 @@ public class AppController {
             List<Device> devices = iDeviceService.selectList(new EntityWrapper<Device>()
                     .eq("is_delete", MainConstants.UN_DELETE)
                     .eq("app_id", app.getId()));
-            if(devices.size()>0){
+            if (devices.size() > 0) {
                 apiResult.setCode(CommonCode.ERROR.getKey());
                 apiResult.setMsg("应用下有设备,请先删除应用下的设备");
                 return apiResult;
@@ -192,7 +186,7 @@ public class AppController {
             //接入层来判断到底能删不能删,删不掉自然我这就不用走查询应用下设备逻辑了
             ApiResult apiResult1 = appFeignClient.delete(app.getAppEui());
             if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
-                iAppService.deleteApp(currentUser, app);
+                iAppService.deleteApp(app);
                 return apiResult;
             }
             return apiResult1;
@@ -208,8 +202,7 @@ public class AppController {
     @ApiOperation(value = "应用内设备列表模糊查询", notes = "应用内设备列表模糊查询")
     @RequestMapping(value = "/devicelist", method = RequestMethod.POST)
     public ApiResult devicelist(@RequestBody RequestVO requestVO) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
-        Page<Device> page = iDeviceService.selectAppDeviceList(requestVO, currentUser);
+        Page<Device> page = iDeviceService.selectAppDeviceList(requestVO);
         ApiResult apiResult = new ApiResult<>();
         apiResult.setData(page);
         return apiResult;
@@ -217,106 +210,20 @@ public class AppController {
     }
 
 
-    @ApiOperation(value = "应用内产品数量占比", notes = "应用内产品数量占比")
-    @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public ApiResult product(@RequestBody App app) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
-        List<Map<String, Object>> list = iAppService.selectProduct(currentUser, app);
-        ApiResult apiResult = new ApiResult<>();
-        apiResult.setData(list);
-        return apiResult;
-
-    }
-
-    @ApiOperation(value = "应用设备拓扑", notes = "应用设备拓扑")
-    @RequestMapping(value = "/topo", method = RequestMethod.POST)
-    public ApiResult topo(@RequestBody App app) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
-
-        EntityWrapper<Device> wrapper = new EntityWrapper<>();
-        wrapper.eq("app_id", app.getId());
-        wrapper.eq("is_delete", MainConstants.UN_DELETE);
-        List<Device> list = iDeviceService.selectList(wrapper);
-        App app1 = iAppService.selectById(app);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("devlist", list);
-        map.put("name", app1.getName());
-        map.put("id", app1.getId());
-        ApiResult apiResult = new ApiResult<>();
-        apiResult.setData(map);
-        return apiResult;
-
-    }
-
-    @ApiOperation(value = "设备在线率", notes = "设备在线率")
-    @RequestMapping(value = "/devonline", method = RequestMethod.POST)
-    public ApiResult devonline(@RequestBody App app) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
-        ApiResult apiResult = new ApiResult<>();
-        App app1 = iAppService.selectById(app);
-        List<Map<String, Integer>> list = iMybatisPlusDB2Service.selectDevonline(app1);
-        apiResult.setData(list);
-        return apiResult;
-    }
-
-    @ApiOperation(value = "应用上下行数据量占比", notes = "应用上下行数据量占比")
-    @RequestMapping(value = "/updownrate", method = RequestMethod.POST)
-    public ApiResult updownrate(@RequestBody App app) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
-        ApiResult apiResult = new ApiResult<>();
-
-        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
-        deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
-        deviceEntityWrapper.eq("app_id", app.getId());
-        deviceEntityWrapper.setSqlSelect("device_uuid");
-        List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
-
-        Map<String, Object> map = iMybatisPlusDB3Service.selectAppUpDownDataCount(objects);
-        apiResult.setData(map);
-        return apiResult;
-    }
-
-
-    @ApiOperation(value = "测试", notes = "测试")
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ApiResult test() {
-        ApiResult apiResult = new ApiResult<>();
-        List<String> list = iAppService.selctTest();
-
-        return apiResult;
-    }
-
-
-    @ApiOperation(value = "应用内近七日上下行数据统计", notes = "应用内近七日上下行数据统计")
-    @RequestMapping(value = "/aweekdata", method = RequestMethod.POST)
-    public ApiResult aweekdata(@RequestBody App app) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
-
-        List<String> uuidlist = iDeviceService.selectDevList(app.getId());
-
-        List<Map<String, Object>> list = iMybatisPlusDB3Service.selectAWeekData(uuidlist);
-        ApiResult apiResult = new ApiResult<>();
-        apiResult.setData(list);
-        return apiResult;
-
-    }
-
     @ApiOperation(value = "应用内上行数据模糊查询", notes = "应用内上行数据模糊查询")
     @RequestMapping(value = "/updata", method = RequestMethod.POST)
     public ApiResult updata(@RequestBody RequestVO requestVO) {
 
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         App app = JSON.parseObject(JSON.toJSONString(requestVO.getData()), App.class);
 
-      */
-/*  // 查询产品id
+        // 查询产品id
         EntityWrapper<Product> wrapper = new EntityWrapper<>();
         if (null != app.getName() && !"".equals(app.getName())) {
             wrapper.like("name", app.getName());
         }
         wrapper.setSqlSelect("id");
-        List<Object> list = iProductService.selectObjs(wrapper);*//*
+        List<Object> list = iProductService.selectObjs(wrapper);
 
 
         // 查询设备id
@@ -341,7 +248,6 @@ public class AppController {
     @RequestMapping(value = "/downdata", method = RequestMethod.POST)
     public ApiResult downdata(@RequestBody RequestVO requestVO) {
 
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         App app = JSON.parseObject(JSON.toJSONString(requestVO.getData()), App.class);
 
@@ -356,9 +262,7 @@ public class AppController {
         deviceEntityWrapper.setSqlSelect("device_uuid");
         List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
 
-    */
-/*    System.out.println("uuid is");
-        objects.forEach(s-> System.out.println("uuid"+s.toString()));*//*
+        objects.forEach(s -> System.out.println("uuid" + s.toString()));
 
         // 查询上行数据
         Page<DevDownDataPO> devDownDataPOPage = iMybatisPlusDB3Service.selectAppDownData(objects, requestVO.getPageInfo());
@@ -370,7 +274,6 @@ public class AppController {
     @ApiOperation(value = "应用内设备告警记录", notes = "应用内设备告警记录")
     @RequestMapping(value = "/devalarm", method = RequestMethod.POST)
     public ApiResult devalarm(@RequestBody RequestVO requestVO) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         PageInfoVO pageInfo = requestVO.getPageInfo();
         App app = JSON.parseObject(JSON.toJSONString(requestVO.getData()), App.class);
@@ -403,9 +306,9 @@ public class AppController {
         List<Object> objects = iAppOrgRelationService.selectObjs(appOrgRelationEntityWrapper);
 
         EntityWrapper<App> appEntityWrapper = new EntityWrapper<>();
-        if(objects.size()==0){
+        if (objects.size() == 0) {
             appEntityWrapper.eq("id", -989898989);
-        }else {
+        } else {
             appEntityWrapper.in("id", objects);
         }
 
@@ -418,6 +321,87 @@ public class AppController {
     }
 
 
+
+/*
+    @ApiOperation(value = "应用内产品数量占比", notes = "应用内产品数量占比")
+    @RequestMapping(value = "/product", method = RequestMethod.POST)
+    public ApiResult product(@RequestBody App app) {
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
+        List<Map<String, Object>> list = iAppService.selectProduct(app);
+        ApiResult apiResult = new ApiResult<>();
+        apiResult.setData(list);
+        return apiResult;
+
+    }
+
+    @ApiOperation(value = "应用设备拓扑", notes = "应用设备拓扑")
+    @RequestMapping(value = "/topo", method = RequestMethod.POST)
+    public ApiResult topo(@RequestBody App app) {
+        EntityWrapper<Device> wrapper = new EntityWrapper<>();
+        wrapper.eq("app_id", app.getId());
+        wrapper.eq("is_delete", MainConstants.UN_DELETE);
+        List<Device> list = iDeviceService.selectList(wrapper);
+        App app1 = iAppService.selectById(app);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("devlist", list);
+        map.put("name", app1.getName());
+        map.put("id", app1.getId());
+        ApiResult apiResult = new ApiResult<>();
+        apiResult.setData(map);
+        return apiResult;
+
+    }
+
+    @ApiOperation(value = "设备在线率", notes = "设备在线率")
+    @RequestMapping(value = "/devonline", method = RequestMethod.POST)
+    public ApiResult devonline(@RequestBody App app) {
+        ApiResult apiResult = new ApiResult<>();
+        App app1 = iAppService.selectById(app);
+        List<Map<String, Integer>> list = iMybatisPlusDB2Service.selectDevonline(app1);
+        apiResult.setData(list);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "应用上下行数据量占比", notes = "应用上下行数据量占比")
+    @RequestMapping(value = "/updownrate", method = RequestMethod.POST)
+    public ApiResult updownrate(@RequestBody App app) {
+        ApiResult apiResult = new ApiResult<>();
+
+        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
+        deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
+        deviceEntityWrapper.eq("app_id", app.getId());
+        deviceEntityWrapper.setSqlSelect("device_uuid");
+        List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
+
+        Map<String, Object> map = iMybatisPlusDB3Service.selectAppUpDownDataCount(objects);
+        apiResult.setData(map);
+        return apiResult;
+    }
+
+
+    @ApiOperation(value = "测试", notes = "测试")
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public ApiResult test() {
+        ApiResult apiResult = new ApiResult<>();
+        List<String> list = iAppService.selctTest();
+
+        return apiResult;
+    }
+
+
+    @ApiOperation(value = "应用内近七日上下行数据统计", notes = "应用内近七日上下行数据统计")
+    @RequestMapping(value = "/aweekdata", method = RequestMethod.POST)
+    public ApiResult aweekdata(@RequestBody App app) {
+
+        List<String> uuidlist = iDeviceService.selectDevList(app.getId());
+
+        List<Map<String, Object>> list = iMybatisPlusDB3Service.selectAWeekData(uuidlist);
+        ApiResult apiResult = new ApiResult<>();
+        apiResult.setData(list);
+        return apiResult;
+
+    }*/
+
+
 }
 
-*/

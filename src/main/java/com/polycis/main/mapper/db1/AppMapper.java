@@ -42,4 +42,8 @@ public interface AppMapper extends BaseMapper<App> {
     List<AppVo> seletMonitorApp(Integer org);
 
     Integer selectDevIsmine(Integer id, Integer org);
+
+    List<App> queryAppList(Map<String, Object> param);
+
+    Integer queryAppListCount(Map<String, Object> param);
 }

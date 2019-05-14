@@ -1,11 +1,8 @@
 package com.polycis.main.controller.admin;
 
-
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.netflix.discovery.converters.Auto;
 import com.polycis.main.client.redis.RedisFeignClient;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
@@ -15,7 +12,6 @@ import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.Users;
 import com.polycis.main.entity.admin.OssAdmin;
-import com.polycis.main.mapper.admin.OssAdminMapper;
 import com.polycis.main.service.admin.IOssAdminService;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -24,8 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
