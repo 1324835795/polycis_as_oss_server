@@ -1,4 +1,4 @@
-package com.polycis.main.controller;
+package com.polycis.main.controller.dictionary;
 
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
