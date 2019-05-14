@@ -8,6 +8,7 @@ import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.datasource.DbContextHolder;
 import com.polycis.main.entity.Users;
 import com.polycis.main.client.redis.RedisFeignClient;
+import com.polycis.main.entity.admin.OssAdmin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -80,7 +81,7 @@ public class TokenIntecptor implements HandlerInterceptor {
                     redisFeignClient.getandsetexpire(token, MainConstants.TOKEN_LIFETIME);
                     // 将user塞入threadlocal中,方便线程获取user对象
                     String user = apiResult.getData().toString();
-                    RequestHolder.add(JSON.parseObject(user, Users.class));
+                    RequestHolder.add(JSON.parseObject(user, OssAdmin.class));
 
                     return true;
                 } else {
