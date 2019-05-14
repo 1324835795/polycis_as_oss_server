@@ -1,4 +1,4 @@
-package com.polycis.main.controller;
+package com.polycis.main.controller.monitor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
