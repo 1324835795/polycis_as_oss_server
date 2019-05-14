@@ -1,3 +1,4 @@
+/*
 package com.polycis.main.controller.app;
 
 
@@ -35,10 +36,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * @author qiaokai
  * @since 2019-04-19
- */
+ *//*
+
 @RestController
 @RequestMapping("/app")
 public class AppController {
@@ -305,13 +308,15 @@ public class AppController {
         ApiResult apiResult = new ApiResult<>();
         App app = JSON.parseObject(JSON.toJSONString(requestVO.getData()), App.class);
 
-      /*  // 查询产品id
+      */
+/*  // 查询产品id
         EntityWrapper<Product> wrapper = new EntityWrapper<>();
         if (null != app.getName() && !"".equals(app.getName())) {
             wrapper.like("name", app.getName());
         }
         wrapper.setSqlSelect("id");
-        List<Object> list = iProductService.selectObjs(wrapper);*/
+        List<Object> list = iProductService.selectObjs(wrapper);*//*
+
 
         // 查询设备id
         EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
@@ -350,8 +355,10 @@ public class AppController {
         deviceEntityWrapper.setSqlSelect("device_uuid");
         List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
 
-    /*    System.out.println("uuid is");
-        objects.forEach(s-> System.out.println("uuid"+s.toString()));*/
+    */
+/*    System.out.println("uuid is");
+        objects.forEach(s-> System.out.println("uuid"+s.toString()));*//*
+
         // 查询上行数据
         Page<DevDownDataPO> devDownDataPOPage = iMybatisPlusDB3Service.selectAppDownData(objects, requestVO.getPageInfo());
         apiResult.setData(devDownDataPOPage);
@@ -412,3 +419,4 @@ public class AppController {
 
 }
 
+*/
