@@ -28,7 +28,7 @@ public class GeneratorServiceEntity {
 
         String packageName = "com.polycis.main";
         boolean serviceNameStartWithI = true;//user -> UserService, 设置成true: user -> IUserService
-        generateByTables(serviceNameStartWithI, packageName, "iot_oss_admin");
+        generateByTables(serviceNameStartWithI, packageName, "iot_org");
     }
 
 
@@ -53,7 +53,7 @@ public class GeneratorServiceEntity {
 
         config.setActiveRecord(false);
         //D:\LORA_DEVELOP\lorawan2\lorawan-service\src\main\java
-        config.setOutputDir("D:\\LORA_DEVELOP\\polycis_iot_platform\\polycis_as_oss_server\\src\\main\\java\\com\\polycis\\main");
+        config.setOutputDir("D:\\polycis\\polycis_iot_platform\\polycis_as_oss_server\\src\\main\\java\\com\\polycis\\main");
         //\LoRaWanService\lorawan-service\src\main\java
         config.setFileOverride(true);
 
@@ -86,7 +86,7 @@ public class GeneratorServiceEntity {
                             @Override
                             public String outputFile(TableInfo tableInfo) {
                                 //D:/LORA_DEVELOP/lorawan2/lorawan-service/"+"/src/main/resources/mybatis/gateway/
-                                return "D:\\LORA_DEVELOP\\polycis_iot_platform\\polycis_as_oss_server"+"/src/main/resources/mybatis/data/" + tableInfo.getEntityName() + "Mapper.xml";
+                                return "D:\\polycis\\polycis_iot_platform\\polycis_as_oss_server"+"/src/main/resources/mybatis/data/" + tableInfo.getEntityName() + "Mapper.xml";
                         }
                         }))
 

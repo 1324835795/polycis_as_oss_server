@@ -1,7 +1,7 @@
 package com.polycis.main.mapper.db1;
 
-import com.polycis.main.entity.Org;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.polycis.main.entity.Org;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -9,8 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
  * 组织管理表 Mapper 接口
  * </p>
  *
- * @author qiaokai
- * @since 2019-04-19
+ * @author ${author}
+ * @since 2019-05-14
  */
 @Mapper
 public interface OrgMapper extends BaseMapper<Org> {

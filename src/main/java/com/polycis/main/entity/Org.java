@@ -1,10 +1,11 @@
 package com.polycis.main.entity;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author ${author}
- * @since 2019-04-19
+ * @since 2019-05-14
  */
 @TableName("iot_org")
 public class Org implements Serializable {
@@ -25,13 +26,17 @@ public class Org implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     /**
-     * 组织名称
+     * 客户名称
      */
     private String name;
     /**
-     * 备注
+     * 登录名称
      */
-    private String remark;
+    private String loginname;
+    /**
+     * 登录密码
+     */
+    private String password;
     /**
      * 组织地址
      */
@@ -45,13 +50,17 @@ public class Org implements Serializable {
      */
     private String linkmanPhone;
     /**
+     * 修改时间
+     */
+    private Date updateTime;
+    /**
      * 创建时间
      */
     private Date createTime;
     /**
      * 删除标识(0删除,1未删除)
      */
-    private Integer isDelete;
+    private Integer delete;
 
 
     public Integer getId() {
@@ -70,12 +79,20 @@ public class Org implements Serializable {
         this.name = name;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getLoginname() {
+        return loginname;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setLoginname(String loginname) {
+        this.loginname = loginname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getAddress() {
@@ -102,6 +119,14 @@ public class Org implements Serializable {
         this.linkmanPhone = linkmanPhone;
     }
 
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -110,12 +135,12 @@ public class Org implements Serializable {
         this.createTime = createTime;
     }
 
-    public Integer getIsDelete() {
-        return isDelete;
+    public Integer getDelete() {
+        return delete;
     }
 
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
+    public void setDelete(Integer delete) {
+        this.delete = delete;
     }
 
     @Override
@@ -123,12 +148,14 @@ public class Org implements Serializable {
         return "Org{" +
         ", id=" + id +
         ", name=" + name +
-        ", remark=" + remark +
+        ", loginname=" + loginname +
+        ", password=" + password +
         ", address=" + address +
         ", linkmanName=" + linkmanName +
         ", linkmanPhone=" + linkmanPhone +
+        ", updateTime=" + updateTime +
         ", createTime=" + createTime +
-        ", isDelete=" + isDelete +
+        ", delete=" + delete +
         "}";
     }
 }
