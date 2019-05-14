@@ -53,6 +53,20 @@ public class OssAdmin implements Serializable {
      */
     private Integer start;
 
+
+
+    private Integer delete;
+
+    public Integer getDelete() {
+        return delete;
+    }
+
+    public void setDelete(Integer delete) {
+        this.delete = delete;
+    }
+
+    ;
+
     public String getName() {
         return name;
     }
@@ -137,6 +151,7 @@ public class OssAdmin implements Serializable {
                 ", updateTime=" + updateTime +
                 ", name='" + name + '\'' +
                 ", start=" + start +
+                ", delete=" + delete +
                 '}';
     }
 }
