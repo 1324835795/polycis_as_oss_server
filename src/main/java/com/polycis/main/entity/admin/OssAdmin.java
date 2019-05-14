@@ -53,6 +53,21 @@ public class OssAdmin implements Serializable {
      */
     private Integer start;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getStart() {
+        return start;
+    }
+
+    public void setStart(Integer start) {
+        this.start = start;
+    }
 
     public Integer getId() {
         return id;
