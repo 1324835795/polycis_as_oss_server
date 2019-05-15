@@ -55,21 +55,19 @@ public class OssAdmin implements Serializable {
     private Integer start;
 
 
-
-    private Integer delete;
-
-    public Integer getDelete() {
-        return delete;
-    }
-
-    public void setDelete(Integer delete) {
-        this.delete = delete;
-    }
-
-    ;
+    private Integer del;
 
     @TableField(exist=false)
     private Integer org;
+
+
+    public Integer getDel() {
+        return del;
+    }
+
+    public void setDel(Integer del) {
+        this.del = del;
+    }
 
     public Integer getOrg() {
         return org;
@@ -151,6 +149,7 @@ public class OssAdmin implements Serializable {
         this.updateTime = updateTime;
     }
 
+
     @Override
     public String toString() {
         return "OssAdmin{" +
@@ -163,7 +162,8 @@ public class OssAdmin implements Serializable {
                 ", updateTime=" + updateTime +
                 ", name='" + name + '\'' +
                 ", start=" + start +
-                ", delete=" + delete +
+                ", del=" + del +
+                ", org=" + org +
                 '}';
     }
 }

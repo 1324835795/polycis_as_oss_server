@@ -34,4 +34,8 @@ public interface IMybatisPlusDB3Service {
     Page<DevDataWarn> selectPage(List<Object> list, PageInfoVO pageInfo);
 
     Integer selectAppAlarm(List<String> strings);
+
+    Page<DevDownDataPO> selectAppDownData(RequestVO requestVO);
+
+    Page<DevUpDataPO> selectAppUpData(RequestVO requestVO);
 }

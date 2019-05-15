@@ -28,10 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /*
  * @author qiaokai
@@ -214,30 +211,9 @@ public class AppController {
     public ApiResult updata(@RequestBody RequestVO requestVO) {
 
         ApiResult apiResult = new ApiResult<>();
-        App app = JSON.parseObject(JSON.toJSONString(requestVO.getData()), App.class);
-
-        // 查询产品id
-        EntityWrapper<Product> wrapper = new EntityWrapper<>();
-        if (null != app.getName() && !"".equals(app.getName())) {
-            wrapper.like("name", app.getName());
-        }
-        wrapper.setSqlSelect("id");
-        List<Object> list = iProductService.selectObjs(wrapper);
-
-
-        // 查询设备id
-        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
-        if (null != app.getAppEui() && !"".equals(app.getAppEui())) {
-            deviceEntityWrapper.like("device_uuid", app.getAppEui(), SqlLike.CUSTOM);
-        }
-        deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
-        deviceEntityWrapper.eq("app_id", app.getId());
-        // deviceEntityWrapper.in("product_id", list);
-        deviceEntityWrapper.setSqlSelect("device_uuid");
-        List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
 
         // 查询上行数据
-        Page<DevUpDataPO> devUpDataPOPage = iMybatisPlusDB3Service.selectAppUpData(objects, requestVO.getPageInfo());
+        Page<DevUpDataPO> devUpDataPOPage = iMybatisPlusDB3Service.selectAppUpData(requestVO);
         apiResult.setData(devUpDataPOPage);
         return apiResult;
 
@@ -248,23 +224,8 @@ public class AppController {
     public ApiResult downdata(@RequestBody RequestVO requestVO) {
 
         ApiResult apiResult = new ApiResult<>();
-        App app = JSON.parseObject(JSON.toJSONString(requestVO.getData()), App.class);
-
-
-        // 查询设备id
-        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
-        if (null != app.getAppEui() && !"".equals(app.getAppEui())) {
-            deviceEntityWrapper.like("device_uuid", app.getAppEui(), SqlLike.CUSTOM);
-        }
-        deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
-        deviceEntityWrapper.eq("app_id", app.getId());
-        deviceEntityWrapper.setSqlSelect("device_uuid");
-        List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
-
-        objects.forEach(s -> System.out.println("uuid" + s.toString()));
-
         // 查询上行数据
-        Page<DevDownDataPO> devDownDataPOPage = iMybatisPlusDB3Service.selectAppDownData(objects, requestVO.getPageInfo());
+        Page<DevDownDataPO> devDownDataPOPage = iMybatisPlusDB3Service.selectAppDownData(requestVO);
         apiResult.setData(devDownDataPOPage);
         return apiResult;
     }

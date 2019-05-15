@@ -49,7 +49,7 @@ public class OssAdminController {
 
     @ApiOperation(value = "oss用户登录", notes = "oss用户登录接口")
     @PostMapping("/login")
-    public ApiResult login(@RequestBody Users uss, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)  {
+    public ApiResult login(@RequestBody Users uss, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         ApiResult apiResult = new ApiResult<>();
         OssAdmin ossAdmin = new OssAdmin();
         ossAdmin.setLoginname(uss.getLoginname());
@@ -96,10 +96,10 @@ public class OssAdminController {
 
     @ApiOperation(value = "用户启用/不启用", notes = "用户启用/不启用")
     @PostMapping("/active")
-    public ApiResult active(@RequestBody OssAdmin ossAdmin)  {
+    public ApiResult active(@RequestBody OssAdmin ossAdmin) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
-        if (currentUser.getRole().contains(MainConstants.SYS) ) {
+        if (currentUser.getRole().contains(MainConstants.SYS)) {
             ossAdmin.setStart(0);
             iOssAdminService.updateById(ossAdmin);
             return apiResult;
@@ -140,7 +140,7 @@ public class OssAdminController {
 
     @ApiOperation(value = "删除oss用户", notes = "删除oss用户")
     @PostMapping("/delete")
-    public ApiResult delete(@RequestBody OssAdmin ossAdmin)  {
+    public ApiResult delete(@RequestBody OssAdmin ossAdmin) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         if (currentUser.getId().equals(ossAdmin.getId())) {
@@ -149,7 +149,7 @@ public class OssAdminController {
         }
 
         if (currentUser.getRole().contains(MainConstants.SYS)) {
-            ossAdmin.setDelete(MainConstants.DELETETED);
+            ossAdmin.setDel(MainConstants.DELETETED);
             iOssAdminService.updateById(ossAdmin);
             return apiResult;
         } else {
@@ -162,7 +162,7 @@ public class OssAdminController {
 
     @ApiOperation(value = "修改oss用户", notes = "修改oss用户")
     @PostMapping("/update")
-    public ApiResult update(@RequestBody OssAdmin ossAdmin)  {
+    public ApiResult update(@RequestBody OssAdmin ossAdmin) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         // 操作用户是管理员 且 被操作用户是type=1用户
@@ -206,7 +206,7 @@ public class OssAdminController {
 
     @ApiOperation(value = "oss用户个人信息", notes = "oss用户个人信息")
     @PostMapping("/selfinfo")
-    public ApiResult selfinfo(@RequestBody OssAdmin ossAdmin)  {
+    public ApiResult selfinfo(@RequestBody OssAdmin ossAdmin) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         OssAdmin ossAdmin1 = iOssAdminService.selectById(ossAdmin);
@@ -217,10 +217,10 @@ public class OssAdminController {
 
     @ApiOperation(value = "oss用户个人密码修改", notes = "oss用户个人密码修改")
     @PostMapping("/selfpassword")
-    public ApiResult selfpassword(@RequestBody OssAdmin ossAdmin)  {
+    public ApiResult selfpassword(@RequestBody OssAdmin ossAdmin) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
-        boolean b =iOssAdminService.update(ossAdmin, new EntityWrapper<OssAdmin>().eq("id", currentUser.getId()));
+        boolean b = iOssAdminService.update(ossAdmin, new EntityWrapper<OssAdmin>().eq("id", currentUser.getId()));
         return apiResult;
     }
 
