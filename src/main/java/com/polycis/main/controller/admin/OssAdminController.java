@@ -225,19 +225,5 @@ public class OssAdminController {
     }
 
 
-    @ApiOperation(value = "查询", notes = "查询")
-    @PostMapping("/search")
-    public ApiResult search(@RequestBody OssAdmin ossAdmin) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
-        ApiResult apiResult = new ApiResult<>();
-
-        iOssAdminService.selectById(ossAdmin);
-
-        return apiResult;
-
-
-    }
-
-
 }
 
