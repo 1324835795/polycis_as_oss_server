@@ -2,7 +2,9 @@ package com.polycis.main.controller.warn;
 
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.page.RequestVO;
+import com.polycis.main.entity.WarnLevel;
 import com.polycis.main.service.db3.IDevDataWarnService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +36,20 @@ public class WarnController {
     public ApiResult<List<Map<String, Object>>> warnStatusCal(@RequestBody RequestVO param){
         return iwarn.warnStatusCal(param);
     }
-
+    @PostMapping("/warn/createWarnLevel")
+    public ApiResult createWarnLevel(@RequestBody WarnLevel warnLevel){
+        return iwarn.createWarnLevel(warnLevel);
+    }
+    @PostMapping("/warn/selectWarnLevel")
+    public ApiResult<Map<String,Object>> selectWarnLevel(@RequestBody RequestVO requestVO){
+        return iwarn.selectWarnLevel(requestVO);
+    }
+    @PostMapping("/warn/deleteWarnLevel")
+    public ApiResult deleteWarnLevel(@RequestBody WarnLevel warnLevel){
+        return null;
+    }
+    @PostMapping("/warn/modifyWarnLevelState")
+    public ApiResult modifyWarnLevelState(@RequestBody WarnLevel warnLevel){
+        return null;
+    }
 }

@@ -2,6 +2,7 @@ package com.polycis.main.service.db3.impl;
 
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.page.RequestVO;
+import com.polycis.main.entity.WarnLevel;
 import com.polycis.main.entity.db3.DevDataWarn;
 import com.polycis.main.mapper.db3.DevDataWarnMapper;
 import com.polycis.main.service.db3.IDevDataWarnService;
@@ -84,5 +85,29 @@ public class DevDataWarnServiceImpl extends ServiceImpl<DevDataWarnMapper, DevDa
         }
         api.setData(listChange);
         return api;
+    }
+
+    @Override
+    public ApiResult createWarnLevel(WarnLevel warnLevel) {
+        if(warnMapper.selectWarnLevelEmpty(warnLevel)==0){
+            warnMapper.insertWarnLevel(warnLevel);
+        }else {
+            warnMapper.updateWarnLevel(warnLevel);
+        }
+        ApiResult api = new ApiResult();
+        api.setCode(10000);
+        api.setMsg("操作成功");
+        return api;
+    }
+
+    @Override
+    public ApiResult<Map<String,Object>> selectWarnLevel(RequestVO requestVO) {
+        Map<String,Object> map = new HashMap<>(16);
+        map.put("total",warnMapper.selectWarnLevelCount());
+        map.put("records",warnMapper.selectWarnLevel(requestVO));
+        ApiResult<Map<String,Object>> apiResult = new ApiResult<>();
+        apiResult.setCode(10000);
+        apiResult.setData(map);
+        return apiResult;
     }
 }
