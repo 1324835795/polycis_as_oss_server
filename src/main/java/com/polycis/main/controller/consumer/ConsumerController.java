@@ -170,11 +170,22 @@ public class ConsumerController {
         return apiResult;
     }
 
-    //客户下拉框
-    @ApiOperation(value = "删除客户", notes = "删除客户")
+
+    @ApiOperation(value = "客户下拉框", notes = "下拉框")
     @PostMapping("/downList")
-    public ApiResult downList(@RequestBody Org orgusers) throws IOException{
-        ApiResult apiResult = new ApiResult<>();
+    public ApiResult downList() throws IOException{
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
+        ApiResult apiResult = new ApiResult<>(CommonCode.SUCCESS);
+        try{
+            Map<String,Object> param  = new HashMap<>();
+            param.put("is_delete",1);
+            List<Org> orgs = iOrgService.selectByMap(param);
+            apiResult.setData(orgs);
+        }catch (Exception e){
+            apiResult.setMsg("查询失败");
+            apiResult.setCode(CommonCode.ERROR.getKey());
+            return apiResult;
+        }
 
         return apiResult;
     }
