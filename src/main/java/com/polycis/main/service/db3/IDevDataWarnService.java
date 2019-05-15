@@ -5,6 +5,7 @@ import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.db3.DevDataWarn;
 import com.baomidou.mybatisplus.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,5 +19,5 @@ import java.util.Map;
 public interface IDevDataWarnService extends IService<DevDataWarn> {
     ApiResult<Map<String,Object>> selectWarnInfo(RequestVO param);
     ApiResult updateWarnRead(RequestVO param);
-    ApiResult<Map<String,Object>> warnStatusCal(RequestVO param);
+    ApiResult<List<Map<String, Object>>> warnStatusCal(RequestVO param);
 }

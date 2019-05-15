@@ -51,7 +51,7 @@
         </foreach>
     </update>
     <select id="warnStatusCal" resultType="java.util.Map">
-        select case when `status` = 0 then 'unfinish' when `status` = 1 then 'infinish' when `status` = 2 then 'finished' end as 'status', count(id) as 'count' from dev_data_warn
+        select case when `status` = 0 then '未处理' when `status` = 1 then '处理中' when `status` = 2 then '已处理' end as 'label', count(id) as 'value' from dev_data_warn
         where 1 = 1
         <if test="data.beginTime !=null and data.beginTime !=''">
             and create_time &gt;= #{data.beginTime}
