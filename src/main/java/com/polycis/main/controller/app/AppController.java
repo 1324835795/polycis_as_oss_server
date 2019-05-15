@@ -66,28 +66,26 @@ public class AppController {
 
     @ApiOperation(value = "添加应用", notes = "添加应用接口")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ApiResult addApp(@RequestBody RequestVO requestVO) {
+    public ApiResult addApp(@RequestBody App app) {
+        // 用户id即组织id
+/*
+        Map<String, Object> data = requestVO.getData();
+        Integer userId = (Integer) data.get("userId");
+        Users users = iUsersService.selectById(userId);
+        Map<String, Object> params = (Map<String, Object>) data.get("appInfo");
+        App app = JSON.parseObject(JSON.toJSONString(params), App.class);*/
 
         ApiResult apiResult = new ApiResult<>();
         OssAdmin currentUser = RequestHolder.getCurrentUser();
 
-
         if (currentUser.getRole().contains(MainConstants.SYS)) {
-
-            Map<String, Object> data = requestVO.getData();
-            Integer userId = (Integer) data.get("userId");
-
-            Users users = iUsersService.selectById(userId);
-
-            Map<String, Object> params = (Map<String, Object>) data.get("appInfo");
-            App app = JSON.parseObject(JSON.toJSONString(params), App.class);
-
             app.setAppEui(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16));
             ApiResult apiResult1 = appFeignClient.create(app);
             LOG.info(apiResult1.getMsg());
             if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
                 app.setOrganizationId(currentUser.getOrg());
-                boolean b = iAppService.addApp(app, users);
+                // 将用户信息的prg 添加到关联表中
+                boolean b = iAppService.addApp(app);
                 if (b) {
                     apiResult.setSub_code(app.getId());
                     return apiResult;
@@ -116,6 +114,14 @@ public class AppController {
         Map<String, Object> data = requestVO.getData();
         App app = JSON.parseObject(JSON.toJSONString(data), App.class);
         Page<App> page = iAppService.queryAppList(currentPage, pageSize, app);
+        // 塞入组织信息,即运维平台用户信息. 这个app表的组织冗余字段,如果不被非法攻击,是可以与关联表组织字段保持一致的,
+        // 所以也没有必要进行查询操作,写了注掉说不定以后要用
+       /* page.getRecords().forEach(s -> {
+            Object o = iAppOrgRelationService.selectObj(new EntityWrapper<AppOrgRelation>().setSqlSelect("organization_id")
+                    .eq("app_id", s.getId())
+                    .last("limit 1"));
+            s.setOrganizationId(Integer.parseInt(o.toString()));
+        });*/
         ApiResult apiResult = new ApiResult<>();
         apiResult.setData(page);
         return apiResult;
@@ -127,11 +133,6 @@ public class AppController {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         App app1 = iAppService.selectById(app);
 
-       /* int i = iDeviceService.selectCount(new EntityWrapper<Device>()
-                .eq("is_delete", MainConstants.UN_DELETE)
-                .eq("app_id", app.getId()));
-        app1.setPicturepath(String.valueOf(i));*/
-
         // aop切入,直接用plus的service切不进去有待研究
         App app2 = iMybatisPlusDB2Service.appInfo(app1);
 
@@ -141,7 +142,6 @@ public class AppController {
     }
 
 
-    // 想走restful风格,奈何前端不允许,只好用动词
     @ApiOperation(value = "更新应用", notes = "更新应用")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ApiResult update(@RequestBody App app) {

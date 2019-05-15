@@ -52,16 +52,6 @@ public class TokenIntecptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
 
-        // 设置跨域
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Headers", "content-type");
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
-
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=utf-8");
-
         if (null != request.getCookies()) {
             Log.info("cookie长度" + request.getCookies().length);
             String token = null;

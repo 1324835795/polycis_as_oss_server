@@ -17,4 +17,6 @@ import java.util.Map;
 public interface IDevDataUpService extends IService<DevUpDataPO> {
 
     List<Map<String,Object>> selectAWeekData(List<String> list);
+
+    List<Map<String,Object>> selectAWeekdataOss();
 }

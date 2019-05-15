@@ -1,7 +1,6 @@
 /*
 package com.polycis.main.controller.product;
 
-
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -11,10 +10,8 @@ import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.interceptor.RequestHolder;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
-import com.polycis.main.entity.App;
 import com.polycis.main.entity.Device;
 import com.polycis.main.entity.Product;
-import com.polycis.main.entity.Users;
 import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.service.db1.IDeviceService;
 import com.polycis.main.service.db1.IProductService;
@@ -22,13 +19,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 import java.util.Map;
+
 
 */
 /**
@@ -39,6 +34,7 @@ import java.util.Map;
  * @author qiaokai
  * @since 2019-04-19
  *//*
+
 
 @RestController
 @RequestMapping("/product")
@@ -54,15 +50,12 @@ public class ProductController {
     @ApiOperation(value = "查看产品列表", notes = "查看产品列表")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public ApiResult addApp(@RequestBody RequestVO requestVO) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         PageInfoVO pageInfo = requestVO.getPageInfo();
-        Integer currentPage = pageInfo.getCurrentPage();
-        Integer pageSize = pageInfo.getPageSize();
 
         Map<String, Object> data = requestVO.getData();
         Product product = JSON.parseObject(JSON.toJSONString(data), Product.class);
-        Page<Product> page = iProductService.queryProductList(currentPage, pageSize, currentUser, product);
+        Page<Product> page = iProductService.queryProductListOss(pageInfo, product);
 
         page.getRecords().forEach(p -> {
             EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
@@ -156,6 +149,7 @@ public class ProductController {
 
     }
 
+
     @ApiOperation(value = "产品下拉列表", notes = "产品下拉列表")
     @RequestMapping(value = "/prolist", method = RequestMethod.POST)
     public ApiResult prolist() {
@@ -168,10 +162,9 @@ public class ProductController {
         ApiResult apiResult = new ApiResult<>();
         apiResult.setData(products);
         return apiResult;
-
-
     }
 
 }
+
 
 */

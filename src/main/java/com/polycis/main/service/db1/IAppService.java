@@ -3,7 +3,6 @@ package com.polycis.main.service.db1;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.polycis.main.entity.App;
 import com.baomidou.mybatisplus.service.IService;
-import com.polycis.main.entity.Users;
 import com.polycis.main.entity.vo.AppVo;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public interface IAppService extends IService<App> {
 
     void deleteApp(App app);
 
-    boolean addApp(App app, Users currentUser);
+    boolean addApp(App app);
 
     List<String> selctTest();
 

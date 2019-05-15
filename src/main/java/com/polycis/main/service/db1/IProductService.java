@@ -1,6 +1,7 @@
 package com.polycis.main.service.db1;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.entity.App;
 import com.polycis.main.entity.Product;
 import com.baomidou.mybatisplus.service.IService;
@@ -17,4 +18,6 @@ import com.polycis.main.entity.Users;
 public interface IProductService extends IService<Product> {
 
     Page<Product> queryProductList(Integer currentPage, Integer pageSize, Users currentUser, Product product);
+
+    Page<Product> queryProductListOss(PageInfoVO pageInfo, Product product);
 }

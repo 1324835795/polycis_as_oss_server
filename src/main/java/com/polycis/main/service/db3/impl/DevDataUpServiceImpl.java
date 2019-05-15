@@ -27,4 +27,9 @@ public class DevDataUpServiceImpl extends ServiceImpl<DevDataUpMapper, DevUpData
 
 
     }
+
+    @Override
+    public List<Map<String, Object>> selectAWeekdataOss() {
+        return  baseMapper.selectAWeekdataOss();
+    }
 }
