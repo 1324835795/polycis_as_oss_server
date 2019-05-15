@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.polycis.main.mapper.db3.DevDataWarnMapper">
+    <insert id="insertWarnLevel">
+        insert into dev_warn_level (dev_type_id, warn_type_id, warn_level_id, state, create_time, update_time) select
+        #{devTypeId},#{warnTypeId},#{warnLevelId},1,now(),now() from dual where not exists(
+        select * from dev_warn_level where dev_type_id = #{devTypeId} and warn_type_id = #{warnTypeId})
+    </insert>
 
     <select id="selectWarnInfo" resultType="java.util.Map">
         <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
@@ -60,5 +65,17 @@
             and create_time &lt;= #{data.endTime}
         </if>
         group by `status`
+    </select>
+    <select id="selectWarnLevel" resultType="com.polycis.main.entity.WarnLevel">
+        <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
+        select l.id,s1.name as 'devTypeName',s2.name as 'warnTypeName',s3.name as 'warnLevelName' ,l.state
+        from dev_warn_level l
+        left join polycis_as_main.iot_dictionary s1 on l.dev_type_id = s1.id
+        left join polycis_as_main.iot_dictionary s2 on l.warn_type_id = s2.id
+        left join polycis_as_main.iot_dictionary s3 on l.warn_level_id = s3.id
+        LIMIT #{key_offset},#{pageInfo.pageSize}
+    </select>
+    <select id="selectWarnLevelCount" resultType="java.lang.Integer">
+        select count(*) from dev_warn_level
     </select>
 </mapper>
