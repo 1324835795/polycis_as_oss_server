@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author qiaokai
@@ -29,11 +29,11 @@ public class DevDataWarnServiceImpl extends ServiceImpl<DevDataWarnMapper, DevDa
     @Override
     public ApiResult<Map<String, Object>> selectWarnInfo(RequestVO param) {
         int total = warnMapper.selectWarnInfoCount(param);
-        List<Map<String,Object>> data = warnMapper.selectWarnInfo(param);
-        Map<String,Object> map = new HashMap<>(16);
-        map.put("list",data);
-        map.put("total",total);
-        ApiResult<Map<String,Object>> api = new ApiResult<>();
+        List<Map<String, Object>> data = warnMapper.selectWarnInfo(param);
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("list", data);
+        map.put("total", total);
+        ApiResult<Map<String, Object>> api = new ApiResult<>();
         api.setCode(10000);
         api.setData(map);
         return api;
@@ -44,7 +44,38 @@ public class DevDataWarnServiceImpl extends ServiceImpl<DevDataWarnMapper, DevDa
         int size = warnMapper.updateWarnRead(param.getData());
         ApiResult api = new ApiResult();
         api.setCode(10000);
-        api.setMsg("成功标记"+ size +"条数据");
+        api.setMsg("成功标记" + size + "条数据");
+        return api;
+    }
+
+    @Override
+    public ApiResult<Map<String, Object>> warnStatusCal(RequestVO param) {
+        ApiResult<Map<String, Object>> api = new ApiResult<>();
+        api.setCode(10000);
+        List<Map<String, Object>> list = warnMapper.warnStatusCal(param);
+        int unfinish = 0;
+        int infinish = 0;
+        int finished = 0;
+        for (Map<String, Object> map : list) {
+            switch (map.get("status").toString()) {
+                case "unfinish":
+                    unfinish = Integer.valueOf(map.get("count").toString());
+                    break;
+                case "infinish":
+                    infinish = Integer.valueOf(map.get("count").toString());
+                    break;
+                case "finished":
+                    finished = Integer.valueOf(map.get("count").toString());
+                    break;
+                default:
+                    break;
+            }
+        }
+        Map<String,Object> map = new HashMap<>(16);
+        map.put("unfinish",unfinish);
+        map.put("infinish",infinish);
+        map.put("finished",finished);
+        api.setData(map);
         return api;
     }
 }

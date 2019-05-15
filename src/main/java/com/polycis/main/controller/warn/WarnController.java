@@ -29,5 +29,9 @@ public class WarnController {
     public ApiResult updateWarnRead(@RequestBody RequestVO param){
         return iwarn.updateWarnRead(param);
     }
+    @PostMapping("/warn/warnStatusCal")
+    public ApiResult<Map<String,Object>> warnStatusCal(@RequestBody RequestVO param){
+        return iwarn.warnStatusCal(param);
+    }
 
 }
