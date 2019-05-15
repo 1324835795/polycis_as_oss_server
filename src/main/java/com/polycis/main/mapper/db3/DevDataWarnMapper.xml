@@ -2,6 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.polycis.main.mapper.db3.DevDataWarnMapper">
 
-
-
+    <select id="selectWarnInfo" resultType="java.util.Map">
+        <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
+        select d.id,d.device_uuid as 'deviceUuid',
+        dev.name,dev.type,
+        d.event_type as 'eventType',
+        d.`status`,
+        d.create_time as 'createTime',d.modify_time as 'modifyTime'
+        from dev_data_warn d left join
+        polycis_ns_device.dev_union_device dev
+        on d.device_uuid = dev.dev_uuid
+        where 1 = 1
+        <if test="data.mac != null and data.mac !=''">
+            and d.mac = #{data.mac}
+        </if>
+        <if test="data.beginTime !=null and data.beginTime !=''">
+            and d.create_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !=''">
+            and d.create_time &lt;= #{data.endTime}
+        </if>
+        <if test="data.status !=null and data.status !=''">
+            and d.status = #{data.status}
+        </if>
+        order by d.create_time
+        LIMIT #{key_offset},#{pageInfo.pageSize}
+    </select>
+    <select id="selectWarnInfoCount" resultType="java.lang.Integer">
+        select count(id) from dev_data_warn d
+        where d.read_status = 0
+        <if test="data.mac != null and data.mac !=''">
+            and d.mac = #{data.mac}
+        </if>
+        <if test="data.beginTime !=null and data.beginTime !=''">
+            and d.create_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !=''">
+            and d.create_time &lt;= #{data.endTime}
+        </if>
+    </select>
+    <update id="updateWarnRead">
+        update dev_data_warn set read_status = 1,status = 1 ,modify_time = now() where id in
+        <foreach collection="idList" item="ids" index="index" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </update>
 </mapper>
