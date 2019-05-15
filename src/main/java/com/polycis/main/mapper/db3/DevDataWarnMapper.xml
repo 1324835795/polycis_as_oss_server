@@ -1,7 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.polycis.main.mapper.db3.DevDataWarnMapper">
+    <insert id="insertWarnLevel">
+        insert into dev_warn_level (dev_type_id, warn_type_id, warn_level_id, state, create_time, update_time) select
+        #{devTypeId},#{warnTypeId},#{warnLevelId},1,now(),now() from dual where not exists(
+        select * from dev_warn_level where dev_type_id = #{devTypeId} and warn_type_id = #{warnTypeId})
+    </insert>
 
-
-
+    <select id="selectWarnInfo" resultType="java.util.Map">
+        <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
+        select d.id,d.device_uuid as 'deviceUuid',
+        dev.name,dev.type,
+        d.event_type as 'eventType',
+        d.`status`,
+        d.create_time as 'createTime',d.modify_time as 'modifyTime'
+        from dev_data_warn d left join
+        polycis_ns_device.dev_union_device dev
+        on d.device_uuid = dev.dev_uuid
+        where 1 = 1
+        <if test="data.mac != null and data.mac !=''">
+            and d.mac like concat('%',#{data.mac},'%') or dev.name like concat('%',#{data.mac},'%')
+        </if>
+        <if test="data.beginTime !=null and data.beginTime !=''">
+            and d.create_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !=''">
+            and d.create_time &lt;= #{data.endTime}
+        </if>
+        <if test="data.status !=null and data.status !=''">
+            and d.status = #{data.status}
+        </if>
+        order by d.create_time
+        LIMIT #{key_offset},#{pageInfo.pageSize}
+    </select>
+    <select id="selectWarnInfoCount" resultType="java.lang.Integer">
+        select count(*)
+        from dev_data_warn d left join
+        polycis_ns_device.dev_union_device dev
+        on d.device_uuid = dev.dev_uuid
+        where 1 = 1
+        <if test="data.mac != null and data.mac !=''">
+            and d.mac like concat('%',#{data.mac},'%') or dev.name like concat('%',#{data.mac},'%')
+        </if>
+        <if test="data.beginTime !=null and data.beginTime !=''">
+            and d.create_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !=''">
+            and d.create_time &lt;= #{data.endTime}
+        </if>
+    </select>
+    <update id="updateWarnRead">
+        update dev_data_warn set read_status = 1,status = 1 ,modify_time = now() where id in
+        <foreach collection="idList" item="ids" index="index" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </update>
+    <select id="warnStatusCal" resultType="java.util.Map">
+        select case when `status` = 0 then '未处理' when `status` = 1 then '处理中' when `status` = 2 then '已处理' end as 'label', count(id) as 'value' from dev_data_warn
+        where 1 = 1
+        <if test="data.beginTime !=null and data.beginTime !=''">
+            and create_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !=''">
+            and create_time &lt;= #{data.endTime}
+        </if>
+        group by `status`
+    </select>
+    <select id="selectWarnLevel" resultType="com.polycis.main.entity.WarnLevel">
+        <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
+        select l.id,s1.name as 'devTypeName',s2.name as 'warnTypeName',s3.name as 'warnLevelName' ,l.state
+        from dev_warn_level l
+        left join polycis_as_main.iot_dictionary s1 on l.dev_type_id = s1.id
+        left join polycis_as_main.iot_dictionary s2 on l.warn_type_id = s2.id
+        left join polycis_as_main.iot_dictionary s3 on l.warn_level_id = s3.id
+        LIMIT #{key_offset},#{pageInfo.pageSize}
+    </select>
+    <select id="selectWarnLevelCount" resultType="java.lang.Integer">
+        select count(*) from dev_warn_level
+    </select>
 </mapper>
