@@ -142,12 +142,15 @@ public class ConsumerController {
 
     @ApiOperation(value = "删除客户", notes = "删除客户")
     @PostMapping("/delete")
-    public ApiResult delete(@RequestBody RequestVO requestVO) throws IOException {
+    public ApiResult delete(@RequestBody Org orgusers) throws IOException {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         // 添加的客户只是超级管理客户,不能添加普通客户,需要接入平台自主维护
         if (currentUser.getRole().contains(MainConstants.SYS)) {
             try {
+
+                //跟据id修改客户名称
+                boolean b = iOrgService.updateById(orgusers);
 
 
                 return apiResult;
