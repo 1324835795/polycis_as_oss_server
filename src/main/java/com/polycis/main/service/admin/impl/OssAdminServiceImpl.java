@@ -26,7 +26,7 @@ public class OssAdminServiceImpl extends ServiceImpl<OssAdminMapper, OssAdmin> i
     private OssAdminMapper ossAdminMapper;
     @Override
     public OssAdmin isossAdmin(OssAdmin ossAdmin) {
-        ossAdmin.setDelete(1);
+        ossAdmin.setDel(1);
         ossAdmin.setStart(1);
         List<OssAdmin> ossAdmins = ossAdminMapper.selectList(new EntityWrapper<OssAdmin>(ossAdmin));
         if (null != ossAdmins && !ossAdmins.isEmpty()) {

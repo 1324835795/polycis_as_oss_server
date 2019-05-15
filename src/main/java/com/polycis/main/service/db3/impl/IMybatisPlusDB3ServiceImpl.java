@@ -1,14 +1,18 @@
 package com.polycis.main.service.db3.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.db3.DevDataWarn;
 import com.polycis.main.entity.Device;
 import com.polycis.main.entity.db3.DevDownDataPO;
 import com.polycis.main.entity.db3.DevUpDataPO;
+import com.polycis.main.entity.vo.QueryTimePO;
+import com.polycis.main.service.db1.IDeviceService;
 import com.polycis.main.service.db3.IDevDataDownService;
 import com.polycis.main.service.db3.IDevDataUpService;
 import com.polycis.main.service.db3.IDevDataWarnService;
@@ -16,6 +20,8 @@ import com.polycis.main.service.db3.IMybatisPlusDB3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +31,9 @@ public class IMybatisPlusDB3ServiceImpl implements IMybatisPlusDB3Service {
 
     @Autowired
     private IDevDataDownService iDevDataDownService;
+
+    @Autowired
+    private IDeviceService iDeviceService;
     @Autowired
     private IDevDataUpService iDevDataUpService;
 
@@ -116,6 +125,7 @@ public class IMybatisPlusDB3ServiceImpl implements IMybatisPlusDB3Service {
         }else {
             devUpDataPOEntityWrapper.in("device_uuid", objects);
         }
+
         Page<DevUpDataPO> devUpDataPOPage = new Page<>(pageInfo.getCurrentPage(), pageInfo.getPageSize());
         Page<DevUpDataPO> devUpDataPOPage1 = iDevDataUpService.selectPage(devUpDataPOPage, devUpDataPOEntityWrapper);
 
@@ -190,6 +200,74 @@ public class IMybatisPlusDB3ServiceImpl implements IMybatisPlusDB3Service {
 
         devDataWarnEntityWrapper.eq("status",0);
         return iDevDataWarnService.selectCount(devDataWarnEntityWrapper);
+    }
+
+    @Override
+    public Page<DevDownDataPO> selectAppDownData(RequestVO requestVO) {
+
+        PageInfoVO pageInfo = requestVO.getPageInfo();
+
+        QueryTimePO queryTimePO = JSON.parseObject(JSON.toJSONString(requestVO.getData()), QueryTimePO.class);
+
+        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
+        deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
+        deviceEntityWrapper.eq("app_id", queryTimePO.getId());
+        deviceEntityWrapper.setSqlSelect("device_uuid");
+        List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
+
+
+        EntityWrapper<DevDownDataPO> devDownDataPOEntityWrapper = new EntityWrapper<>();
+        if(objects.size()==0){
+            devDownDataPOEntityWrapper.eq("device_uuid","不存在po");
+        }else {
+            devDownDataPOEntityWrapper.in("device_uuid",objects);
+        }
+
+
+        if (null != queryTimePO.getStartTime() && null !=queryTimePO.getEndTime() && ! queryTimePO.getEndTime().toString().isEmpty()
+                && !queryTimePO.getStartTime().toString().isEmpty()) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String startTime = formatter.format(queryTimePO.getStartTime());
+            String endTime = formatter.format(queryTimePO.getEndTime());
+            devDownDataPOEntityWrapper.between("report_time",startTime,endTime);
+        }
+        Page<DevDownDataPO> page = new Page<>(pageInfo.getCurrentPage(), pageInfo.getPageSize());
+        Page<DevDownDataPO> devUpDataPOPage = iDevDataDownService.selectPage(page, devDownDataPOEntityWrapper);
+
+        return devUpDataPOPage;
+    }
+
+    @Override
+    public Page<DevUpDataPO> selectAppUpData(RequestVO requestVO) {
+        PageInfoVO pageInfo = requestVO.getPageInfo();
+        QueryTimePO queryTimePO = JSON.parseObject(JSON.toJSONString(requestVO.getData()), QueryTimePO.class);
+
+
+        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
+        deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
+        deviceEntityWrapper.eq("app_id", queryTimePO.getId());
+        deviceEntityWrapper.setSqlSelect("device_uuid");
+        List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
+
+        EntityWrapper<DevUpDataPO> devUpDataPOEntityWrapper = new EntityWrapper<>();
+
+        if(objects.size()==0){
+            devUpDataPOEntityWrapper.eq("device_uuid","不存在po");
+        }else {
+            devUpDataPOEntityWrapper.in("device_uuid",objects);
+        }
+
+        if (null != queryTimePO.getStartTime() && null !=queryTimePO.getEndTime() && ! queryTimePO.getEndTime().toString().isEmpty()
+                && !queryTimePO.getStartTime().toString().isEmpty()) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String startTime = formatter.format(queryTimePO.getStartTime());
+            String endTime = formatter.format(queryTimePO.getEndTime());
+            devUpDataPOEntityWrapper.between("report_time",startTime,endTime);
+        }
+        Page<DevUpDataPO> page = new Page<>(pageInfo.getCurrentPage(), pageInfo.getPageSize());
+        Page<DevUpDataPO> devUpDataPOPage = iDevDataUpService.selectPage(page, devUpDataPOEntityWrapper);
+
+        return devUpDataPOPage;
     }
 
 
