@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OSSApplication extends SpringBootServletInitializer {
 
- .   @Override
+    @Override
     protected SpringApplicationBuilder configure(
             SpringApplicationBuilder application) {
         return application.sources(OSSApplication.class);

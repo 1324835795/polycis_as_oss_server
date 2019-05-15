@@ -120,7 +120,7 @@ public class ConsumerController {
     }
 
 
-    @ApiOperation(value = "查询客户列表", notes = "修改客户")
+    @ApiOperation(value = "查询客户列表", notes = "查询客户列表")
     @PostMapping("/consumerlist")
     public ApiResult consumerlist(@RequestBody RequestVO requestVO) throws IOException {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
@@ -149,6 +149,7 @@ public class ConsumerController {
         if (currentUser.getRole().contains(MainConstants.SYS)) {
             try {
                 //跟据id修改客户名称
+                orgusers.setIsDelete(0);
                 boolean b = iOrgService.updateById(orgusers);
                 if(b){
                     Org org = iOrgService.selectById(orgusers.getId());
