@@ -75,7 +75,7 @@ public class ConsumerController {
                 }
                 return apiResult;
             } catch (Exception e) {
-                apiResult.setMsg("客户登录名重复");
+                apiResult.setMsg("客户登录名已被注册");
                 apiResult.setCode(CommonCode.ERROR.getKey());
                 return apiResult;
             }
@@ -148,14 +148,18 @@ public class ConsumerController {
         // 添加的客户只是超级管理客户,不能添加普通客户,需要接入平台自主维护
         if (currentUser.getRole().contains(MainConstants.SYS)) {
             try {
-
                 //跟据id修改客户名称
                 boolean b = iOrgService.updateById(orgusers);
-
-
+                if(b){
+                    Org org = iOrgService.selectById(orgusers.getId());
+                    Users user = new Users();
+                    user.setLoginname(orgusers.getLoginname());
+                    user.setIsDelete(0);
+                    iUsersService.update(user,new EntityWrapper<Users>().eq("loginname", user.getLoginname()));
+                }
                 return apiResult;
             } catch (Exception e) {
-                apiResult.setMsg("客户登录名重复");
+                apiResult.setMsg("客户删除失败");
                 apiResult.setCode(CommonCode.ERROR.getKey());
                 return apiResult;
             }
