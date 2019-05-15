@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,7 +31,7 @@ public class WarnController {
         return iwarn.updateWarnRead(param);
     }
     @PostMapping("/warn/warnStatusCal")
-    public ApiResult<Map<String,Object>> warnStatusCal(@RequestBody RequestVO param){
+    public ApiResult<List<Map<String, Object>>> warnStatusCal(@RequestBody RequestVO param){
         return iwarn.warnStatusCal(param);
     }
 

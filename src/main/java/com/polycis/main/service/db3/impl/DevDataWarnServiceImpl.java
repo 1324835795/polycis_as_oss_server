@@ -9,9 +9,8 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * <p>
@@ -49,33 +48,41 @@ public class DevDataWarnServiceImpl extends ServiceImpl<DevDataWarnMapper, DevDa
     }
 
     @Override
-    public ApiResult<Map<String, Object>> warnStatusCal(RequestVO param) {
-        ApiResult<Map<String, Object>> api = new ApiResult<>();
+    public ApiResult<List<Map<String, Object>>> warnStatusCal(RequestVO param) {
+        ApiResult<List<Map<String, Object>>> api = new ApiResult<>();
         api.setCode(10000);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if("1".equals(param.getData().get("week").toString())){
+            Calendar c = Calendar.getInstance();
+            //过去七天
+            c.setTime(new Date());
+            c.add(Calendar.DATE, - 7);
+            Date d = c.getTime();
+            String day = format.format(d);
+            param.getData().put("beginTime",day);
+        }
         List<Map<String, Object>> list = warnMapper.warnStatusCal(param);
-        int unfinish = 0;
-        int infinish = 0;
-        int finished = 0;
-        for (Map<String, Object> map : list) {
-            switch (map.get("status").toString()) {
-                case "unfinish":
-                    unfinish = Integer.valueOf(map.get("count").toString());
-                    break;
-                case "infinish":
-                    infinish = Integer.valueOf(map.get("count").toString());
-                    break;
-                case "finished":
-                    finished = Integer.valueOf(map.get("count").toString());
-                    break;
-                default:
-                    break;
+        List<Map<String, Object>> listChange = new ArrayList<>();
+        Map<String,Object> map0 = new HashMap<String,Object>();
+        map0.put("label","未处理");
+        map0.put("value",0);
+        Map<String,Object> map1 = new HashMap<String,Object>();
+        map1.put("label","处理中");
+        map1.put("value",0);
+        Map<String,Object> map2 = new HashMap<String,Object>();
+        map2.put("label","已处理");
+        map2.put("value",0);
+        listChange.add(map0);
+        listChange.add(map1);
+        listChange.add(map2);
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = 0; j < listChange.size(); j++) {
+                if(list.get(i).get("label").toString().equals(listChange.get(j).get("label").toString())){
+                    listChange.get(j).put("value",list.get(i).get("value"));
+                }
             }
         }
-        Map<String,Object> map = new HashMap<>(16);
-        map.put("unfinish",unfinish);
-        map.put("infinish",infinish);
-        map.put("finished",finished);
-        api.setData(map);
+        api.setData(listChange);
         return api;
     }
 }
