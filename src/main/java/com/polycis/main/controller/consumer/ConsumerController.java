@@ -170,4 +170,13 @@ public class ConsumerController {
         return apiResult;
     }
 
+    //客户下拉框
+    @ApiOperation(value = "删除客户", notes = "删除客户")
+    @PostMapping("/downList")
+    public ApiResult downList(@RequestBody Org orgusers) throws IOException{
+        ApiResult apiResult = new ApiResult<>();
+
+        return apiResult;
+    }
+
 }
