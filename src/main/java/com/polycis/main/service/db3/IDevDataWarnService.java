@@ -1,7 +1,11 @@
 package com.polycis.main.service.db3;
 
+import com.polycis.main.common.ApiResult;
+import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.db3.DevDataWarn;
 import com.baomidou.mybatisplus.service.IService;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -12,5 +16,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2019-04-25
  */
 public interface IDevDataWarnService extends IService<DevDataWarn> {
-
+    ApiResult<Map<String,Object>> selectWarnInfo(RequestVO param);
+    ApiResult updateWarnRead(RequestVO param);
 }
