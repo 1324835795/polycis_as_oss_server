@@ -24,4 +24,6 @@ public interface DevDataWarnMapper extends BaseMapper<DevDataWarn> {
     int selectWarnInfoCount(RequestVO param);
 
     int updateWarnRead(Map map);
+
+    List<Map<String,Object>> warnStatusCal(RequestVO param);
 }

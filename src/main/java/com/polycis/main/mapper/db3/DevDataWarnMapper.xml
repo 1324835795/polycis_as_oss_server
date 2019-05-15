@@ -14,7 +14,7 @@
         on d.device_uuid = dev.dev_uuid
         where 1 = 1
         <if test="data.mac != null and data.mac !=''">
-            and d.mac = #{data.mac}
+            and d.mac like concat('%',#{data.mac},'%') or dev.name like concat('%',#{data.mac},'%')
         </if>
         <if test="data.beginTime !=null and data.beginTime !=''">
             and d.create_time &gt;= #{data.beginTime}
@@ -29,10 +29,13 @@
         LIMIT #{key_offset},#{pageInfo.pageSize}
     </select>
     <select id="selectWarnInfoCount" resultType="java.lang.Integer">
-        select count(id) from dev_data_warn d
-        where d.read_status = 0
+        select count(*)
+        from dev_data_warn d left join
+        polycis_ns_device.dev_union_device dev
+        on d.device_uuid = dev.dev_uuid
+        where 1 = 1
         <if test="data.mac != null and data.mac !=''">
-            and d.mac = #{data.mac}
+            and d.mac like concat('%',#{data.mac},'%') or dev.name like concat('%',#{data.mac},'%')
         </if>
         <if test="data.beginTime !=null and data.beginTime !=''">
             and d.create_time &gt;= #{data.beginTime}
@@ -47,4 +50,15 @@
             #{ids}
         </foreach>
     </update>
+    <select id="warnStatusCal" resultType="java.util.Map">
+        select case when `status` = 0 then 'unfinish' when `status` = 1 then 'infinish' when `status` = 2 then 'finished' end as 'status', count(id) as 'count' from dev_data_warn
+        where 1 = 1
+        <if test="data.beginTime !=null and data.beginTime !=''">
+            and create_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !=''">
+            and create_time &lt;= #{data.endTime}
+        </if>
+        group by `status`
+    </select>
 </mapper>

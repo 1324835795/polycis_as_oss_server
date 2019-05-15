@@ -18,4 +18,5 @@ import java.util.Map;
 public interface IDevDataWarnService extends IService<DevDataWarn> {
     ApiResult<Map<String,Object>> selectWarnInfo(RequestVO param);
     ApiResult updateWarnRead(RequestVO param);
+    ApiResult<Map<String,Object>> warnStatusCal(RequestVO param);
 }
