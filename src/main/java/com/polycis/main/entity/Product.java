@@ -74,6 +74,11 @@ public class Product implements Serializable {
     private Integer activeWay;
 
     /**
+     * lora设备配置id
+     */
+    private  Integer loraConfigId;
+
+    /**
      * 设备数量
      */
     private transient Integer devCount;
@@ -182,6 +187,14 @@ public class Product implements Serializable {
         this.isDelete = isDelete;
     }
 
+    public Integer getLoraConfigId() {
+        return loraConfigId;
+    }
+
+    public void setLoraConfigId(Integer loraConfigId) {
+        this.loraConfigId = loraConfigId;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -189,6 +202,7 @@ public class Product implements Serializable {
                 ", name='" + name + '\'' +
                 ", classifyId=" + classifyId +
                 ", platform=" + platform +
+                ", description='" + description + '\'' +
                 ", loraDeviceClass=" + loraDeviceClass +
                 ", org=" + org +
                 ", analysisWay=" + analysisWay +
@@ -196,6 +210,7 @@ public class Product implements Serializable {
                 ", createTime=" + createTime +
                 ", isDelete=" + isDelete +
                 ", activeWay=" + activeWay +
+                ", loraConfigId=" + loraConfigId +
                 ", devCount=" + devCount +
                 '}';
     }

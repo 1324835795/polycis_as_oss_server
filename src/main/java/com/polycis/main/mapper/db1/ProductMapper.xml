@@ -3,4 +3,33 @@
 <mapper namespace="com.polycis.main.mapper.db1.ProductMapper">
 
 
+    <select id="queryAppList" resultType="com.polycis.main.entity.Product">
+
+        SELECT ip.*
+        FROM iot_product ip
+        INNER JOIN  iot_org  io ON io.id =ip.org AND io.is_delete=1
+        WHERE ip.is_delete=1
+        <if test="query != null and query != ''">
+            AND (io.name LIKE "%"#{query}"%"or ip.name LIKE "%"#{query}"%" )
+        </if>
+        ORDER BY ia.create_time DESC
+        LIMIT #{pageNumber}, #{pageSize}
+
+
+    </select>
+
+
+    <select id="queryAppListCount" resultType="java.lang.Integer">
+
+        SELECT count(ip.id)
+        FROM iot_product ip
+        INNER JOIN  iot_org  io ON io.id =ip.org AND io.is_delete=1
+        WHERE ip.is_delete=1
+        <if test="query != null and query != ''">
+            AND (io.name LIKE "%"#{query}"%"or ip.name LIKE "%"#{query}"%" )
+        </if>
+
+
+
+    </select>
 </mapper>

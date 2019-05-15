@@ -11,6 +11,8 @@ public class RequestHolder {
 
     private static final ThreadLocal<HttpServletRequest> requestHolder = new ThreadLocal<>();
 
+    
+
     public static void add(OssAdmin ossAdmin){
         userHolder.set(ossAdmin);
     }
