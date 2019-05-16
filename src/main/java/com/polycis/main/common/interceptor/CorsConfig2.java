@@ -1,3 +1,4 @@
+/*
 package com.polycis.main.common.interceptor;
 
 
@@ -20,3 +21,4 @@ public class CorsConfig2 extends WebMvcConfigurerAdapter {
     }
 
 }
+*/
