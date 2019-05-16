@@ -61,7 +61,7 @@ public class App implements Serializable {
 
     /* 服务配置id
      */
-    private Integer configid;
+    private Integer configId;
 
 
     /*推送类型 1http 2mq
@@ -174,12 +174,30 @@ public class App implements Serializable {
     }
 
 
-    public Integer getConfigid() {
-        return configid;
+    public Integer getConfigId() {
+        return configId;
     }
 
-    public void setConfigid(Integer configid) {
-        this.configid = configid;
+    public void setConfigId(Integer configId) {
+        this.configId = configId;
     }
 
+    @Override
+    public String toString() {
+        return "App{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", appEui='" + appEui + '\'' +
+                ", organizationId=" + organizationId +
+                ", updateTime=" + updateTime +
+                ", createTime=" + createTime +
+                ", isDelete=" + isDelete +
+                ", picturepath='" + picturepath + '\'' +
+                ", configId=" + configId +
+                ", pushType=" + pushType +
+                ", http='" + http + '\'' +
+                ", mq='" + mq + '\'' +
+                '}';
+    }
 }

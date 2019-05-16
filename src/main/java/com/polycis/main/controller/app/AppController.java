@@ -274,20 +274,6 @@ public class AppController {
 
     }
 
-
-
-/*
-    @ApiOperation(value = "应用内产品数量占比", notes = "应用内产品数量占比")
-    @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public ApiResult product(@RequestBody App app) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
-        List<Map<String, Object>> list = iAppService.selectProduct(app);
-        ApiResult apiResult = new ApiResult<>();
-        apiResult.setData(list);
-        return apiResult;
-
-    }
-
     @ApiOperation(value = "应用设备拓扑", notes = "应用设备拓扑")
     @RequestMapping(value = "/topo", method = RequestMethod.POST)
     public ApiResult topo(@RequestBody App app) {
@@ -305,6 +291,22 @@ public class AppController {
         return apiResult;
 
     }
+
+
+
+/*
+    @ApiOperation(value = "应用内产品数量占比", notes = "应用内产品数量占比")
+    @RequestMapping(value = "/product", method = RequestMethod.POST)
+    public ApiResult product(@RequestBody App app) {
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
+        List<Map<String, Object>> list = iAppService.selectProduct(app);
+        ApiResult apiResult = new ApiResult<>();
+        apiResult.setData(list);
+        return apiResult;
+
+    }
+
+
 
     @ApiOperation(value = "设备在线率", notes = "设备在线率")
     @RequestMapping(value = "/devonline", method = RequestMethod.POST)
