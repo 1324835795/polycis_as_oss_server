@@ -210,7 +210,7 @@ public class MonitorCenterController {
         return apiResult;
     }
 
-    @ApiOperation(value = "首页告警表", notes = "首页告警表")
+    @ApiOperation(value = "未处理告警列表", notes = "未处理告警列表")
     @RequestMapping(value = "warnlist", method = RequestMethod.POST)
     public ApiResult warnlist(@RequestBody RequestVO requestVO) {
 
@@ -240,7 +240,7 @@ public class MonitorCenterController {
                 .eq("is_delete",MainConstants.UN_DELETE)
                 .groupBy("platform");
         List<Map<String, Object>> maps = iDeviceService.selectMaps(wrapper);
-        maps.forEach(s-> System.out.println(s.toString()));
+        /*maps.forEach(s-> System.out.println(s.toString()));*/
         apiResult.setData(maps);
         return apiResult;
     }
@@ -255,6 +255,9 @@ public class MonitorCenterController {
         apiResult.setData(list);
         return  apiResult;
     }
+
+
+
 
 
 }
