@@ -25,4 +25,8 @@ public class LogController {
     public ApiResult<Map<String,Object>> sysLog(@RequestBody RequestVO requestVO){
         return ilogService.selectSysLogInfo(requestVO);
     }
+    @PostMapping("/log/devLogState")
+    public ApiResult<Map<String,Object>> devLogState(@RequestBody RequestVO requestVO){
+        return ilogService.sekectDevLogState(requestVO);
+    }
 }
