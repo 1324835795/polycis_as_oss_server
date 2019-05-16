@@ -30,7 +30,7 @@
         <if test="data.status !=null and data.status !=''">
             and d.status = #{data.status}
         </if>
-        order by d.create_time
+        order by d.create_time desc
         LIMIT #{key_offset},#{pageInfo.pageSize}
     </select>
     <select id="selectWarnInfoCount" resultType="java.lang.Integer">
@@ -77,5 +77,49 @@
     </select>
     <select id="selectWarnLevelCount" resultType="java.lang.Integer">
         select count(*) from dev_warn_level
+    </select>
+
+
+    <select id="selectAWeekAPIOss" resultType="java.util.Map">
+
+        SELECT aa.click_date,
+        IFNULL(bb.amount,0) AS count
+        FROM
+        (
+        SELECT CURDATE() AS click_date
+        UNION ALL
+        SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) AS click_date
+        UNION ALL
+        SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) AS click_date
+        UNION ALL
+        SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY) AS click_date
+        UNION ALL
+        SELECT DATE_SUB(CURDATE(), INTERVAL 4 DAY) AS click_date
+        UNION ALL
+        SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY) AS click_date
+        UNION ALL
+        SELECT DATE_SUB(CURDATE(), INTERVAL 6 DAY) AS click_date
+        ) AS aa
+        LEFT JOIN
+        (
+        SELECT
+        COUNT(id) AS amount,
+        any_value(DATE_FORMAT(invoke_time,'%Y-%m-%d')) AS click_date
+        FROM api_open_count
+        WHERE invoke_time>=DATE(NOW())-INTERVAL 6 DAY
+        GROUP BY TO_DAYS(invoke_time)
+        ) AS bb
+        ON aa.click_date=bb.click_date
+        order by aa.click_date asc
+
+    </select>
+    <select id="aweekapisum" resultType="java.lang.Integer">
+
+        SELECT
+        COUNT(id) AS amount
+        FROM api_open_count
+        WHERE invoke_time>=DATE(NOW())-INTERVAL 6 DAY
+
+
     </select>
 </mapper>

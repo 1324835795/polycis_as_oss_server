@@ -20,7 +20,7 @@ public interface IDeviceService extends IService<Device> {
 
     Page<Device> selectAppDeviceList(RequestVO requestVO);
 
-    Page<Device> selectProductDevList(RequestVO requestVO, Users currentUser);
+    Page<Device> selectProductDevList(RequestVO requestVO);
 
     Integer selectOrgCount(Users currentUser);
 

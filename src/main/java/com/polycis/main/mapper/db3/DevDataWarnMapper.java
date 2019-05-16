@@ -44,4 +44,8 @@ public interface DevDataWarnMapper extends BaseMapper<DevDataWarn> {
     int updateWarnLevelState(Map map);
     @Delete("delete from dev_warn_level where id = #{id}")
     int deleteWarnLevelById(Map map);
+
+    List<Map<String,Object>> selectAWeekAPIOss();
+
+    Integer aweekapisum();
 }

@@ -32,11 +32,10 @@ public class AuthorityControllerBeanProcessor implements BeanPostProcessor {
             for (Method method : methods) {
 
                 Boolean isAuthorityAnnotationInMethod = method.isAnnotationPresent(RoleOfAdmin.class);
-                String target = bean.getClass().getName() + "." + method.getName();
-
                 if (isAuthorityAnnotationInMethod) {
                     // 如果有 @Authority 注解的话
                     // 则记录该注解中的内容
+                    String target = bean.getClass().getName() + "." + method.getName();
                     RoleOfAdmin annotation = method.getAnnotation(RoleOfAdmin.class);
                     AuthorityAnnotationContainer.set(target,annotation);
                 }

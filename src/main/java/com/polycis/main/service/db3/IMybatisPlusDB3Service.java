@@ -6,6 +6,7 @@ import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.db3.DevDataWarn;
 import com.polycis.main.entity.db3.DevDownDataPO;
 import com.polycis.main.entity.db3.DevUpDataPO;
+import com.polycis.main.entity.vo.QueryTimePO;
 
 import java.util.List;
 import java.util.Map;
@@ -54,4 +55,12 @@ public interface IMybatisPlusDB3Service {
     Page<DevDataWarn> selectDevWarnPageName(Page<DevDataWarn> page0);
 
     List<Map<String,Object>> selectAWeekdataOss();
+
+    Page<DevUpDataPO> selectAppUpData(PageInfoVO pageInfo, QueryTimePO queryTimePO, List<Object> objects);
+
+    Page<DevDownDataPO> selectAppDownData(PageInfoVO pageInfo, QueryTimePO queryTimePO, List<Object> objects);
+
+    List<Map<String,Object>> selectAWeekAPIOss();
+
+    Integer aweekapisum();
 }

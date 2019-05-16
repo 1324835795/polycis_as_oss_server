@@ -250,7 +250,6 @@ public class IMybatisPlusDB3ServiceImpl implements IMybatisPlusDB3Service {
         PageInfoVO pageInfo = requestVO.getPageInfo();
         QueryTimePO queryTimePO = JSON.parseObject(JSON.toJSONString(requestVO.getData()), QueryTimePO.class);
 
-
         EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
         deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
         deviceEntityWrapper.eq("app_id", queryTimePO.getId());
@@ -348,5 +347,63 @@ public class IMybatisPlusDB3ServiceImpl implements IMybatisPlusDB3Service {
 
         return iDevDataUpService.selectAWeekdataOss();
 
+    }
+
+    @Override
+    public Page<DevUpDataPO> selectAppUpData(PageInfoVO pageInfo, QueryTimePO queryTimePO, List<Object> objects) {
+        EntityWrapper<DevUpDataPO> devUpDataPOEntityWrapper = new EntityWrapper<>();
+
+        if (objects.size() == 0) {
+            devUpDataPOEntityWrapper.eq("device_uuid", "不存在po");
+        } else {
+            devUpDataPOEntityWrapper.in("device_uuid", objects);
+        }
+
+        if (null != queryTimePO.getStartTime() && null != queryTimePO.getEndTime() && !queryTimePO.getEndTime().toString().isEmpty()
+                && !queryTimePO.getStartTime().toString().isEmpty()) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String startTime = formatter.format(queryTimePO.getStartTime());
+            String endTime = formatter.format(queryTimePO.getEndTime());
+            devUpDataPOEntityWrapper.between("report_time", startTime, endTime);
+        }
+        Page<DevUpDataPO> page = new Page<>(pageInfo.getCurrentPage(), pageInfo.getPageSize());
+        Page<DevUpDataPO> devUpDataPOPage = iDevDataUpService.selectPage(page, devUpDataPOEntityWrapper);
+
+        return devUpDataPOPage;
+
+    }
+
+    @Override
+    public Page<DevDownDataPO> selectAppDownData(PageInfoVO pageInfo, QueryTimePO queryTimePO, List<Object> objects) {
+        EntityWrapper<DevDownDataPO> devDownDataPOEntityWrapper = new EntityWrapper<>();
+        if (objects.size() == 0) {
+            devDownDataPOEntityWrapper.eq("device_uuid", "不存在po");
+        } else {
+            devDownDataPOEntityWrapper.in("device_uuid", objects);
+        }
+
+        if (null != queryTimePO.getStartTime() && null != queryTimePO.getEndTime() && !queryTimePO.getEndTime().toString().isEmpty()
+                && !queryTimePO.getStartTime().toString().isEmpty()) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String startTime = formatter.format(queryTimePO.getStartTime());
+            String endTime = formatter.format(queryTimePO.getEndTime());
+            devDownDataPOEntityWrapper.between("create_time", startTime, endTime);
+        }
+        Page<DevDownDataPO> page = new Page<>(pageInfo.getCurrentPage(), pageInfo.getPageSize());
+        Page<DevDownDataPO> devUpDataPOPage = iDevDataDownService.selectPage(page, devDownDataPOEntityWrapper);
+
+        return devUpDataPOPage;
+    }
+
+    @Override
+    public List<Map<String, Object>> selectAWeekAPIOss() {
+
+        return  iDevDataWarnService.selectAWeekAPIOss();
+
+    }
+
+    @Override
+    public Integer aweekapisum() {
+        return  iDevDataWarnService.aweekapisum();
     }
 }

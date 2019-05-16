@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.polycis.main.common.MainConstants;
-import com.polycis.main.common.interceptor.RequestHolder;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.Device;
@@ -60,7 +59,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     }
 
     @Override
-    public Page<Device> selectProductDevList(RequestVO requestVO, Users currentUser) {
+    public Page<Device> selectProductDevList(RequestVO requestVO) {
         Map<String, Object> data = requestVO.getData();
         Device device = JSON.parseObject(JSON.toJSONString(data), Device.class);
 
