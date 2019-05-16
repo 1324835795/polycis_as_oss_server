@@ -60,8 +60,25 @@ public class Org implements Serializable {
     /**
      * 删除标识(0删除,1未删除)
      */
-    private Integer delete;
+    private Integer isDelete;
 
+    private Integer start;
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    public Integer getStart() {
+        return start;
+    }
+
+    public void setStart(Integer start) {
+        this.start = start;
+    }
 
     public Integer getId() {
         return id;
@@ -135,27 +152,20 @@ public class Org implements Serializable {
         this.createTime = createTime;
     }
 
-    public Integer getDelete() {
-        return delete;
-    }
-
-    public void setDelete(Integer delete) {
-        this.delete = delete;
-    }
-
     @Override
     public String toString() {
         return "Org{" +
-        ", id=" + id +
-        ", name=" + name +
-        ", loginname=" + loginname +
-        ", password=" + password +
-        ", address=" + address +
-        ", linkmanName=" + linkmanName +
-        ", linkmanPhone=" + linkmanPhone +
-        ", updateTime=" + updateTime +
-        ", createTime=" + createTime +
-        ", delete=" + delete +
-        "}";
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", loginname='" + loginname + '\'' +
+                ", password='" + password + '\'' +
+                ", address='" + address + '\'' +
+                ", linkmanName='" + linkmanName + '\'' +
+                ", linkmanPhone='" + linkmanPhone + '\'' +
+                ", updateTime=" + updateTime +
+                ", createTime=" + createTime +
+                ", isDelete=" + isDelete +
+                ", start=" + start +
+                '}';
     }
 }
