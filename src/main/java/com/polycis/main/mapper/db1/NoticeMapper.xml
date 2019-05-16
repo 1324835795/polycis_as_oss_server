@@ -14,6 +14,7 @@
         <if test="data.topic != null and data.topic!=''">
           and topic like concat('%',#{data.topic},'%')
         </if>
+        order by create_time desc
         LIMIT #{key_offset},#{pageInfo.pageSize}
     </select>
     <select id="selectNoticeCount" resultType="java.lang.Integer">
