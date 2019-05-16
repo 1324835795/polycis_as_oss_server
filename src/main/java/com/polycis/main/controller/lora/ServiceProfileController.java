@@ -63,7 +63,7 @@ public class ServiceProfileController {
 
     @ApiOperation(value = "查看服务配置文件列表", notes = "查看服务配置文件列表")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public ApiResult applist(@RequestBody RequestVO requestVO) {
+    public ApiResult list(@RequestBody RequestVO requestVO) {
         ApiResult<Page<ServiceProfile>> apiResult = new ApiResult<>(CommonCode.SUCCESS);
         PageInfoVO pageInfo = requestVO.getPageInfo();
         Integer currentPage = pageInfo.getCurrentPage();
@@ -72,6 +72,15 @@ public class ServiceProfileController {
         ServiceProfile spFile = JSON.parseObject(JSON.toJSONString(data), ServiceProfile.class);
         Page<ServiceProfile> page = this.serviceProfileService.findList(currentPage, pageSize, spFile);
         apiResult.setData(page);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "查看全部服务配置文件列表", notes = "查看全部服务配置文件列表")
+    @RequestMapping(value = "/listAll", method = RequestMethod.POST)
+    public ApiResult listAll(@RequestBody RequestVO requestVO) {
+        ApiResult<List<ServiceProfile>> apiResult = new ApiResult<>(CommonCode.SUCCESS);
+        List<ServiceProfile> list = this.serviceProfileService.findListAll();
+        apiResult.setData(list);
         return apiResult;
     }
 

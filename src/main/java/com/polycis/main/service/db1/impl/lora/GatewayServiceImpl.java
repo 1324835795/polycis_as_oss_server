@@ -1,12 +1,13 @@
 package com.polycis.main.service.db1.impl.lora;
 
+
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
-import com.polycis.main.entity.lora.ServiceProfile;
-import com.polycis.main.mapper.db1.ServiceProfileMapper;
-import com.polycis.main.service.db1.lora.IServiceProfileService;
+import com.polycis.main.entity.lora.Gateway;
+import com.polycis.main.mapper.db1.GatewayMapper;
+import com.polycis.main.service.db1.lora.IGatewayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,39 +16,38 @@ import java.util.*;
 
 /**
  * <p>
- * 服务配置文件 服务实现类
+ * 网关 服务实现类
  * </p>
  *
  * @author ${author}
- * @since 2019-05-15
+ * @since 2019-05-16
  */
 @Service
-@Transactional
-public class ServiceProfileServiceImpl extends ServiceImpl<ServiceProfileMapper, ServiceProfile> implements IServiceProfileService {
+public class GatewayServiceImpl extends ServiceImpl<GatewayMapper, Gateway> implements IGatewayService {
 
     @Autowired
-    private ServiceProfileMapper serviceProfileMapper;
+    private GatewayMapper gatewayMapper;
 
     /**
      * 服务配置文件
-     * @param spFile
+     * @param gw
      * @return
      */
     @Override
-    public ApiResult add(ServiceProfile spFile) {
+    public ApiResult add(Gateway gw) {
         ApiResult<String> apiResult = new ApiResult<>(CommonCode.SUCCESS);
         Date date = Calendar.getInstance().getTime();
-        spFile.setCreateTime(date);
-        spFile.setUpdateTime(date);
+        gw.setCreateTime(date);
+        gw.setUpdateTime(date);
 
         //TODO 要关联接入平台
-        spFile.setNetworkServerID("1");
-        spFile.setOrganizationID("1");
+        gw.setNetworkServerID("1");
+        gw.setOrganizationID("1");
 
-        this.serviceProfileMapper.insert(spFile);
+        this.gatewayMapper.insert(gw);
 
         //TODO loraserver中添加server_profile
-//        this.serviceProfileMapper.updateById(spFile);
+//        this.gatewayMapper.updateById(gw);
         return apiResult;
     }
 
@@ -55,19 +55,20 @@ public class ServiceProfileServiceImpl extends ServiceImpl<ServiceProfileMapper,
      * 查看服务配置列表
      * @param currentPage
      * @param pageSize
-     * @param spFile
+     * @param gw
      * @return
      */
     @Transactional(readOnly = true)
     @Override
-    public Page<ServiceProfile> findList(Integer currentPage, Integer pageSize, ServiceProfile spFile) {
-        Page<ServiceProfile> page = new Page<>(currentPage, pageSize);
+    public Page<Gateway> findList(Integer currentPage, Integer pageSize, Gateway gw) {
+        Page<Gateway> page = new Page<>(currentPage, pageSize);
         Map<String, Object> param = new HashMap<>();
         param.put("pageNumber", (currentPage - 1) * pageSize);
         param.put("pageSize", pageSize);
-        param.put("spName", spFile.getName());
-        List<ServiceProfile> list = this.serviceProfileMapper.findList(param);
-        Integer count = this.serviceProfileMapper.findListCount(param);
+        param.put("gwName", gw.getName());
+        param.put("gwMac", gw.getName());
+        List<Gateway> list = this.gatewayMapper.findList(param);
+        Integer count = this.gatewayMapper.findListCount(param);
         page.setTotal(count);
         page.setRecords(list);
         return page;
@@ -75,46 +76,36 @@ public class ServiceProfileServiceImpl extends ServiceImpl<ServiceProfileMapper,
 
     /**
      * 更新服务配置文件
-     * @param spFile
+     * @param gw
      * @return
      */
     @Transactional
     @Override
-    public ApiResult<String> updateServiceProfile(ServiceProfile spFile) {
+    public ApiResult<String> updateGateway(Gateway gw) {
         ApiResult<String> apiResult = new ApiResult<>(CommonCode.SUCCESS);
         Date date = Calendar.getInstance().getTime();
-        spFile.setUpdateTime(date);
-        this.serviceProfileMapper.updateById(spFile);
+        gw.setUpdateTime(date);
+        this.gatewayMapper.updateById(gw);
 
         //TODO loraserver中更新server_profile
-//        this.serviceProfileMapper.updateById(spFile);
+//        this.gatewayMapper.updateById(gw);
         return apiResult;
     }
 
     /**
      * 删除服务配置文件
-     * @param spFile
+     * @param gw
      * @return
      */
     @Transactional
     @Override
-    public ApiResult<String> deleteServiceProfile(ServiceProfile spFile) {
+    public ApiResult<String> deleteGateway(Gateway gw) {
         ApiResult<String> apiResult = new ApiResult<>(CommonCode.SUCCESS);
-        this.serviceProfileMapper.deleteById(spFile);
+        this.gatewayMapper.deleteById(gw);
 
         //TODO loraserver中删除server_profile
-//        this.serviceProfileMapper.updateById(spFile);
+//        this.gatewayMapper.updateById(gw);
         return apiResult;
     }
-
-    /**
-     * 查看全部服务配置列表
-     * @return
-     */
-    @Override
-    public List<ServiceProfile> findListAll() {
-        return this.serviceProfileMapper.findListAll();
-    }
-
 
 }
