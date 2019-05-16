@@ -4,6 +4,7 @@ import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.WarnLevel;
 import com.polycis.main.entity.db3.DevDataWarn;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -39,4 +40,8 @@ public interface DevDataWarnMapper extends BaseMapper<DevDataWarn> {
 
     List<WarnLevel> selectWarnLevel(RequestVO requestVO);
     Integer selectWarnLevelCount();
+    @Update("update dev_warn_level set state = #{state} where id = #{id}")
+    int updateWarnLevelState(Map map);
+    @Delete("delete from dev_warn_level where id = #{id}")
+    int deleteWarnLevelById(Map map);
 }

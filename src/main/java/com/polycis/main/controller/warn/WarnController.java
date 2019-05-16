@@ -44,12 +44,24 @@ public class WarnController {
     public ApiResult<Map<String,Object>> selectWarnLevel(@RequestBody RequestVO requestVO){
         return iwarn.selectWarnLevel(requestVO);
     }
+
+    /**
+     * 删除告警级别配置
+     * @param map
+     * @return
+     */
     @PostMapping("/warn/deleteWarnLevel")
-    public ApiResult deleteWarnLevel(@RequestBody WarnLevel warnLevel){
-        return null;
+    public ApiResult deleteWarnLevel(@RequestBody Map map){
+        return iwarn.deleteWarnLevel(map);
     }
+
+    /**
+     * 禁用/启用
+     * @param map
+     * @return
+     */
     @PostMapping("/warn/modifyWarnLevelState")
-    public ApiResult modifyWarnLevelState(@RequestBody WarnLevel warnLevel){
-        return null;
+    public ApiResult modifyWarnLevelState(@RequestBody Map map){
+        return iwarn.modifyWarnLevelState(map);
     }
 }
