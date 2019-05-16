@@ -16,4 +16,6 @@ public interface IGatewayProService extends IService<GatewayPro> {
 
 
     Boolean addGatewayPro(Integer orgId, GatewayProVO gatewayPro);
+
+    Boolean deleteGatewayPro(String gatewayPro);
 }
