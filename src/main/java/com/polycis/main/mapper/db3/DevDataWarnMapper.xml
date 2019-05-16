@@ -30,7 +30,7 @@
         <if test="data.status !=null and data.status !=''">
             and d.status = #{data.status}
         </if>
-        order by d.create_time
+        order by d.create_time desc
         LIMIT #{key_offset},#{pageInfo.pageSize}
     </select>
     <select id="selectWarnInfoCount" resultType="java.lang.Integer">

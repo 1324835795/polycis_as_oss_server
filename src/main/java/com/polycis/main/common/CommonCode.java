@@ -17,7 +17,10 @@ public enum CommonCode {
 	PARAMETER_LOSE(40001,"缺少必选参数"),
 	PARAMETER_INVALID(40002,"非法的参数"),
 	AUTH_LIMIT(40006,"权限不足"),
-	CODE_INVALID(0,"提示码参数非法");
+	CODE_INVALID(0,"提示码参数非法"),
+
+	OPER_FAILURE(30000, "操作失败");
+
 
 	private int key;
 	private String value;
