@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.polycis.main.common.MainConstants;
 import com.polycis.main.entity.App;
 import com.polycis.main.entity.AppOrgRelation;
-import com.polycis.main.entity.Users;
 import com.polycis.main.entity.vo.AppVo;
 import com.polycis.main.mapper.db1.AppMapper;
 import com.polycis.main.service.db1.IAppOrgRelationService;
@@ -99,11 +98,11 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements IAppS
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public boolean addApp(App app, Users currentUser) {
+    public boolean addApp(App app) {
         boolean insert = iAppService.insert(app);
         AppOrgRelation appOrgRelation = new AppOrgRelation();
         appOrgRelation.setAppId(app.getId());
-        appOrgRelation.setOrganizationId(currentUser.getOrg());
+        appOrgRelation.setOrganizationId(app.getOrganizationId());
         iAppOrgRelationService.insert(appOrgRelation);
         return insert;
     }

@@ -59,8 +59,13 @@ public class App implements Serializable {
 
     private String picturepath;
 
-    /* 推送类型  1http 2mq 3都没启用
+    /* 服务配置id
      */
+    private Integer configid;
+
+
+    /*推送类型 1http 2mq
+    */
     private Integer pushType;
 
     @TableField(exist = false)
@@ -68,6 +73,8 @@ public class App implements Serializable {
 
     @TableField(exist = false)
     private String mq;
+
+
 
     public Integer getPushType() {
         return pushType;
@@ -166,21 +173,13 @@ public class App implements Serializable {
         this.picturepath = picturepath;
     }
 
-    @Override
-    public String toString() {
-        return "App{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", appEui='" + appEui + '\'' +
-                ", organizationId=" + organizationId +
-                ", updateTime=" + updateTime +
-                ", createTime=" + createTime +
-                ", isDelete=" + isDelete +
-                ", http='" + http + '\'' +
-                ", mq='" + mq + '\'' +
-                ", picturepath='" + picturepath + '\'' +
-                ", pushType=" + pushType +
-                '}';
+
+    public Integer getConfigid() {
+        return configid;
     }
+
+    public void setConfigid(Integer configid) {
+        this.configid = configid;
+    }
+
 }

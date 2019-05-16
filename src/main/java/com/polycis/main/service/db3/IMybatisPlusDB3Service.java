@@ -38,4 +38,20 @@ public interface IMybatisPlusDB3Service {
     Page<DevDownDataPO> selectAppDownData(RequestVO requestVO);
 
     Page<DevUpDataPO> selectAppUpData(RequestVO requestVO);
+
+    Object selectDevWarnCount();
+
+    Integer selectDevOnLineCount();
+
+    int selectDevCount();
+
+    Integer selectDevWarnCount0();
+
+    Integer selectDevWarnCount1();
+
+    Page<DevDataWarn> selectDevWarnPage(RequestVO requestVO);
+
+    Page<DevDataWarn> selectDevWarnPageName(Page<DevDataWarn> page0);
+
+    List<Map<String,Object>> selectAWeekdataOss();
 }
