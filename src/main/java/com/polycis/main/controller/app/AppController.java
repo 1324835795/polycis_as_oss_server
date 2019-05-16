@@ -18,6 +18,7 @@ import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.entity.db3.DevDataWarn;
 import com.polycis.main.entity.db3.DevDownDataPO;
 import com.polycis.main.entity.db3.DevUpDataPO;
+import com.polycis.main.entity.vo.QueryTimePO;
 import com.polycis.main.service.db1.*;
 import com.polycis.main.service.db2.IDevHttpService;
 import com.polycis.main.service.db2.IDevMqQueueService;
@@ -57,12 +58,6 @@ public class AppController {
     @Autowired
     private IMybatisPlusDB3Service iMybatisPlusDB3Service;
 
-    @Autowired
-    private IProductService iProductService;
-
-
-    @Autowired
-    private IUsersService iUsersService;
 
     @RoleOfAdmin
     @ApiOperation(value = "添加应用", notes = "添加应用接口")
@@ -72,30 +67,29 @@ public class AppController {
 
         ApiResult apiResult = new ApiResult<>();
 
-            app.setAppEui(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16));
-            /*ApiResult apiResult1 = appFeignClient.create(app);
-            LOG.info(apiResult1.getMsg());
-            if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
-                app.setOrganizationId(currentUser.getOrg());
-                // 将用户信息的prg 添加到关联表中
-                boolean b = iAppService.addApp(app);
-                if (b) {
-                    apiResult.setSub_code(app.getId());
-                    return apiResult;
-                }
-                LOG.info("添加应用失败:{},用户:{}", app.toString(), currentUser.toString());
+        app.setAppEui(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16));
+        ApiResult apiResult1 = appFeignClient.create(app);
+        LOG.info(apiResult1.getMsg());
+        if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
+            // 将用户信息的prg 添加到关联表中
+            boolean b = iAppService.addApp(app);
+            if (b) {
+                apiResult.setSub_code(app.getId());
+                return apiResult;
             }
+            LOG.info("添加应用失败:{}", app.toString());
+        }
 
-            return apiResult1;*/
+        return apiResult1;
 
         // 为了测试通过添加的代码,后续要删除并且解注上边的代码
-        boolean b = iAppService.addApp(app);
+       /* boolean b = iAppService.addApp(app);
         if (b) {
             apiResult.setSub_code(app.getId());
             return apiResult;
         }
         apiResult.setCode(CommonCode.ERROR.getKey());
-        return apiResult;
+        return apiResult;*/
 
     }
 
@@ -145,29 +139,33 @@ public class AppController {
         ApiResult apiResult = new ApiResult<>();
         OssAdmin currentUser = RequestHolder.getCurrentUser();
 
-           /* // 应用更新接口只更新 应用的http
-            ApiResult apiResult1 = appFeignClient.update(app);
-            if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
-                // 在此存在一个问题是,用户可以更改自己应用的组织id到其他组织上,是app上org的冗余字段发生问题,但这个冗余字段后续应该不用,时间仓促后续再处理
-                iAppService.updateById(app);
-                return apiResult;
-            }
-            apiResult.setMsg(CommonCode.ERROR.getValue());
-            apiResult.setCode(CommonCode.ERROR.getKey());
-            return apiResult;*/
+        // 应用更新接口只更新 应用的http
+        ApiResult apiResult1 = appFeignClient.update(app);
+
+        System.out.println(apiResult1.toString());
+        if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
+            // 在此存在一个问题是,用户可以更改自己应用的组织id到其他组织上,是app上org的冗余字段发生问题,但这个冗余字段后续应该不用,时间仓促后续再处理
+            iAppService.updateById(app);
+            return apiResult;
+        }
+        apiResult.setMsg(CommonCode.ERROR.getValue());
+        apiResult.setCode(CommonCode.ERROR.getKey());
+        return apiResult;
 
         // 为了测试通过添加的代码,后续要删除并且解注上边的代码
-        iAppService.updateById(app);
-        return apiResult;
+     /*   iAppService.updateById(app);
+        return apiResult;*/
     }
 
     @RoleOfAdmin
     @ApiOperation(value = "删除应用", notes = "删除应用")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ApiResult delete(@RequestBody App app) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
+
+        App app1 = iAppService.selectById(app);
+
         ApiResult apiResult = new ApiResult<>();
-         /*   List<Device> devices = iDeviceService.selectList(new EntityWrapper<Device>()
+            List<Device> devices = iDeviceService.selectList(new EntityWrapper<Device>()
                     .eq("is_delete", MainConstants.UN_DELETE)
                     .eq("app_id", app.getId()));
             if (devices.size() > 0) {
@@ -176,16 +174,17 @@ public class AppController {
                 return apiResult;
             }
             //接入层来判断到底能删不能删,删不掉自然我这就不用走查询应用下设备逻辑了
-            ApiResult apiResult1 = appFeignClient.delete(app.getAppEui());
+
+            ApiResult apiResult1 = appFeignClient.delete(app1.getAppEui().toString());
             if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
                 iAppService.deleteApp(app);
                 return apiResult;
             }
-            return apiResult1;*/
+            return apiResult1;
 
-        // 为了测试通过添加的代码,后续要删除并且解注上边的代码
+       /* // 为了测试通过添加的代码,后续要删除并且解注上边的代码
         iAppService.deleteApp(app);
-        return apiResult;
+        return apiResult;*/
 
     }
 
@@ -206,8 +205,17 @@ public class AppController {
 
         ApiResult apiResult = new ApiResult<>();
 
+        PageInfoVO pageInfo = requestVO.getPageInfo();
+        QueryTimePO queryTimePO = JSON.parseObject(JSON.toJSONString(requestVO.getData()), QueryTimePO.class);
+
+        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
+        deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
+        deviceEntityWrapper.eq("app_id", queryTimePO.getId());
+        deviceEntityWrapper.setSqlSelect("device_uuid");
+        List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
+
         // 查询上行数据
-        Page<DevUpDataPO> devUpDataPOPage = iMybatisPlusDB3Service.selectAppUpData(requestVO);
+        Page<DevUpDataPO> devUpDataPOPage = iMybatisPlusDB3Service.selectAppUpData(pageInfo, queryTimePO, objects);
         apiResult.setData(devUpDataPOPage);
         return apiResult;
 
@@ -218,8 +226,16 @@ public class AppController {
     public ApiResult downdata(@RequestBody RequestVO requestVO) {
 
         ApiResult apiResult = new ApiResult<>();
+        PageInfoVO pageInfo = requestVO.getPageInfo();
+        QueryTimePO queryTimePO = JSON.parseObject(JSON.toJSONString(requestVO.getData()), QueryTimePO.class);
+
+        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
+        deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
+        deviceEntityWrapper.eq("app_id", queryTimePO.getId());
+        deviceEntityWrapper.setSqlSelect("device_uuid");
+        List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
         // 查询上行数据
-        Page<DevDownDataPO> devDownDataPOPage = iMybatisPlusDB3Service.selectAppDownData(requestVO);
+        Page<DevDownDataPO> devDownDataPOPage = iMybatisPlusDB3Service.selectAppDownData(pageInfo, queryTimePO, objects);
         apiResult.setData(devDownDataPOPage);
         return apiResult;
     }

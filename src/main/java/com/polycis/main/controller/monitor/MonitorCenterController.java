@@ -257,6 +257,27 @@ public class MonitorCenterController {
     }
 
 
+    @RoleOfAdmin
+    @ApiOperation(value = "api近七天数据查询", notes = "api近七天")
+    @RequestMapping(value = "aweekapi", method = RequestMethod.POST)
+    public ApiResult aweekapi() {
+        List<Map<String, Object>> list = iMybatisPlusDB3Service.selectAWeekAPIOss();
+        ApiResult apiResult = new ApiResult<>();
+        apiResult.setData(list);
+        return  apiResult;
+    }
+
+    @RoleOfAdmin
+    @ApiOperation(value = "api近七天总数查询", notes = "api近七天总数查询")
+    @RequestMapping(value = "aweekapisum", method = RequestMethod.POST)
+    public ApiResult aweekapisum() {
+        ApiResult apiResult = new ApiResult<>();
+        Integer count = iMybatisPlusDB3Service.aweekapisum();
+        apiResult.setData(count);
+        return  apiResult;
+    }
+
+
 
 
 

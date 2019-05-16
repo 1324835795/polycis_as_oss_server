@@ -127,4 +127,16 @@ public class DevDataWarnServiceImpl extends ServiceImpl<DevDataWarnMapper, DevDa
         apiResult.setMsg("操作成功");
         return apiResult;
     }
+
+    @Override
+    public List<Map<String, Object>> selectAWeekAPIOss() {
+
+        return  warnMapper.selectAWeekAPIOss();
+
+    }
+
+    @Override
+    public Integer aweekapisum() {
+        return  warnMapper.aweekapisum();
+    }
 }
