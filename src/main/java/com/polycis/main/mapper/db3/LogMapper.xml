@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.polycis.main.mapper.db3.LogMapper">
+    <select id="selectSysLog" resultType="java.util.Map">
+        <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
+        select s.username,s.operation,d.`name` as 'operationName',s.params,s.create_time as 'createTime' from polycis_as_main.sys_log s
+        left join polycis_as_main.iot_dictionary d on s.operation = d.id
+        where 1 = 1
+        <if test="data.username !=null and data.username !='' ">
+            and s.username like concat('%',#{data.username},'%')
+        </if>
+        <if test="data.beginTime !=null and data.beginTime !='' ">
+            and s.create_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !='' ">
+            and s.create_time &lt;= #{data.endTime}
+        </if>
+        <if test="data.operation !=null and data.operation !='' ">
+            and s.operation = #{data.operation}
+        </if>
+        order by s.create_time desc
+        LIMIT #{key_offset},#{pageInfo.pageSize}
+    </select>
+    <select id="selectSysLogCount" resultType="java.lang.Integer">
+        select count(*) from polycis_as_main.sys_log s
+        where 1 = 1
+        <if test="data.username !=null and data.username !='' ">
+            and s.username like concat('%',#{data.username},'%')
+        </if>
+        <if test="data.beginTime !=null and data.beginTime !='' ">
+            and s.create_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !='' ">
+            and s.create_time &lt;= #{data.endTime}
+        </if>
+        <if test="data.operation !=null and data.operation !='' ">
+            and s.operation = #{data.operation}
+        </if>
+    </select>
+</mapper>
