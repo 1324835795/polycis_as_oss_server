@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.service.IService;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.entity.lora.ServiceProfile;
 
+import java.util.List;
+
 /**
  * <p>
  * 服务配置文件 服务类
@@ -46,4 +48,10 @@ public interface IServiceProfileService extends IService<ServiceProfile> {
      */
     ApiResult<String> deleteServiceProfile(ServiceProfile spFile);
 
+
+    /**
+     * 查看全部服务配置列表
+     * @return
+     */
+    List<ServiceProfile> findListAll();
 }

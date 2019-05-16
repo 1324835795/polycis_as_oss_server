@@ -32,4 +32,10 @@ public interface ServiceProfileMapper extends BaseMapper<ServiceProfile> {
      * @return
      */
     Integer findListCount(Map<String, Object> param);
+
+    /**
+     * 查看全部服务配置列表
+     * @return
+     */
+    List<ServiceProfile> findListAll();
 }

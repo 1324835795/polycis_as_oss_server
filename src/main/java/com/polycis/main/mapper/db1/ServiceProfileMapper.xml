@@ -6,11 +6,9 @@
         SELECT t.*
         FROM lora_service_profile t
         <where>
-            <if test="spId != null and spId != ''">
-                t.serviceProfileId LIKE CONCAT('%', #{spId}, '%')
-            </if>
             <if test="spName != null and spName != ''">
-                AND t.name LIKE CONCAT('%', #{spName}, '%')
+                t.serviceProfileId LIKE CONCAT('%', #{spName}, '%')
+                OR t.name LIKE CONCAT('%', #{spName}, '%')
             </if>
         </where>
         ORDER BY t.create_time DESC
@@ -20,13 +18,17 @@
         SELECT count(t.id)
         FROM lora_service_profile t
         <where>
-            <if test="spId != null and spId != ''">
-                t.serviceProfileId LIKE CONCAT('%', #{spId}, '%')
-            </if>
             <if test="spName != null and spName != ''">
-                AND t.name LIKE CONCAT('%', #{spName}, '%')
+                t.serviceProfileId LIKE CONCAT('%', #{spName}, '%')
+                OR t.name LIKE CONCAT('%', #{spName}, '%')
             </if>
         </where>
+    </select>
+
+    <select id="findListAll" resultType="com.polycis.main.entity.lora.ServiceProfile">
+        SELECT t.*
+        FROM lora_service_profile t
+        ORDER BY t.create_time DESC
     </select>
 
 </mapper>
