@@ -8,6 +8,7 @@ import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.interceptor.RequestHolder;
+import com.polycis.main.common.interceptor.role.RoleOfAdmin;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.Users;
@@ -94,6 +95,7 @@ public class OssAdminController {
         return apiResult;
     }
 
+    @RoleOfAdmin
     @ApiOperation(value = "用户启用/不启用", notes = "用户启用/不启用")
     @PostMapping("/active")
     public ApiResult active(@RequestBody OssAdmin ossAdmin) {
@@ -109,14 +111,13 @@ public class OssAdminController {
         return apiResult;
     }
 
+    @RoleOfAdmin
     @ApiOperation(value = "oss添加用户", notes = "oss添加用户")
     @PostMapping("/add")
     public ApiResult add(@RequestBody OssAdmin ossAdmin) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
-        // 添加的用户只是用户,不能管理员添加管理员
-        if (currentUser.getRole().contains(MainConstants.SYS)) {
-
+        // 添加的用户可以是用户,管理员
             if (ossAdmin.getType() == 1)
                 ossAdmin.setRole(MainConstants.USER);
             if (ossAdmin.getType() == 2)
@@ -131,13 +132,9 @@ public class OssAdminController {
                 apiResult.setCode(CommonCode.ERROR.getKey());
                 return apiResult;
             }
-        }
-        apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
-        apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
-        return apiResult;
     }
 
-
+    @RoleOfAdmin
     @ApiOperation(value = "删除oss用户", notes = "删除oss用户")
     @PostMapping("/delete")
     public ApiResult delete(@RequestBody OssAdmin ossAdmin) {
@@ -148,25 +145,19 @@ public class OssAdminController {
             apiResult.setMsg("不能删除自己");
         }
 
-        if (currentUser.getRole().contains(MainConstants.SYS)) {
+
             ossAdmin.setDel(MainConstants.DELETETED);
             iOssAdminService.updateById(ossAdmin);
             return apiResult;
-        } else {
-            apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
-            apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
-            return apiResult;
-        }
 
     }
-
+    @RoleOfAdmin
     @ApiOperation(value = "修改oss用户", notes = "修改oss用户")
     @PostMapping("/update")
     public ApiResult update(@RequestBody OssAdmin ossAdmin) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         // 操作用户是管理员 且 被操作用户是type=1用户
-        if (currentUser.getRole().contains(MainConstants.SYS)) {
 
             boolean b = iOssAdminService.updateById(ossAdmin);
             if (b) {
@@ -175,12 +166,6 @@ public class OssAdminController {
             apiResult.setCode(CommonCode.ERROR.getKey());
             apiResult.setMsg(CommonCode.ERROR.getValue());
             return apiResult;
-        } else {
-            apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
-            apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
-            return apiResult;
-        }
-
     }
 
 
@@ -189,11 +174,11 @@ public class OssAdminController {
     public ApiResult list(@RequestBody RequestVO requestVO) throws IOException {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         EntityWrapper<OssAdmin> usersEntityWrapper = new EntityWrapper<>();
-        OssAdmin ossAdmin = JSON.parseObject(JSON.toJSONString(requestVO.getData()), OssAdmin.class);
+        //OssAdmin ossAdmin = JSON.parseObject(JSON.toJSONString(requestVO.getData()), OssAdmin.class);
         /*if (null != ossAdmin.getLoginname() && !"".equals(ossAdmin.getLoginname())) {
             usersEntityWrapper.like("loginname", ossAdmin.getLoginname(), SqlLike.RIGHT);
         }*/
-        usersEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
+        usersEntityWrapper.eq("del", MainConstants.UN_DELETE);
         usersEntityWrapper.orderBy("create_time desc");
         ApiResult apiResult = new ApiResult<>();
         PageInfoVO pageInfo = requestVO.getPageInfo();
@@ -206,10 +191,10 @@ public class OssAdminController {
 
     @ApiOperation(value = "oss用户个人信息", notes = "oss用户个人信息")
     @PostMapping("/selfinfo")
-    public ApiResult selfinfo(@RequestBody OssAdmin ossAdmin) {
+    public ApiResult selfinfo() {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
-        OssAdmin ossAdmin1 = iOssAdminService.selectById(ossAdmin);
+        OssAdmin ossAdmin1 = iOssAdminService.selectById(currentUser);
         apiResult.setData(ossAdmin1);
         return apiResult;
     }
