@@ -30,4 +30,9 @@ public class MainConstants {
 
     // 字典表 产品分类的父id
     public static final Integer DICTIONARY_PRODUCT=1;
+
+
+
+
+
 }
