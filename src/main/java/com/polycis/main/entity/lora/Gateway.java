@@ -30,7 +30,6 @@ public class Gateway implements Serializable {
      * 网关mac
      */
     private String mac;
-
     /**
      * 网关id
      */
@@ -68,6 +67,30 @@ public class Gateway implements Serializable {
      * 纬度
      */
     private String latitude;
+    /**
+     * 挂高
+     */
+    private Integer hightUp;
+    /**
+     * 生产厂家
+     */
+    private String factory;
+    /**
+     * 0:室内，1:室外
+     */
+    private String type;
+    /**
+     * 0:定向，1:全向
+     */
+    private String antennaType;
+    /**
+     * 天线增益(dB)
+     */
+    private Integer antennaDb;
+    /**
+     * 网关工作频段
+     */
+    private String workFreq;
     private Date createTime;
     private Date updateTime;
 
@@ -86,6 +109,14 @@ public class Gateway implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMac() {
+        return mac;
+    }
+
+    public void setMac(String mac) {
+        this.mac = mac;
     }
 
     public String getGatewayId() {
@@ -152,6 +183,55 @@ public class Gateway implements Serializable {
         this.latitude = latitude;
     }
 
+    public Integer getHightUp() {
+        return hightUp;
+    }
+
+    public void setHightUp(Integer hightUp) {
+        this.hightUp = hightUp;
+    }
+
+
+    public String getFactory() {
+        return factory;
+    }
+
+    public void setFactory(String factory) {
+        this.factory = factory;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAntennaType() {
+        return antennaType;
+    }
+
+    public void setAntennaType(String antennaType) {
+        this.antennaType = antennaType;
+    }
+
+    public Integer getAntennaDb() {
+        return antennaDb;
+    }
+
+    public void setAntennaDb(Integer antennaDb) {
+        this.antennaDb = antennaDb;
+    }
+
+    public String getWorkFreq() {
+        return workFreq;
+    }
+
+    public void setWorkFreq(String workFreq) {
+        this.workFreq = workFreq;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -168,30 +248,28 @@ public class Gateway implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getMac() {
-        return mac;
-    }
-
-    public void setMac(String mac) {
-        this.mac = mac;
-    }
-
     @Override
     public String toString() {
         return "Gateway{" +
-        ", id=" + id +
-        ", name=" + name +
-        ", gatewayId=" + gatewayId +
-        ", gatewayProfileID=" + gatewayProfileID +
-        ", networkServerID=" + networkServerID +
-        ", organizationID=" + organizationID +
-        ", description=" + description +
-        ", discoveryEnabled=" + discoveryEnabled +
-        ", longitude=" + longitude +
-        ", latitude=" + latitude +
-        ", createTime=" + createTime +
-        ", updateTime=" + updateTime +
-        ", mac=" + mac +
-        "}";
+                ", id=" + id +
+                ", name=" + name +
+                ", mac=" + mac +
+                ", gatewayId=" + gatewayId +
+                ", gatewayProfileID=" + gatewayProfileID +
+                ", networkServerID=" + networkServerID +
+                ", organizationID=" + organizationID +
+                ", description=" + description +
+                ", discoveryEnabled=" + discoveryEnabled +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", hightUp=" + hightUp +
+                ", factory=" + factory +
+                ", type=" + type +
+                ", antennaType=" + antennaType +
+                ", antennaDb=" + antennaDb +
+                ", workFreq=" + workFreq +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                "}";
     }
 }
