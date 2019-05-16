@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.polycis.main.mapper.db1.NoticeMapper">
+
+    <insert id="insertNotice" parameterType="com.polycis.main.entity.Notice">
+        insert into sys_notice (topic, msg, create_time, work_time, dead_time, user_id) VALUES
+        (#{topic},#{msg},now(),#{workTime},#{deadTime},#{userId})
+    </insert>
+    <select id="selectNotice" resultType="com.polycis.main.entity.Notice">
+        <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
+        select id,topic,msg,create_time,work_time,case when dead_time &gt;= now() then '—' else dead_time
+        end as 'deadTime' from sys_notice
+        where 1 = 1
+        <if test="data.topic != null and data.topic!=''">
+          and topic like concat('%',#{data.topic},'%')
+        </if>
+        LIMIT #{key_offset},#{pageInfo.pageSize}
+    </select>
+    <select id="selectNoticeCount" resultType="java.lang.Integer">
+        select count(*) from sys_notice
+        where 1 = 1
+        <if test="data.topic != null and data.topic!=''">
+            and topic like concat('%',#{data.topic},'%')
+        </if>
+    </select>
+    <update id="updateDeadTime" parameterType="java.util.Map">
+        update sys_notice set dead_time = now()
+        where id = #{id}
+    </update>
+</mapper>
