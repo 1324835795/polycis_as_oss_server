@@ -24,4 +24,6 @@ public interface IDevDataWarnService extends IService<DevDataWarn> {
     ApiResult<List<Map<String, Object>>> warnStatusCal(RequestVO param);
     ApiResult createWarnLevel(WarnLevel warnLevel);
     ApiResult<Map<String,Object>> selectWarnLevel(RequestVO requestVO);
+    ApiResult modifyWarnLevelState(Map map);
+    ApiResult deleteWarnLevel(Map map);
 }
