@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ import java.util.Map;
  * @author ${author}
  * @since 2019-05-16
  */
-@Controller
+@RestController
 @RequestMapping("/gatewayPro")
 public class GatewayProController {
 
@@ -62,7 +63,14 @@ public class GatewayProController {
             GatewayProVO gatewayPro = JSON.parseObject(JSON.toJSONString(params), GatewayProVO.class);
             List<GatewayProChannel> params2 = (List<GatewayProChannel>)((Map<String, Object>) requestVO.getData().get("gatewayProfile")).get("extraChannels");
             gatewayPro.setExtraChannels(params2);
-            int code = iGatewayProService.addGatewayPro(userId, gatewayPro);
+            Boolean b = iGatewayProService.addGatewayPro(userId, gatewayPro);
+            if(b){
+                return apiResult;
+            }
+            apiResult.setMsg("配置文件新增失败");
+            apiResult.setCode(CommonCode.ERROR.getKey());
+            return apiResult;
+
         }
 
         apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());

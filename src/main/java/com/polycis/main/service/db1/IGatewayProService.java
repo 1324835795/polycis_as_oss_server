@@ -2,6 +2,7 @@ package com.polycis.main.service.db1;
 
 import com.polycis.main.entity.GatewayPro;
 import com.baomidou.mybatisplus.service.IService;
+import com.polycis.main.entity.vo.GatewayProVO;
 
 /**
  * <p>
@@ -14,5 +15,5 @@ import com.baomidou.mybatisplus.service.IService;
 public interface IGatewayProService extends IService<GatewayPro> {
 
 
-
+    Boolean addGatewayPro(Integer orgId, GatewayProVO gatewayPro);
 }
