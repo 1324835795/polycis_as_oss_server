@@ -79,7 +79,7 @@ public class GatewayProController {
     }
 
 
-    @ApiOperation(value = "新增网关配置", notes = "新增网关配置接口")
+   /* @ApiOperation(value = "新增网关配置", notes = "新增网关配置接口")
     @PostMapping(value = "/addGatePro")
     public ApiResult addGate(@RequestBody RequestVO requestVO) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
@@ -88,7 +88,7 @@ public class GatewayProController {
             String gatewayPro= (String) requestVO.getData().get("gatewayPro");
             iGatewayProService.deleteGatewayPro(gatewayPro);
 
-    }
+    }*/
 
 }
 
