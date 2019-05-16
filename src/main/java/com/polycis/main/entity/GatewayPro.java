@@ -1,10 +1,12 @@
 package com.polycis.main.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -61,6 +63,27 @@ public class GatewayPro implements Serializable {
      */
     private Integer orgId;
 
+    @TableField(exist=false)
+    private List<GatewayProChannel> gatewayProfileChannel;
+
+    @TableField(exist=false)
+    private String total;
+
+    public List<GatewayProChannel> getGatewayProfileChannel() {
+        return gatewayProfileChannel;
+    }
+
+    public void setGatewayProfileChannel(List<GatewayProChannel> gatewayProfileChannel) {
+        this.gatewayProfileChannel = gatewayProfileChannel;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
 
     public Integer getId() {
         return id;

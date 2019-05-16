@@ -2,6 +2,9 @@ package com.polycis.main.service.db1.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.baomidou.mybatisplus.enums.SqlLike;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.polycis.main.entity.GatewayPro;
 import com.polycis.main.entity.GatewayProChannel;
 import com.polycis.main.entity.vo.GatewayProVO;
@@ -90,5 +93,23 @@ public class GatewayProServiceImpl extends ServiceImpl<GatewayProMapper, Gateway
         Log.info("有网关不能删除");
         return 403;
         */
+        return null;
+    }
+
+    @Override
+    public Page<GatewayPro> findAllGatewayPro(Integer currentPage, Integer pageSize, GatewayPro gateway) {
+
+
+        Page<GatewayPro> page = new Page<>(currentPage, pageSize);
+        EntityWrapper<GatewayPro> dev = new EntityWrapper<>();
+
+        if (null!=gateway.getName()||!"".equals(gateway.getName())){
+            dev.or().like("name",gateway.getName(), SqlLike.DEFAULT);
+        }
+        dev.eq("del",1);
+        dev.orderBy("create_time desc");
+        Page<GatewayPro> gateProPage = this.selectPage(page, dev);
+        return gateProPage;
+
     }
 }
