@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface IGatewayProService extends IService<GatewayPro> {
 
+
+
 }
