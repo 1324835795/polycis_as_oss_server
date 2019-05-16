@@ -18,6 +18,7 @@ import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.entity.db3.DevDataWarn;
 import com.polycis.main.entity.db3.DevDownDataPO;
 import com.polycis.main.entity.db3.DevUpDataPO;
+import com.polycis.main.entity.vo.QueryTimePO;
 import com.polycis.main.service.db1.*;
 import com.polycis.main.service.db2.IDevHttpService;
 import com.polycis.main.service.db2.IDevMqQueueService;
@@ -206,8 +207,17 @@ public class AppController {
 
         ApiResult apiResult = new ApiResult<>();
 
+        PageInfoVO pageInfo = requestVO.getPageInfo();
+        QueryTimePO queryTimePO = JSON.parseObject(JSON.toJSONString(requestVO.getData()), QueryTimePO.class);
+
+        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
+        deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
+        deviceEntityWrapper.eq("app_id", queryTimePO.getId());
+        deviceEntityWrapper.setSqlSelect("device_uuid");
+        List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
+
         // 查询上行数据
-        Page<DevUpDataPO> devUpDataPOPage = iMybatisPlusDB3Service.selectAppUpData(requestVO);
+        Page<DevUpDataPO> devUpDataPOPage = iMybatisPlusDB3Service.selectAppUpData(pageInfo,queryTimePO,objects);
         apiResult.setData(devUpDataPOPage);
         return apiResult;
 
@@ -218,8 +228,16 @@ public class AppController {
     public ApiResult downdata(@RequestBody RequestVO requestVO) {
 
         ApiResult apiResult = new ApiResult<>();
+        PageInfoVO pageInfo = requestVO.getPageInfo();
+        QueryTimePO queryTimePO = JSON.parseObject(JSON.toJSONString(requestVO.getData()), QueryTimePO.class);
+
+        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
+        deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
+        deviceEntityWrapper.eq("app_id", queryTimePO.getId());
+        deviceEntityWrapper.setSqlSelect("device_uuid");
+        List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
         // 查询上行数据
-        Page<DevDownDataPO> devDownDataPOPage = iMybatisPlusDB3Service.selectAppDownData(requestVO);
+        Page<DevDownDataPO> devDownDataPOPage = iMybatisPlusDB3Service.selectAppDownData(pageInfo,queryTimePO,objects);
         apiResult.setData(devDownDataPOPage);
         return apiResult;
     }

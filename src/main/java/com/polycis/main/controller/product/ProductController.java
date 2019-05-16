@@ -1,4 +1,4 @@
-/*
+
 package com.polycis.main.controller.product;
 
 import com.alibaba.fastjson.JSON;
@@ -8,6 +8,7 @@ import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.interceptor.RequestHolder;
+import com.polycis.main.common.interceptor.role.RoleOfAdmin;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.Device;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 
-*/
+
 /**
  * <p>
  * 前端控制器
@@ -33,7 +34,7 @@ import java.util.Map;
  *
  * @author qiaokai
  * @since 2019-04-19
- *//*
+ */
 
 
 @RestController
@@ -83,52 +84,46 @@ public class ProductController {
     @RequestMapping(value = "/devlist", method = RequestMethod.POST)
     public ApiResult devlist(@RequestBody RequestVO requestVO) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
-        Page<Device> page = iDeviceService.selectProductDevList(requestVO, currentUser);
+
+        Page<Device> page = iDeviceService.selectProductDevList(requestVO);
         ApiResult apiResult = new ApiResult<>();
         apiResult.setData(page);
         return apiResult;
     }
 
+    @RoleOfAdmin
     @ApiOperation(value = "增加产品", notes = "增加产品")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ApiResult add(@RequestBody Product product) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         ApiResult apiResult = new ApiResult<>();
-        if (currentUser.getRole().contains(MainConstants.SYS)) {
+
             product.setOrg(currentUser.getOrg());
             iProductService.insert(product);
             apiResult.setSub_code(product.getId());
             return apiResult;
-        } else {
-            apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
-            return apiResult;
-        }
     }
 
+    @RoleOfAdmin
     @ApiOperation(value = "修改产品", notes = "修改产品")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ApiResult update(@RequestBody Product product) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         ApiResult apiResult = new ApiResult<>();
-        if (currentUser.getRole().contains(MainConstants.SYS)) {
+
             product.setOrg(currentUser.getOrg());
             iProductService.updateById(product);
             return apiResult;
-        } else {
-            apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
-            return apiResult;
-        }
 
     }
 
+    @RoleOfAdmin
     @ApiOperation(value = "删除产品", notes = "删除产品")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ApiResult delete(@RequestBody Product product) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
-        if (currentUser.getRole().contains(MainConstants.SYS)) {
 
             List<Device> devices = iDeviceService.selectList(new EntityWrapper<Device>()
                     .eq("is_delete", 1)
@@ -138,14 +133,9 @@ public class ProductController {
                 apiResult.setCode(CommonCode.ERROR.getKey());
                 return apiResult;
             }
-            product.setOrg(currentUser.getOrg());
             product.setIsDelete(MainConstants.DELETETED);
             iProductService.updateById(product);
             return apiResult;
-        } else {
-            apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
-            return apiResult;
-        }
 
     }
 
@@ -166,5 +156,3 @@ public class ProductController {
 
 }
 
-
-*/

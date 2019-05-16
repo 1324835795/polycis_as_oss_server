@@ -26,4 +26,8 @@ public interface IDevDataWarnService extends IService<DevDataWarn> {
     ApiResult<Map<String,Object>> selectWarnLevel(RequestVO requestVO);
     ApiResult modifyWarnLevelState(Map map);
     ApiResult deleteWarnLevel(Map map);
+
+    List<Map<String,Object>> selectAWeekAPIOss();
+
+    Integer aweekapisum();
 }
