@@ -13,4 +13,5 @@ import java.util.Map;
  */
 public interface IlogService {
     ApiResult<Map<String,Object>> selectSysLogInfo(RequestVO requestVO);
+    ApiResult<Map<String,Object>> sekectDevLogState(RequestVO requestVO);
 }

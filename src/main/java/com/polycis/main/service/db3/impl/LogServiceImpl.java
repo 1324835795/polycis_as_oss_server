@@ -34,4 +34,16 @@ public class LogServiceImpl implements IlogService {
         apiResult.setData(map);
         return apiResult;
     }
+
+    @Override
+    public ApiResult<Map<String, Object>> sekectDevLogState(RequestVO requestVO) {
+        List<Map<String,Object>> list = logMapper.selectDevLogState(requestVO);
+        int total = logMapper.selectDevLogStateCount(requestVO);
+        Map<String,Object> map = new HashMap<>(16);
+        map.put("records",list);
+        map.put("total",total);
+        ApiResult<Map<String,Object>> apiResult = new ApiResult<>(CommonCode.SUCCESS);
+        apiResult.setData(map);
+        return apiResult;
+    }
 }

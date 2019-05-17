@@ -17,5 +17,6 @@ public interface LogMapper {
 
     List<Map<String,Object>> selectSysLog(RequestVO requestVO);
     Integer selectSysLogCount(RequestVO requestVO);
-
+    List<Map<String,Object>> selectDevLogState(RequestVO requestVO);
+    Integer selectDevLogStateCount(RequestVO requestVO);
 }
