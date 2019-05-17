@@ -53,5 +53,5 @@ public interface IServiceProfileService extends IService<ServiceProfile> {
      * 查看全部服务配置列表
      * @return
      */
-    List<ServiceProfile> findListAll();
+    ApiResult<List<ServiceProfile>> findListAll();
 }

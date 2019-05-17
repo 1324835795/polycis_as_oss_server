@@ -79,8 +79,7 @@ public class ServiceProfileController {
     @RequestMapping(value = "/listAll", method = RequestMethod.POST)
     public ApiResult listAll(@RequestBody RequestVO requestVO) {
         ApiResult<List<ServiceProfile>> apiResult = new ApiResult<>(CommonCode.SUCCESS);
-        List<ServiceProfile> list = this.serviceProfileService.findListAll();
-        apiResult.setData(list);
+        apiResult = this.serviceProfileService.findListAll();
         return apiResult;
     }
 

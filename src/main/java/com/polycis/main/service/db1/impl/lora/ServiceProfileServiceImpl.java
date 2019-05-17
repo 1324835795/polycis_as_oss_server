@@ -112,8 +112,10 @@ public class ServiceProfileServiceImpl extends ServiceImpl<ServiceProfileMapper,
      * @return
      */
     @Override
-    public List<ServiceProfile> findListAll() {
-        return this.serviceProfileMapper.findListAll();
+    public ApiResult<List<ServiceProfile>> findListAll() {
+        ApiResult<List<ServiceProfile>> apiResult = new ApiResult<>(CommonCode.SUCCESS);
+        apiResult.setData(this.serviceProfileMapper.findListAll());
+        return apiResult;
     }
 
 

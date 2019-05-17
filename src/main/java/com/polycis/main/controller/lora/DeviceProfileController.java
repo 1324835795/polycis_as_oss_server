@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,7 +58,7 @@ public class DeviceProfileController {
 
     @ApiOperation(value = "查看设备配置文件列表", notes = "查看设备配置文件列表")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public ApiResult applist(@RequestBody RequestVO requestVO) {
+    public ApiResult list(@RequestBody RequestVO requestVO) {
         ApiResult<Page<DeviceProfile>> apiResult = new ApiResult<>(CommonCode.SUCCESS);
         PageInfoVO pageInfo = requestVO.getPageInfo();
         Integer currentPage = pageInfo.getCurrentPage();
@@ -66,6 +67,13 @@ public class DeviceProfileController {
         DeviceProfile dpFile = JSON.parseObject(JSON.toJSONString(data), DeviceProfile.class);
         Page<DeviceProfile> page = this.deviceProfileService.findList(currentPage, pageSize, dpFile);
         apiResult.setData(page);
+        return apiResult;
+    }
+    @ApiOperation(value = "查看全部设备配置文件列表", notes = "查看全部设备配置文件列表")
+    @RequestMapping(value = "/listAll", method = RequestMethod.POST)
+    public ApiResult listAll(@RequestBody RequestVO requestVO) {
+        ApiResult<List<DeviceProfile>> apiResult = new ApiResult<>(CommonCode.SUCCESS);
+        apiResult = this.deviceProfileService.findListAll();
         return apiResult;
     }
 
