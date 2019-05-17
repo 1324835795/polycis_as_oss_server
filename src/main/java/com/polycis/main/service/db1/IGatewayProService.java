@@ -18,7 +18,7 @@ public interface IGatewayProService extends IService<GatewayPro> {
 
     Boolean addGatewayPro(Integer orgId, GatewayProVO gatewayPro);
 
-    Boolean deleteGatewayPro(String gatewayPro);
+    int deleteGatewayPro(String gatewayPro);
 
     Page<GatewayPro> findAllGatewayPro(Integer currentPage, Integer pageSize, GatewayPro gatewayProfile);
 }

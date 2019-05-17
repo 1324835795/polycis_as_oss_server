@@ -7,11 +7,15 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.polycis.main.entity.GatewayPro;
 import com.polycis.main.entity.GatewayProChannel;
+import com.polycis.main.entity.lora.Gateway;
 import com.polycis.main.entity.vo.GatewayProVO;
 import com.polycis.main.mapper.db1.GatewayProMapper;
 import com.polycis.main.service.db1.IGatewayProChannelService;
 import com.polycis.main.service.db1.IGatewayProService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.polycis.main.service.db1.lora.IGatewayService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +32,13 @@ import java.util.*;
 @Service
 public class GatewayProServiceImpl extends ServiceImpl<GatewayProMapper, GatewayPro> implements IGatewayProService {
 
-
+    protected static Logger Log = LoggerFactory.getLogger(GatewayProServiceImpl.class);
     @Autowired
     IGatewayProChannelService gatewayProChannelService;
+    @Autowired
+    IGatewayService iGatewayService;
+    @Autowired
+    IGatewayProService iGatewayProService;
 
     @Override
     public Boolean addGatewayPro(Integer orgId, GatewayProVO gatewayPro) {
@@ -69,22 +77,24 @@ public class GatewayProServiceImpl extends ServiceImpl<GatewayProMapper, Gateway
     }
 
     @Override
-    public Boolean deleteGatewayPro(String gatewayPro) {
+    public int deleteGatewayPro(String gatewayPro) {
 
-        /*//判断网关配置文件下是否有网关
+        //判断网关配置文件下是否有网关
         Map<String,Object> pram =new HashMap<>();
-        pram.put("gateway_pro_id",GatewayPro);
+        pram.put("gateway_pro_id",gatewayPro);
         pram.put("is_delete",1);
         List<Gateway> gateways = iGatewayService.selectByMap(pram);
         if(gateways.size()==0){
             Log.info("网关配置文件无网关");
             //调用第三方将接口
-            boolean flag =otherGatewayService.deleteGatewayPro(user,GatewayPro);
-            if(flag){
-                Map<String,Object> pram2 =new HashMap<>();
-                pram2.put("gateway_profile_id",GatewayPro);
-                iGatewayProfileService.deleteByMap(pram2);
-                iGatewayProfileService.deleteByMap(pram2);
+            /*boolean flag =otherGatewayService.deleteGatewayPro(user,GatewayPro);*/
+
+            Map<String,Object> pram2 =new HashMap<>();
+            pram2.put("gateway_profile_id",gatewayPro);
+            boolean b1 = iGatewayProService.deleteByMap(pram2);
+            boolean b = gatewayProChannelService.deleteByMap(pram2);
+
+            if(b&&b1){
                 //删除网关信息到数据库
                 return 200;
             }
@@ -92,8 +102,6 @@ public class GatewayProServiceImpl extends ServiceImpl<GatewayProMapper, Gateway
         }
         Log.info("有网关不能删除");
         return 403;
-        */
-        return null;
     }
 
     @Override

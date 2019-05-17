@@ -153,5 +153,30 @@ public class GatewayProController {
     }
 
 
+    /**
+     * 对外删除网关配置接口
+     * @param requestVO
+     * @return
+     */
+
+    @ApiOperation(value = "删除网关配置", notes = "删除网关配置接口")
+    @PostMapping(value = "/deleteGatePro")
+    public ApiResult deleteGate(@RequestBody RequestVO requestVO) {
+
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
+        ApiResult apiResult = new ApiResult<>(CommonCode.SUCCESS);
+
+        String gatewayPro= (String) requestVO.getData().get("gatewayPro");
+        int i = iGatewayProService.deleteGatewayPro(gatewayPro);
+        if(i==200){
+
+        }
+
+        return  apiResult;
+
+    }
+
+
+
 }
 
