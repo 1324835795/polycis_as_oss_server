@@ -31,15 +31,15 @@ public class Gateway implements Serializable {
      */
     private String mac;
     /**
-     * 网关id
+     * lora网关id
      */
     @TableField("gatewayId")
     private String gatewayId;
     /**
-     * 网关配置文件id
+     * oss网关配置文件id
      */
     @TableField("gatewayProfileID")
-    private String gatewayProfileID;
+    private Integer gatewayProfileID;
     /**
      * 网络服务id
      */
@@ -54,7 +54,7 @@ public class Gateway implements Serializable {
     /**
      * 所属用户
      */
-    private String userId;
+    private Integer orgId;
     /**
      * 网关ip
      */
@@ -147,11 +147,11 @@ public class Gateway implements Serializable {
         this.gatewayId = gatewayId;
     }
 
-    public String getGatewayProfileID() {
+    public Integer getGatewayProfileID() {
         return gatewayProfileID;
     }
 
-    public void setGatewayProfileID(String gatewayProfileID) {
+    public void setGatewayProfileID(Integer gatewayProfileID) {
         this.gatewayProfileID = gatewayProfileID;
     }
 
@@ -211,6 +211,13 @@ public class Gateway implements Serializable {
         this.hightUp = hightUp;
     }
 
+    public Integer getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
+    }
 
     public String getFactory() {
         return factory;
@@ -268,14 +275,6 @@ public class Gateway implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getIpAddr() {
         return ipAddr;
     }
@@ -294,7 +293,7 @@ public class Gateway implements Serializable {
                 ", gatewayProfileID=" + gatewayProfileID +
                 ", networkServerID=" + networkServerID +
                 ", organizationID=" + organizationID +
-                ", userId=" + userId +
+                ", orgId=" + orgId +
                 ", ipAddr=" + ipAddr +
                 ", description=" + description +
                 ", discoveryEnabled=" + discoveryEnabled +
