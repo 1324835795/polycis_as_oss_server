@@ -33,6 +33,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         RoleOfAdmin roleOfAdmin = AuthorityAnnotationContainer.get(target);
 
         if(roleOfAdmin != null){
+
             OssAdmin currentUser = RequestHolder.getCurrentUser();
             if(currentUser.getRole().contains(MainConstants.SYS)){
                 return true;

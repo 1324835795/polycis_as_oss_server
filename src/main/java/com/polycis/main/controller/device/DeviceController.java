@@ -8,6 +8,7 @@ import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.interceptor.RequestHolder;
+import com.polycis.main.common.interceptor.role.RoleOfAdmin;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.*;
 import com.polycis.main.entity.admin.OssAdmin;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import sun.misc.PostVMInitHook;
 
 
 /*
@@ -45,6 +47,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/dev")
 public class DeviceController {
 
+    protected static Logger LOG = LoggerFactory.getLogger(DeviceController.class);
+
     @Autowired
     private IDeviceService iDeviceService;
 
@@ -55,18 +59,13 @@ public class DeviceController {
     private IAppService iAppService;
 
     @Autowired
-    private IAppOrgRelationService iAppOrgRelationService;
-
-    @Autowired
-    private IMybatisPlusDB2Service iMybatisPlusDB2Service;
+    private IProductService iProductService;
 
     @Autowired
     private IMybatisPlusDB3Service iMybatisPlusDB3Service;
 
 
-    protected static Logger LOG = LoggerFactory.getLogger(DeviceController.class);
-
-
+    @RoleOfAdmin
     @ApiOperation(value = "设备添加", notes = "设备添加")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ApiResult add(@RequestBody Device device) {
@@ -76,47 +75,40 @@ public class DeviceController {
         deviceDTO.setAppEui(iAppService.selectById(device.getAppId()).getAppEui());
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
-        if (currentUser.getRole().contains(MainConstants.SYS)) {
 
-            // 应用层做了uuid校验,根本上是接入平台要做的,因为是解耦的,接入平台要单独部署,不知道为什么都要放在应用层做
-            int i = iDeviceService.selectCount(new EntityWrapper<Device>()
-                    .eq("device_uuid", device.getDeviceUuid())
-                    .eq("is_delete", MainConstants.UN_DELETE));
-            if (i > 0) {
-                apiResult.setCode(CommonCode.ERROR.getKey());
-                apiResult.setMsg("设备uuid已存在,请校对设备信息");
-                return apiResult;
-            }
-
-            LOG.info("设备信息" + deviceDTO.toString());
-            ApiResult apiResult1 = devFeignClient.create(deviceDTO);
-
-            if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
-
-                // 自己设置一遍,前端不塞值也没事
-                device.setProductId(product.getId());
-                // 设置平台类型冗余字段
-                device.setPlatform(product.getPlatform());
-                if (iDeviceService.insert(device)) {
-                    apiResult.setSub_code(device.getId());
-                    return apiResult;
-                } else {
-                    apiResult.setCode(CommonCode.ERROR.getKey());
-                    return apiResult;
-                }
-
-            }
-            return apiResult1;
-
-        } else {
-            apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
-            apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
+        // 应用层做了uuid校验,根本上是接入平台要做的,因为是解耦的,接入平台要单独部署,不知道为什么都要放在应用层做
+        int i = iDeviceService.selectCount(new EntityWrapper<Device>()
+                .eq("device_uuid", device.getDeviceUuid())
+                .eq("is_delete", MainConstants.UN_DELETE));
+        if (i > 0) {
+            apiResult.setCode(CommonCode.ERROR.getKey());
+            apiResult.setMsg("设备uuid已存在,请校对设备信息");
             return apiResult;
         }
 
+        LOG.info("设备信息" + deviceDTO.toString());
+        ApiResult apiResult1 = devFeignClient.create(deviceDTO);
+
+        if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
+
+            // 自己设置一遍,前端不塞值也没事
+            device.setProductId(product.getId());
+            // 设置平台类型冗余字段
+            device.setPlatform(product.getPlatform());
+            if (iDeviceService.insert(device)) {
+                apiResult.setSub_code(device.getId());
+                return apiResult;
+            } else {
+                apiResult.setCode(CommonCode.ERROR.getKey());
+                return apiResult;
+            }
+
+        }
+        return apiResult1;
+
     }
 
-
+    @RoleOfAdmin
     @ApiOperation(value = "设备更新", notes = "设备更新")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ApiResult update(@RequestBody Device device) {
@@ -125,24 +117,18 @@ public class DeviceController {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         ApiResult apiResult = new ApiResult<>();
-        if (currentUser.getRole().contains(MainConstants.SYS)) {
 
-            EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<Device>();
-            deviceEntityWrapper.eq("id", device.getId());
-            // 设置更新的设备是在app_id 下
-            boolean update = iDeviceService.update(device, deviceEntityWrapper);
-            if (update) {
-                return apiResult;
-            }
-            apiResult.setMsg(CommonCode.ERROR.getValue());
-            apiResult.setCode(CommonCode.ERROR.getKey());
-            return apiResult;
 
-        } else {
-            apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
-            apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
+        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<Device>();
+        deviceEntityWrapper.eq("id", device.getId());
+        // 设置更新的设备是在app_id 下
+        boolean update = iDeviceService.update(device, deviceEntityWrapper);
+        if (update) {
             return apiResult;
         }
+        apiResult.setMsg(CommonCode.ERROR.getValue());
+        apiResult.setCode(CommonCode.ERROR.getKey());
+        return apiResult;
     }
 
     @ApiOperation(value = "设备详情", notes = "设备详情")
@@ -159,53 +145,36 @@ public class DeviceController {
 
     }
 
+    @RoleOfAdmin
     @ApiOperation(value = "设备删除", notes = "设备删除")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public ApiResult delete(@RequestBody Device device) {
+    public ApiResult delete(@RequestBody Device dev) {
 
+        Device device = iDeviceService.selectById(dev);
         // 给传输的包装类设置app_eui,接入层存储应用信息用的是app_eui
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
-
         //应该判断这个设备属不属于这个组织
         ApiResult apiResult = new ApiResult<>();
-        if (currentUser.getRole().contains(MainConstants.SYS)) {
-            // 检查删除的设备是否在该组织下
-           Integer i = iAppService.selectDevIsmine(device.getId(),currentUser.getOrg());
-           if(i<=0){
-               apiResult.setMsg("该设备不在用户所属组织下,想玩火?");
-                apiResult.setCode(CommonCode.ERROR.getKey());
-               return apiResult;
-           }
 
-            ApiResult apiResult1 = devFeignClient.delete(device.getPlatform(), device.getDeviceUuid());
-            if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
-                EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<Device>();
-                deviceEntityWrapper.eq("id", device.getId());
-                // 软删除
-                device.setIsDelete(MainConstants.DELETETED);
-                boolean update = iDeviceService.update(device, deviceEntityWrapper);
+        ApiResult apiResult1 = devFeignClient.delete(device.getPlatform(), device.getDeviceUuid());
+        if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
+            EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<Device>();
+            deviceEntityWrapper.eq("id", device.getId());
+            // 软删除
+            device.setIsDelete(MainConstants.DELETETED);
+            boolean update = iDeviceService.update(device, deviceEntityWrapper);
 
-                if (update) {
-                    return apiResult;
-                }
-                LOG.info("应用层设备信息删除失败:{}" + device.toString());
-                apiResult.setCode(CommonCode.ERROR.getKey());
+            if (update) {
                 return apiResult;
-
             }
-            apiResult.setMsg(CommonCode.ERROR.getValue());
+            LOG.info("应用层设备信息删除失败:{}" + device.toString());
             apiResult.setCode(CommonCode.ERROR.getKey());
             return apiResult;
 
-        } else {
-            apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
-            apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
-            return apiResult;
         }
+        return apiResult1;
     }
 
-    @Autowired
-    private IProductService iProductService;
+
 
     @ApiOperation(value = "设备模糊查询", notes = "设备模糊查询")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -223,7 +192,7 @@ public class DeviceController {
     }
 
 
-    @ApiOperation(value = "查看设备详情下行数据", notes = "查看设备上行数据")
+    @ApiOperation(value = "查看设备详情下行数据", notes = "查看设备详情下行数据")
     @RequestMapping(value = "/downdata", method = RequestMethod.POST)
     public ApiResult downdata(@RequestBody RequestVO requestVO) {
 

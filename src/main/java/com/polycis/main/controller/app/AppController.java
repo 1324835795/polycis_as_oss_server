@@ -269,9 +269,10 @@ public class AppController {
     @ApiOperation(value = "应用下拉列表", notes = "应用下拉列表")
     @RequestMapping(value = "/downlist", method = RequestMethod.POST)
     public ApiResult downlist() {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
+
         EntityWrapper<AppOrgRelation> appOrgRelationEntityWrapper = new EntityWrapper<>();
-        appOrgRelationEntityWrapper.eq("organization_id", currentUser.getOrg());
+       /* OssAdmin currentUser = RequestHolder.getCurrentUser();
+        appOrgRelationEntityWrapper.eq("organization_id", currentUser.getOrg());*/
         appOrgRelationEntityWrapper.setSqlSelect("app_id");
         List<Object> objects = iAppOrgRelationService.selectObjs(appOrgRelationEntityWrapper);
 

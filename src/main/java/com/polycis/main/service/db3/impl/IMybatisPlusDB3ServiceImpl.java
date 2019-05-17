@@ -62,6 +62,8 @@ public class IMybatisPlusDB3ServiceImpl implements IMybatisPlusDB3Service {
 
         deviceEntityWrapper.eq("device_uuid", device.getDeviceUuid());
 
+        deviceEntityWrapper.orderBy("create_time desc");
+
         Page<DevDownDataPO> devDownDataPOPage1 = iDevDataDownService.selectPage(devDownDataPOPage, deviceEntityWrapper);
 
         return devDownDataPOPage1;
