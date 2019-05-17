@@ -166,17 +166,25 @@ public class GatewayProController {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>(CommonCode.SUCCESS);
 
-        String gatewayPro= (String) requestVO.getData().get("gatewayPro");
-        int i = iGatewayProService.deleteGatewayPro(gatewayPro);
-        if(i==200){
-
+        if (currentUser.getRole().contains(MainConstants.SYS)){
+            String gatewayPro= (String) requestVO.getData().get("gatewayPro");
+            int i = iGatewayProService.deleteGatewayPro(gatewayPro);
+            if(i==200){
+                return  apiResult;
+            }else  if (i==403){
+                apiResult.setMsg("配置文件下有网关删除失败");
+                apiResult.setCode(CommonCode.ERROR.getKey());
+                return apiResult;
+            }
+            apiResult.setMsg("服务不可用");
+            apiResult.setCode(CommonCode.ERROR.getKey());
+            return apiResult;
         }
-
-        return  apiResult;
+        apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
+        apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
+        return apiResult;
 
     }
-
-
 
 }
 

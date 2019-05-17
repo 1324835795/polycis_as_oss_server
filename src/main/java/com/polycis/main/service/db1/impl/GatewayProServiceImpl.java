@@ -81,7 +81,7 @@ public class GatewayProServiceImpl extends ServiceImpl<GatewayProMapper, Gateway
 
         //判断网关配置文件下是否有网关
         Map<String,Object> pram =new HashMap<>();
-        pram.put("gateway_pro_id",gatewayPro);
+        pram.put("gatewayProfileID",gatewayPro);
         pram.put("is_delete",1);
         List<Gateway> gateways = iGatewayService.selectByMap(pram);
         if(gateways.size()==0){
