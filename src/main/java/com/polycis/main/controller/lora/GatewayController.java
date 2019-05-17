@@ -59,7 +59,7 @@ public class GatewayController {
 
     @ApiOperation(value = "查看网关列表", notes = "查看网关列表")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public ApiResult applist(@RequestBody RequestVO requestVO) {
+    public ApiResult list(@RequestBody RequestVO requestVO) {
         ApiResult<Page<Gateway>> apiResult = new ApiResult<>(CommonCode.SUCCESS);
         PageInfoVO pageInfo = requestVO.getPageInfo();
         Integer currentPage = pageInfo.getCurrentPage();

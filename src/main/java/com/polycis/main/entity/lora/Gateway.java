@@ -50,6 +50,15 @@ public class Gateway implements Serializable {
      */
     @TableField("organizationID")
     private String organizationID;
+
+    /**
+     * 所属用户
+     */
+    private String userId;
+    /**
+     * 网关ip
+     */
+    private String ipAddr;
     /**
      * 描述
      */
@@ -259,6 +268,22 @@ public class Gateway implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getIpAddr() {
+        return ipAddr;
+    }
+
+    public void setIpAddr(String ipAddr) {
+        this.ipAddr = ipAddr;
+    }
+
     @Override
     public String toString() {
         return "Gateway{" +
@@ -269,6 +294,8 @@ public class Gateway implements Serializable {
                 ", gatewayProfileID=" + gatewayProfileID +
                 ", networkServerID=" + networkServerID +
                 ", organizationID=" + organizationID +
+                ", userId=" + userId +
+                ", ipAddr=" + ipAddr +
                 ", description=" + description +
                 ", discoveryEnabled=" + discoveryEnabled +
                 ", longitude=" + longitude +
