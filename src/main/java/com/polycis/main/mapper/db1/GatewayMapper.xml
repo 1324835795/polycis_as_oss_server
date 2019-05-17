@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.polycis.main.mapper.db1.GatewayMapper">
+
+    <select id="findList" resultType="com.polycis.main.entity.lora.Gateway">
+        SELECT t.*
+        FROM lora_gateway t
+        <where>
+            <if test="gwName != null and gwName != ''">
+                t.name LIKE CONCAT('%', #{gwName}, '%')
+                OR
+                t.mac LIKE CONCAT('%', #{gwName}, '%')
+            </if>
+        </where>
+        ORDER BY t.create_time DESC
+        LIMIT #{pageNumber}, #{pageSize}
+    </select>
+    <select id="findListCount" resultType="java.lang.Integer">
+        SELECT count(t.id)
+        FROM lora_gateway t
+        <where>
+            <if test="gwName != null and gwName != ''">
+                t.name LIKE CONCAT('%', #{gwName}, '%')
+                OR
+                t.mac LIKE CONCAT('%', #{gwName}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

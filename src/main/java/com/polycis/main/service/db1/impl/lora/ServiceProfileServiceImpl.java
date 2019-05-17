@@ -39,6 +39,11 @@ public class ServiceProfileServiceImpl extends ServiceImpl<ServiceProfileMapper,
         Date date = Calendar.getInstance().getTime();
         spFile.setCreateTime(date);
         spFile.setUpdateTime(date);
+
+        //TODO 要关联接入平台
+        spFile.setNetworkServerID("1");
+        spFile.setOrganizationID("1");
+
         this.serviceProfileMapper.insert(spFile);
 
         //TODO loraserver中添加server_profile
@@ -60,7 +65,6 @@ public class ServiceProfileServiceImpl extends ServiceImpl<ServiceProfileMapper,
         Map<String, Object> param = new HashMap<>();
         param.put("pageNumber", (currentPage - 1) * pageSize);
         param.put("pageSize", pageSize);
-        param.put("spId", spFile.getServiceProfileId());
         param.put("spName", spFile.getName());
         List<ServiceProfile> list = this.serviceProfileMapper.findList(param);
         Integer count = this.serviceProfileMapper.findListCount(param);
@@ -100,6 +104,17 @@ public class ServiceProfileServiceImpl extends ServiceImpl<ServiceProfileMapper,
 
         //TODO loraserver中删除server_profile
 //        this.serviceProfileMapper.updateById(spFile);
+        return apiResult;
+    }
+
+    /**
+     * 查看全部服务配置列表
+     * @return
+     */
+    @Override
+    public ApiResult<List<ServiceProfile>> findListAll() {
+        ApiResult<List<ServiceProfile>> apiResult = new ApiResult<>(CommonCode.SUCCESS);
+        apiResult.setData(this.serviceProfileMapper.findListAll());
         return apiResult;
     }
 
