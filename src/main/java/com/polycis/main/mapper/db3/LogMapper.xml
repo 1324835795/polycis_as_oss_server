@@ -39,7 +39,7 @@
     </select>
     <select id="selectDevLogState" resultType="java.util.Map">
         <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
-        select dev.name as 'devName',s.dev_uuid as 'devUuid',dic.name as 'state',s.create_time
+        select case when dev.name is null then '-' else dev.name end as 'devName',s.dev_uuid as 'devUuid',dic.name as 'state',s.create_time as 'createTime'
         from dev_state_log s
         left join polycis_ns_device.dev_union_device dev on dev.dev_uuid = s.dev_uuid
         left join polycis_as_main.iot_dictionary dic on dic.id = s.state
