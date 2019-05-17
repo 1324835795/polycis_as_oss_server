@@ -127,6 +127,11 @@ public class DeviceProfile implements Serializable {
      */
     @TableField("supportsClassA")
     private Boolean supportsClassA;
+
+    /**
+     * 备注
+     */
+    private String remark;
     private Date createTime;
     private Date updateTime;
 
@@ -279,6 +284,13 @@ public class DeviceProfile implements Serializable {
         this.classCTimeout = classCTimeout;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public Date getCreateTime() {
         return createTime;
@@ -361,6 +373,7 @@ public class DeviceProfile implements Serializable {
         ", supportsClassC=" + supportsClassC +
         ", classCTimeout=" + classCTimeout +
         ", supportsClassA=" + supportsClassA +
+        ", remark=" + remark +
         ", createTime=" + createTime +
         ", updateTime=" + updateTime +
         "}";

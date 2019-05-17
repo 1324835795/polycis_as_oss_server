@@ -69,7 +69,9 @@ public class DeviceProfileServiceImpl extends ServiceImpl<DeviceProfileMapper, D
         param.put("pageSize", pageSize);
         param.put("classType", dpFile.getClassType());
         param.put("name", dpFile.getName());
-        param.put("supportsJoin", dpFile.getSupportsJoin() ? 1 : 0);
+        if(null != dpFile.getSupportsJoin()){
+            param.put("supportsJoin", dpFile.getSupportsJoin() ? 1 : 0);
+        }
         List<DeviceProfile> list = this.deviceProfileMapper.findList(param);
         Integer count = this.deviceProfileMapper.findListCount(param);
         page.setTotal(count);
