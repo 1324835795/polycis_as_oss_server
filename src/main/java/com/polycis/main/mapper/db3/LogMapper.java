@@ -1,6 +1,7 @@
 package com.polycis.main.mapper.db3;
 
 import com.polycis.main.common.page.RequestVO;
+import com.polycis.main.entity.DevLogUp;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -19,4 +20,8 @@ public interface LogMapper {
     Integer selectSysLogCount(RequestVO requestVO);
     List<Map<String,Object>> selectDevLogState(RequestVO requestVO);
     Integer selectDevLogStateCount(RequestVO requestVO);
+    List<DevLogUp> selectDevLogUp(RequestVO requestVO);
+    Integer selectDevLogUpCount(RequestVO requestVO);
+    List<DevLogUp> selectDevLogDown(RequestVO requestVO);
+    Integer selectDevLogDownCount(RequestVO requestVO);
 }

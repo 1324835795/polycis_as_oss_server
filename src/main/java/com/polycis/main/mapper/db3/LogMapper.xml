@@ -53,6 +53,12 @@
         <if test="data.queryParam !=null and data.queryParam !=''">
             and s.dev_uuid like concat('%',#{data.queryParam},'%') or dev.name like concat('%',#{data.queryParam},'%')
         </if>
+        <if test="data.beginTime !=null and data.beginTime !='' ">
+            and s.create_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !='' ">
+            and s.create_time &lt;= #{data.endTime}
+        </if>
         order by s.create_time desc
         LIMIT #{key_offset},#{pageInfo.pageSize}
     </select>
@@ -69,6 +75,104 @@
         </if>
         <if test="data.queryParam !=null and data.queryParam !=''">
             and s.dev_uuid like concat('%',#{data.queryParam},'%') or dev.name like concat('%',#{data.queryParam},'%')
+        </if>
+        <if test="data.beginTime !=null and data.beginTime !='' ">
+            and s.create_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !='' ">
+            and s.create_time &lt;= #{data.endTime}
+        </if>
+    </select>
+    <select id="selectDevLogUp" resultType="com.polycis.main.entity.DevLogUp">
+        <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
+        select dev.name as 'devName',s.device_uuid as 'devUuid',s.encode_data as 'encodeData',
+        s.decode_data as 'decodeData',s.platform,s.push_status as 'status',s.modify_time as 'modifyTime'
+        from dev_data_up s
+        left join polycis_ns_device.dev_union_device dev on dev.dev_uuid = s.device_uuid
+        where 1=1
+        <if test="data.productId != null and data.productId != ''">
+            and s.device_uuid in (select device_uuid from polycis_as_main.iot_device where product_id = #{data.productId})
+        </if>
+        <if test="data.appId != null and data.appId != ''">
+            and s.device_uuid in (select device_uuid from polycis_as_main.iot_device where app_id = #{data.appId})
+        </if>
+        <if test="data.queryParam !=null and data.queryParam !=''">
+            and s.device_uuid like concat('%',#{data.queryParam},'%') or dev.name like concat('%',#{data.queryParam},'%')
+        </if>
+        <if test="data.beginTime !=null and data.beginTime !='' ">
+            and s.modify_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !='' ">
+            and s.modify_time &lt;= #{data.endTime}
+        </if>
+        order by modify_time desc
+        LIMIT #{key_offset},#{pageInfo.pageSize}
+    </select>
+    <select id="selectDevLogUpCount" resultType="java.lang.Integer">
+        select count(*)
+        from dev_data_up s
+        left join polycis_ns_device.dev_union_device dev on dev.dev_uuid = s.device_uuid
+        where 1=1
+        <if test="data.productId != null and data.productId != ''">
+            and s.device_uuid in (select device_uuid from polycis_as_main.iot_device where product_id = #{data.productId})
+        </if>
+        <if test="data.appId != null and data.appId != ''">
+            and s.device_uuid in (select device_uuid from polycis_as_main.iot_device where app_id = #{data.appId})
+        </if>
+        <if test="data.queryParam !=null and data.queryParam !=''">
+            and s.device_uuid like concat('%',#{data.queryParam},'%') or dev.name like concat('%',#{data.queryParam},'%')
+        </if>
+        <if test="data.beginTime !=null and data.beginTime !='' ">
+            and s.modify_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !='' ">
+            and s.modify_time &lt;= #{data.endTime}
+        </if>
+    </select>
+    <select id="selectDevLogDown" resultType="com.polycis.main.entity.DevLogUp">
+        <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
+        select dev.name as 'devName',s.device_uuid as 'devUuid',s.encode_data as 'encodeData',
+        s.down_data as 'decodeData',s.platform,s.down_status as 'status',s.modify_time as 'modifyTime'
+        from dev_data_down s
+        left join polycis_ns_device.dev_union_device dev on dev.dev_uuid = s.device_uuid
+        where 1=1
+        <if test="data.productId != null and data.productId != ''">
+            and s.device_uuid in (select device_uuid from polycis_as_main.iot_device where product_id = #{data.productId})
+        </if>
+        <if test="data.appId != null and data.appId != ''">
+            and s.device_uuid in (select device_uuid from polycis_as_main.iot_device where app_id = #{data.appId})
+        </if>
+        <if test="data.queryParam !=null and data.queryParam !=''">
+            and s.device_uuid like concat('%',#{data.queryParam},'%') or dev.name like concat('%',#{data.queryParam},'%')
+        </if>
+        <if test="data.beginTime !=null and data.beginTime !='' ">
+            and s.modify_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !='' ">
+            and s.modify_time &lt;= #{data.endTime}
+        </if>
+        order by modify_time desc
+        LIMIT #{key_offset},#{pageInfo.pageSize}
+    </select>
+    <select id="selectDevLogDownCount" resultType="java.lang.Integer">
+        select count(*)
+        from dev_data_down s
+        left join polycis_ns_device.dev_union_device dev on dev.dev_uuid = s.device_uuid
+        where 1=1
+        <if test="data.productId != null and data.productId != ''">
+            and s.device_uuid in (select device_uuid from polycis_as_main.iot_device where product_id = #{data.productId})
+        </if>
+        <if test="data.appId != null and data.appId != ''">
+            and s.device_uuid in (select device_uuid from polycis_as_main.iot_device where app_id = #{data.appId})
+        </if>
+        <if test="data.queryParam !=null and data.queryParam !=''">
+            and s.device_uuid like concat('%',#{data.queryParam},'%') or dev.name like concat('%',#{data.queryParam},'%')
+        </if>
+        <if test="data.beginTime !=null and data.beginTime !='' ">
+            and s.modify_time &gt;= #{data.beginTime}
+        </if>
+        <if test="data.endTime !=null and data.endTime !='' ">
+            and s.modify_time &lt;= #{data.endTime}
         </if>
     </select>
 </mapper>
