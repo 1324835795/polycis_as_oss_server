@@ -1,114 +1,26 @@
-spring:
-  application:
-    name: qcdq-news-server
-  cloud:
-    config:
-      discovery:
-        enabled: true
-        serviceId: QCDQ-EUREKA-CONFIG-SERVER
-      name: qcdq-news-server
-      profile: prod
-      #uri: http://localhost:8888/
-  rabbitmq:
-    host: 192.168.105.112
-    port: 5672
-    username: admin
-    password: 123.com
-  datasource:
-    newsread:
-        name: test
-        url: ${readUrl}
-        username: ${readUsername}
-        password: ${readPassword}
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
-        filters: stat
-        maxActive: 200
-        initialSize: 10
-        maxWait: 60000
-        minIdle: 1
-        timeBetweenEvictionRunsMillis: 60000
-        minEvictableIdleTimeMillis: 300000
-        validationQuery: select 'x'
-        testWhileIdle: true
-        testOnBorrow: false
-        testOnReturn: false
-        poolPreparedStatements: true
-        maxOpenPreparedStatements: 20
-    newswrite:
-        name: test
-        url: ${writeUrl}
-        username: ${writename}
-        password: ${writePassword}
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
-        filters: stat
-        maxActive: 200
-        initialSize: 10
-        maxWait: 60000
-        minIdle: 1
-        timeBetweenEvictionRunsMillis: 60000
-        minEvictableIdleTimeMillis: 300000
-        validationQuery: select 'x'
-        testWhileIdle: true
-        testOnBorrow: false
-        testOnReturn: false
-        poolPreparedStatements: true
-        maxOpenPreparedStatements: 20
-#  redis:
-#    sentinel:
-#      master: mymaster
-#      nodes: 192.168.105.106:26379,192.168.105.107:26379,192.168.105.108:26379
-
-
+#spring:
+#  application:
+#    name: polycis-as-main-server
 server:
-  port: 8084
-  connection-timeout: 2000
+  port: 10001
   tomcat:
-    #context-path: /xycar
-    #access-log-enabled: true
-    #basedir: ${logging.path}
     uri-encoding: UTF-8
-    max-threads: 1000
+    max-threads: 200
+    connection-timeout: 5000
+    acceptCount: 100
 
-endpoints.shutdown:
-  enabled: true
-  sensitive: false
-mybatis:
-    type-aliases-package: com.xingyuanauto.api.news.entity
-    mapper-locations: classpath:mapper/**.xml
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
 
-mapper:
-  mappers:
-    -com.xingyuanauto.api.news.repository.mysql.dao.BaseDao
-  not-empty: false
-  identity: MYSQL
-
-pagehelper:
-  helperDialect: mysql
-  reasonable: true
-  supportMethodsArguments: true
-  params: count=countSql
-
-
-management:
-  health:
-    solr:
-      enabled: false
-    db:
-      enabled: false
-    elasticsearch:
-      enabled: false
-    jms:
-      enabled: false
-    mail:
-      enabled: false
-    mongo:
-      enabled: false
-    rabbit:
-      enabled: false
-    redis:
-      enabled: false
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 10000
 
 eureka:
   client:
@@ -116,8 +28,57 @@ eureka:
       enable: true
     registryFetchIntervalSeconds: 30
     serviceUrl:
-       defaultZone: http://192.168.105.133:11100/eureka/,http://192.168.105.173:11100/eureka/,http://192.168.105.213:11100/eureka/
+      defaultZone: http://192.168.10.20:10035/eureka/
+      #defaultZone: http://59.110.225.90:8761/eureka/
+      #defaultZone: http://localhost:11000/eureka/
   instance:
     lease-expiration-duration-in-seconds: 90
     leaseRenewalIntervalInSeconds: 30
     preferIpAddress: true
+
+
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  application:
+    name: polycis-as-main-server
+  aop:
+    proxy-target-class: true
+    auto: true
+  datasource:
+    druid:
+      # 数据库 1
+      db1:
+        url: jdbc:mysql://192.168.10.156:3306/polycis_as_main?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
+        initialSize: 5
+        minIdle: 5
+        maxActive: 20
+      # 数据库 2
+      db2:
+        url: jdbc:mysql://192.168.10.156:3306/polycis_ns_device?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
+        initialSize: 5
+        minIdle: 5
+        maxActive: 20
+      db3:
+        url: jdbc:mysql://192.168.10.156:3306/polycis_ns_send?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
+        initialSize: 5
+        minIdle: 5
+        maxActive: 20
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    id-type: 0
+    refresh-mapper: true
+  typeAliasesPackage: com.polycis.main.entity

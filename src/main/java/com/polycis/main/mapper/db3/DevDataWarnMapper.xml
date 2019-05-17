@@ -48,6 +48,9 @@
         <if test="data.endTime !=null and data.endTime !=''">
             and d.create_time &lt;= #{data.endTime}
         </if>
+        <if test="data.status !=null and data.status !=''">
+            and d.status = #{data.status}
+        </if>
     </select>
     <update id="updateWarnRead">
         update dev_data_warn set read_status = 1,status = 1 ,modify_time = now() where id in

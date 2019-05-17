@@ -8,7 +8,7 @@
     </insert>
     <select id="selectNotice" resultType="com.polycis.main.entity.Notice">
         <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
-        select id,topic,msg,create_time,work_time,case when dead_time &gt;= now() then '—' else dead_time
+        select id,topic,msg,create_time,work_time,case when dead_time &gt; now() then '—' else dead_time
         end as 'deadTime' from sys_notice
         where 1 = 1
         <if test="data.topic != null and data.topic!=''">
