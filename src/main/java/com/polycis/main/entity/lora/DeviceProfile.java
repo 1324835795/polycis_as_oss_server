@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -136,6 +137,7 @@ public class DeviceProfile implements Serializable {
     private Date updateTime;
 
     //查询条件 class 类型 0:class_a,1:class_b,2:class_c
+    @TableField(exist=false)
     private String classType;
 
     public String getClassType() {

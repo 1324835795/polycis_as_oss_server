@@ -41,6 +41,21 @@ public class DeviceProfileController {
     private IDeviceProfileService deviceProfileService;
 
 
+    @ApiOperation(value = "查询设备配置文件", notes = "查询设备配置文件接口")
+    @RequestMapping(value = "/get", method = RequestMethod.POST)
+    @RoleOfAdmin
+    public ApiResult getDeviceProfile(@RequestBody DeviceProfile dpFile) {
+        ApiResult<DeviceProfile> apiResult = new ApiResult<>(CommonCode.SUCCESS);
+        try{
+            DeviceProfile dp = this.deviceProfileService.selectById(dpFile);
+            apiResult.setData(dp);
+        }catch (Exception e){
+            apiResult.setCodeMsg(CommonCode.ERROR);
+            LOG.error(String.format("查询设备配置文件异常，异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
+        }
+        return apiResult;
+    }
+
     @ApiOperation(value = "添加设备配置文件", notes = "添加设备配置文件接口")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @RoleOfAdmin
