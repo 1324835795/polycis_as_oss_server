@@ -27,6 +27,14 @@ public class LogController {
     }
     @PostMapping("/log/devLogState")
     public ApiResult<Map<String,Object>> devLogState(@RequestBody RequestVO requestVO){
-        return ilogService.sekectDevLogState(requestVO);
+        return ilogService.selectDevLogState(requestVO);
+    }
+    @PostMapping("/log/devLogUp")
+    public ApiResult<Map<String,Object>> devLogUp(@RequestBody RequestVO requestVO){
+        return ilogService.selectDevLogUp(requestVO);
+    }
+    @PostMapping("/log/devLogDown")
+    public ApiResult<Map<String,Object>> devLogDown(@RequestBody RequestVO requestVO){
+        return ilogService.selectDevLogDown(requestVO);
     }
 }
