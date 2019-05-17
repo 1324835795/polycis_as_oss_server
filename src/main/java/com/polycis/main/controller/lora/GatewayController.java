@@ -42,6 +42,22 @@ public class GatewayController {
     private IGatewayService gatewayService;
 
 
+    @ApiOperation(value = "查询网关", notes = "查询网关接口")
+    @RequestMapping(value = "/get", method = RequestMethod.POST)
+    @RoleOfAdmin
+    public ApiResult getGateway(@RequestBody Gateway gw) {
+        ApiResult<Gateway> apiResult = new ApiResult<>(CommonCode.SUCCESS);
+        try{
+            Gateway gwTemp = this.gatewayService.selectById(gw);
+            apiResult.setData(gwTemp);
+        }catch (Exception e){
+            apiResult.setCodeMsg(CommonCode.ERROR);
+            LOG.error(String.format("查询网关异常，异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
+        }
+        return apiResult;
+    }
+
+
     @ApiOperation(value = "添加网关", notes = "添加网关接口")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @RoleOfAdmin
