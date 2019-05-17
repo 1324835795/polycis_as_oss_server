@@ -143,10 +143,9 @@ public class ProductController {
     @ApiOperation(value = "产品下拉列表", notes = "产品下拉列表")
     @RequestMapping(value = "/prolist", method = RequestMethod.POST)
     public ApiResult prolist() {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         EntityWrapper<Product> wrapper = new EntityWrapper<>();
-        wrapper.eq("org",currentUser.getOrg());
+
         wrapper.eq("is_delete",MainConstants.UN_DELETE);
         List<Product> products = iProductService.selectList(wrapper);
         ApiResult apiResult = new ApiResult<>();

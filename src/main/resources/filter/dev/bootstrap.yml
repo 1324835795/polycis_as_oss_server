@@ -28,8 +28,8 @@ eureka:
       enable: true
     registryFetchIntervalSeconds: 30
     serviceUrl:
-      #defaultZone: http://192.168.10.20:10035/eureka/
-      defaultZone: http://59.110.225.90:8761/eureka/
+      defaultZone: http://192.168.10.20:10035/eureka/
+      #defaultZone: http://59.110.225.90:8761/eureka/
       #defaultZone: http://localhost:11000/eureka/
   instance:
     lease-expiration-duration-in-seconds: 90
