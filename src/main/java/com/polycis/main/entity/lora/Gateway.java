@@ -76,11 +76,11 @@ public class Gateway implements Serializable {
      */
     private String factory;
     /**
-     * 0:室内，1:室外
+     * 网关类别,0:室内，1:室外
      */
     private String type;
     /**
-     * 0:定向，1:全向
+     * 天线类型,0:定向，1:全向
      */
     private String antennaType;
     /**
@@ -88,7 +88,18 @@ public class Gateway implements Serializable {
      */
     private Integer antennaDb;
     /**
-     * 网关工作频段
+     * 网关工作频段(0-9)
+     *
+     AS_923  0
+     AU_915_928  1
+     CN_470_510  2
+     CN_779_787  3
+     EU_433  4
+     EU_863_870  5
+     IN_865_867  6
+     KR_920_923  7
+     RU_864_870  8
+     US_902_928  9
      */
     private String workFreq;
     private Date createTime;
