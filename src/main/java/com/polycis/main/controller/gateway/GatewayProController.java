@@ -81,7 +81,6 @@ public class GatewayProController {
     }
 
 
-
     /**
      * 查询网关配置文件下拉框
      * @param
@@ -124,7 +123,6 @@ public class GatewayProController {
         GatewayPro gatewayProfile = JSON.parseObject(JSON.toJSONString(params), GatewayPro.class);
         Page<GatewayPro> allGatewayPro = iGatewayProService.findAllGatewayPro(currentPage, pageSize, gatewayProfile);
         apiResult.setData(allGatewayPro);
-
         return apiResult;
     }
 
