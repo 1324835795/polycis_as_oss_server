@@ -95,11 +95,9 @@ public class ProductController {
     @ApiOperation(value = "增加产品", notes = "增加产品")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ApiResult add(@RequestBody Product product) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
         ApiResult apiResult = new ApiResult<>();
 
-            product.setOrg(currentUser.getOrg());
             iProductService.insert(product);
             apiResult.setSub_code(product.getId());
             return apiResult;
