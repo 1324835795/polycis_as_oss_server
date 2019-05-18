@@ -31,7 +31,7 @@ eureka:
       #defaultZone: http://192.168.10.20:10035/eureka/
       #defaultZone: http://59.110.225.90:8761/eureka/
       #defaultZone: http://localhost:11000/eureka/
-      defaultZone: http://47.94.128.139/eureka/
+      defaultZone: http://47.94.128.139:10035/eureka/
   instance:
     lease-expiration-duration-in-seconds: 90
     leaseRenewalIntervalInSeconds: 30
