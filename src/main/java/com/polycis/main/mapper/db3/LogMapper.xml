@@ -86,9 +86,10 @@
     <select id="selectDevLogUp" resultType="com.polycis.main.entity.DevLogUp">
         <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
         select dev.name as 'devName',s.device_uuid as 'devUuid',s.encode_data as 'encodeData',
-        s.decode_data as 'decodeData',s.platform,s.push_status as 'status',s.modify_time as 'modifyTime'
+        s.decode_data as 'decodeData',s.platform,d.name as 'status',s.modify_time as 'modifyTime'
         from dev_data_up s
         left join polycis_ns_device.dev_union_device dev on dev.dev_uuid = s.device_uuid
+        left join polycis_as_main.iot_dictionary d on d.code = s.push_status and d.parent_id = 112
         where 1=1
         <if test="data.productId != null and data.productId != ''">
             and s.device_uuid in (select device_uuid from polycis_as_main.iot_device where product_id = #{data.productId})
@@ -132,9 +133,10 @@
     <select id="selectDevLogDown" resultType="com.polycis.main.entity.DevLogUp">
         <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
         select dev.name as 'devName',s.device_uuid as 'devUuid',s.encode_data as 'encodeData',
-        s.down_data as 'decodeData',s.platform,s.down_status as 'status',s.modify_time as 'modifyTime'
+        s.down_data as 'decodeData',s.platform,d.name as 'status',s.modify_time as 'modifyTime'
         from dev_data_down s
         left join polycis_ns_device.dev_union_device dev on dev.dev_uuid = s.device_uuid
+        left join polycis_as_main.iot_dictionary d on d.code = s.down_status and d.parent_id = 111
         where 1=1
         <if test="data.productId != null and data.productId != ''">
             and s.device_uuid in (select device_uuid from polycis_as_main.iot_device where product_id = #{data.productId})
