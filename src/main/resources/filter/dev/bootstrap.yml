@@ -2,7 +2,7 @@
 #  application:
 #    name: polycis-as-main-server
 server:
-  port: 10001
+  port: 10060
   tomcat:
     uri-encoding: UTF-8
     max-threads: 200
