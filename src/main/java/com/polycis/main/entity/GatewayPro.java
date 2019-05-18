@@ -64,17 +64,17 @@ public class GatewayPro implements Serializable {
     private Integer orgId;
 
     @TableField(exist=false)
-    private List<GatewayProChannel> gatewayProfileChannel;
+    private List<GatewayProChannel> gatewayProChannel;
 
     @TableField(exist=false)
     private String total;
 
-    public List<GatewayProChannel> getGatewayProfileChannel() {
-        return gatewayProfileChannel;
+    public List<GatewayProChannel> getGatewayProChannel() {
+        return gatewayProChannel;
     }
 
-    public void setGatewayProfileChannel(List<GatewayProChannel> gatewayProfileChannel) {
-        this.gatewayProfileChannel = gatewayProfileChannel;
+    public void setGatewayProChannel(List<GatewayProChannel> gatewayProChannel) {
+        this.gatewayProChannel = gatewayProChannel;
     }
 
     public String getTotal() {

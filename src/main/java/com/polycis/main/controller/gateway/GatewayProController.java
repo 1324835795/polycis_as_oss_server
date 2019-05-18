@@ -146,7 +146,7 @@ public class GatewayProController {
         GatewayPro gatewayProfile = gatewayProfiles.get(0);
         //查询额外通道
         List<GatewayProChannel> gatewayProfileChannels = iGatewayProChannelService.selectByMap(pram);
-        gatewayProfile.setGatewayProfileChannel(gatewayProfileChannels);
+        gatewayProfile.setGatewayProChannel(gatewayProfileChannels);
         gatewayProfile.setTotal(String.valueOf(gatewayProfileChannels.size()));
         apiResult.setData(gatewayProfile);
         return  apiResult;
