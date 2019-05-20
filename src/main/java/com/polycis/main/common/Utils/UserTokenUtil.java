@@ -28,7 +28,7 @@ public class UserTokenUtil {
      * 从cookie中获取用户信息
      * @param request
      * */
-    public OssAdmin getAccountFromToken(HttpServletRequest request,RedisFeignClient redisFeignClient) {
+    public String getToken(HttpServletRequest request) {
         Cookie[] cookieArray = request.getCookies();
         if (cookieArray == null || cookieArray.length == 0) {
             Log.info("当前请求中未包含任何cookie信息");
@@ -47,22 +47,6 @@ public class UserTokenUtil {
             Log.info("获取用户唯一token信息失败！");
             return null;
         }
-
-
-        //从redis缓存中获取用户信息
-        ApiResult apiResult = redisFeignClient.get(userToken);
-        if (apiResult.getCode() != CommonCode.SUCCESS.getKey()) {
-            Log.info(String.format("根据token:%s,从redis缓存中获取用户信息失败！",userToken));
-            return null;
-        }
-
-        String userJson = apiResult.getData().toString();
-        if(StringUtils.isBlank(userJson)){
-            Log.info(String.format("根据用户缓存数据：%s，反序列化用户信息失败！",userJson));
-            return null;
-        }
-
-        OssAdmin ossAdmin = JSON.parseObject(userJson, new TypeToken<OssAdmin>(){}.getType());
-        return ossAdmin;
+        return userToken;
     }
 }
