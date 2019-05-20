@@ -9,6 +9,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.context.annotation.AdviceMode;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableHystrixDashboard
 //@MapperScan("com.polycis.main.mapper*")
 @RestController
+@EnableTransactionManagement()
 public class OSSApplication extends SpringBootServletInitializer {
 
     @Override

@@ -19,4 +19,5 @@ public interface UsersMapper extends BaseMapper<Users> {
 
     Users selectSysUserByOrgId(Integer organizationId);
 
+    void insertTest();
 }

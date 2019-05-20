@@ -13,7 +13,7 @@ public class DevLogUp {
     private int platform;
     private String devName;
     private String devUuid;
-    private int status;
+    private String status;
 
     public String getModifyTime() {
         return modifyTime;
@@ -63,11 +63,11 @@ public class DevLogUp {
         this.devUuid = devUuid;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

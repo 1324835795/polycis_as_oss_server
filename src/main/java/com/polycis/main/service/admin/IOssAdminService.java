@@ -14,4 +14,5 @@ import com.baomidou.mybatisplus.service.IService;
 public interface IOssAdminService extends IService<OssAdmin> {
 
     OssAdmin isossAdmin(OssAdmin ossAdmin);
+
 }
