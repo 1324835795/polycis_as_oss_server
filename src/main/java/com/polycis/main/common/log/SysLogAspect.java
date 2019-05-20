@@ -39,7 +39,7 @@ public class SysLogAspect {
     @Autowired
     private ISysLogService sysLogService;
 
-
+    @Autowired
     private RedisFeignClient redisFeignClient;
 
     //定义切点 @Pointcut
