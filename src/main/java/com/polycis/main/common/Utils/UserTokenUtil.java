@@ -28,7 +28,7 @@ public class UserTokenUtil {
      * 从cookie中获取用户信息
      * @param request
      * */
-    public String getToken(HttpServletRequest request) {
+    public static String getToken(HttpServletRequest request) {
         Cookie[] cookieArray = request.getCookies();
         if (cookieArray == null || cookieArray.length == 0) {
             Log.info("当前请求中未包含任何cookie信息");

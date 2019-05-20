@@ -25,15 +25,16 @@ import javax.annotation.Resource;
  * @since 2019-04-19
  */
 @Service
-@Lazy
 public class SysLogServiceImpl  implements ISysLogService {
 
     protected static Logger LOG = LoggerFactory.getLogger(SysLogServiceImpl.class);
 
     @Resource
+    @Lazy
     private SysLogMapper sysLogMapper;
 
     @Resource
+    @Lazy
     private RedisFeignClient redisFeignClient;
 
     @Override

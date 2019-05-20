@@ -35,9 +35,6 @@ public class SysLogAspect {
     protected static Logger Log = LoggerFactory.getLogger(SysLogAspect.class);
 
     @Autowired
-    private UserTokenUtil userTokenUtil;
-
-    @Autowired
     private ISysLogService sysLogService;
 
     //定义切点 @Pointcut
@@ -87,7 +84,7 @@ public class SysLogAspect {
         sysLog.setIp(remoteAddr);
 
         //获取用户信息
-        String token = userTokenUtil.getToken(request);
+        String token = UserTokenUtil.getToken(request);
         OssAdmin ossAdmin = sysLogService.getAccountByToken(token);
         if(ossAdmin != null){
             sysLog.setUsername(ossAdmin.getLoginname());
