@@ -18,11 +18,6 @@
     </appender>
 
 
-    <logger name="com.xingyuanauto.api.news.repository.mysql.dao" level="DEBUG"/>
-    <logger name="java.sql" level="debug">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-
     <!-- 文件日志：输出全部日志到文件 -->
     <appender name="FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
