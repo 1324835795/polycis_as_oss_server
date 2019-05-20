@@ -89,7 +89,7 @@ public class OssAdminController {
         return apiResult;
     }
 
-
+    @MyLog(describe = "oss用户登出")
     @ApiOperation(value = "用户登出", notes = "登录登出")
     @PostMapping("/logout")
     public ApiResult logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
@@ -118,6 +118,7 @@ public class OssAdminController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "oss添加用户")
     @ApiOperation(value = "oss添加用户", notes = "oss添加用户")
     @PostMapping("/add")
     public ApiResult add(@RequestBody OssAdmin ossAdmin) {
@@ -153,6 +154,7 @@ public class OssAdminController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "删除oss用户")
     @ApiOperation(value = "删除oss用户", notes = "删除oss用户")
     @PostMapping("/delete")
     public ApiResult delete(@RequestBody OssAdmin ossAdmin) {
@@ -171,6 +173,7 @@ public class OssAdminController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "修改oss用户")
     @ApiOperation(value = "修改oss用户", notes = "修改oss用户")
     @PostMapping("/update")
     public ApiResult update(@RequestBody OssAdmin ossAdmin) {
@@ -224,7 +227,7 @@ public class OssAdminController {
         return apiResult;
     }
 
-
+    @MyLog(describe = "oss用户个人密码修改")
     @ApiOperation(value = "oss用户个人密码修改", notes = "oss用户个人密码修改")
     @PostMapping("/selfpassword")
     public ApiResult selfpassword(@RequestBody OssAdmin ossAdmin) {

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.interceptor.role.RoleOfAdmin;
+import com.polycis.main.common.log.MyLog;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.lora.Gateway;
@@ -55,7 +56,7 @@ public class GatewayController {
         return apiResult;
     }
 
-
+    @MyLog(describe = "添加网关")
     @ApiOperation(value = "添加网关", notes = "添加网关接口")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @RoleOfAdmin
@@ -86,7 +87,7 @@ public class GatewayController {
     }
 
 
-
+    @MyLog(describe = "更新网关")
     @ApiOperation(value = "更新网关", notes = "更新网关")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @RoleOfAdmin
@@ -102,6 +103,7 @@ public class GatewayController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "删除网关")
     @ApiOperation(value = "删除网关", notes = "删除网关")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ApiResult delete(@RequestBody Gateway gw) {
