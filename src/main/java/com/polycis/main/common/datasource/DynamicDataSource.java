@@ -2,9 +2,11 @@ package com.polycis.main.common.datasource;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
+import javax.sql.DataSource;
+
 /**
- * @Author DGD
- * @date 2018/2/7.
+ * @Author qiaokai
+ * @date 2019/5/18
  */
 public class DynamicDataSource extends AbstractRoutingDataSource {
     /**
@@ -14,5 +16,15 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         return DbContextHolder.getDbType();
+    }
+
+
+    public DataSource getAcuallyDataSource() {
+        Object lookupKey = determineCurrentLookupKey();
+        if(null == lookupKey) {
+            return this;
+        }
+        DataSource determineTargetDataSource = this.determineTargetDataSource();
+        return determineTargetDataSource==null ? this : determineTargetDataSource;
     }
 }

@@ -119,6 +119,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         return list.get(0);
     }
 
+
+
     public static final String WINDOWS_PROFILES_PATH = "C:/super_meeting/profiles/";
     public static final String LINUX_PROFILES_PATH = "/root/super_meeting/profiles/";
 
