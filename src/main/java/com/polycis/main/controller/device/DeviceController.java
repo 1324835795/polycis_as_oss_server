@@ -9,6 +9,7 @@ import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.interceptor.RequestHolder;
 import com.polycis.main.common.interceptor.role.RoleOfAdmin;
+import com.polycis.main.common.log.MyLog;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.*;
 import com.polycis.main.entity.admin.OssAdmin;
@@ -66,6 +67,7 @@ public class DeviceController {
 
 
     @RoleOfAdmin
+    @MyLog(describe = "设备添加")
     @ApiOperation(value = "设备添加", notes = "设备添加")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ApiResult add(@RequestBody Device device) {
@@ -109,6 +111,7 @@ public class DeviceController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "设备更新")
     @ApiOperation(value = "设备更新", notes = "设备更新")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ApiResult update(@RequestBody Device device) {
@@ -146,6 +149,7 @@ public class DeviceController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "设备删除")
     @ApiOperation(value = "设备删除", notes = "设备删除")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ApiResult delete(@RequestBody Device dev) {

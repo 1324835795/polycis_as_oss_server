@@ -11,6 +11,7 @@ import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.interceptor.RequestHolder;
 import com.polycis.main.common.interceptor.role.RoleOfAdmin;
+import com.polycis.main.common.log.MyLog;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.*;
@@ -60,6 +61,7 @@ public class AppController {
 
 
     @RoleOfAdmin
+    @MyLog(describe = "添加应用")
     @ApiOperation(value = "添加应用", notes = "添加应用接口")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ApiResult addApp(@RequestBody App app) {
@@ -133,6 +135,7 @@ public class AppController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "更新应用")
     @ApiOperation(value = "更新应用", notes = "更新应用")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ApiResult update(@RequestBody App app) {
@@ -158,6 +161,7 @@ public class AppController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "删除应用")
     @ApiOperation(value = "删除应用", notes = "删除应用")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ApiResult delete(@RequestBody App app) {
