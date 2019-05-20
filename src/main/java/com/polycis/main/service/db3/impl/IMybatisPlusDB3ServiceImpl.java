@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -420,6 +421,7 @@ public class IMybatisPlusDB3ServiceImpl implements IMybatisPlusDB3Service {
         DevUpDataPO devUpDataPO = new DevUpDataPO();
         devUpDataPO.setDeviceUuid("test");
         devUpDataPO.setPlatform(1);
+        devUpDataPO.setCreateTime(new Date());
         iDevDataUpService.insert(devUpDataPO);
      //   throw new RuntimeException();
     }

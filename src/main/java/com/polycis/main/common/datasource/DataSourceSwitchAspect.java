@@ -2,14 +2,14 @@ package com.polycis.main.common.datasource;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
+
+import static com.polycis.main.common.datasource.DbContextHolder.clearDbType;
 
 /**
  * @Author DGD
@@ -39,20 +39,40 @@ public class DataSourceSwitchAspect {
 
     @Before( "db1Aspect()" )
     public void db1(JoinPoint joinPoint) {
-       // log.info("切换到db1 数据源...");
+        log.info("DataSourceSwitchAspect切换到db1 数据源...");
         setDataSource(joinPoint,DBTypeEnum.db1);
     }
 
     @Before("db2Aspect()" )
     public void db2 (JoinPoint joinPoint) {
-      //  log.info("切换到db2 数据源...");
+       log.info("DataSourceSwitchAspect切换到db2 数据源...");
         setDataSource(joinPoint,DBTypeEnum.db2);
     }
 
     @Before("db3Aspect()" )
     public void db3 (JoinPoint joinPoint) {
-      //  log.info("切换到db3 数据源...");
+        log.info("DataSourceSwitchAspect切换到db3 数据源...");
         setDataSource(joinPoint,DBTypeEnum.db3);
+    }
+
+
+
+    @After( "db1Aspect()" )
+    public void db11(JoinPoint joinPoint) {
+        log.info("清除数据源db1");
+        clearDbType();
+    }
+
+    @After("db2Aspect()" )
+    public void db22 (JoinPoint joinPoint) {
+        log.info("清除数据源db2");
+        clearDbType();
+    }
+
+    @After("db3Aspect()" )
+    public void db33 (JoinPoint joinPoint) {
+        log.info("清除数据源db3");
+        clearDbType();
     }
 
     /**
