@@ -27,7 +27,7 @@
         <if test="data.endTime !=null and data.endTime !=''">
             and d.create_time &lt;= #{data.endTime}
         </if>
-        <if test="data.status !=null and data.status !=''">
+        <if test="data.status !=null">
             and d.status = #{data.status}
         </if>
         order by d.create_time desc
@@ -48,7 +48,7 @@
         <if test="data.endTime !=null and data.endTime !=''">
             and d.create_time &lt;= #{data.endTime}
         </if>
-        <if test="data.status !=null and data.status !=''">
+        <if test="data.status !=null">
             and d.status = #{data.status}
         </if>
     </select>

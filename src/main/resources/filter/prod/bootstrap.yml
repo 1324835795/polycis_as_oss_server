@@ -1,8 +1,5 @@
-#spring:
-#  application:
-#    name: polycis-as-main-server
 server:
-  port: 10001
+  port: 10060
   tomcat:
     uri-encoding: UTF-8
     max-threads: 200
@@ -28,9 +25,7 @@ eureka:
       enable: true
     registryFetchIntervalSeconds: 30
     serviceUrl:
-      defaultZone: http://192.168.10.20:10035/eureka/
-      #defaultZone: http://59.110.225.90:8761/eureka/
-      #defaultZone: http://localhost:11000/eureka/
+      defaultZone: http://47.94.128.139:10035/eureka/
   instance:
     lease-expiration-duration-in-seconds: 90
     leaseRenewalIntervalInSeconds: 30
@@ -42,7 +37,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   application:
-    name: polycis-as-main-server
+    name: polycis-as-oss-server
   aop:
     proxy-target-class: true
     auto: true
@@ -50,26 +45,26 @@ spring:
     druid:
       # 数据库 1
       db1:
-        url: jdbc:mysql://192.168.10.156:3306/polycis_as_main?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
-        username: root
-        password: root
+        url: jdbc:mysql://182.92.132.150:3306/polycis_as_main?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+        username: ceshi
+        password: gaodeyang
         driver-class-name: com.mysql.jdbc.Driver
         initialSize: 5
         minIdle: 5
         maxActive: 20
       # 数据库 2
       db2:
-        url: jdbc:mysql://192.168.10.156:3306/polycis_ns_device?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
-        username: root
-        password: root
+        url: jdbc:mysql://182.92.132.150:3306/polycis_ns_device?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+        username: ceshi
+        password: gaodeyang
         driver-class-name: com.mysql.jdbc.Driver
         initialSize: 5
         minIdle: 5
         maxActive: 20
       db3:
-        url: jdbc:mysql://192.168.10.156:3306/polycis_ns_send?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
-        username: root
-        password: root
+        url: jdbc:mysql://182.92.132.150:3306/polycis_ns_send?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+        username: ceshi
+        password: gaodeyang
         driver-class-name: com.mysql.jdbc.Driver
         initialSize: 5
         minIdle: 5

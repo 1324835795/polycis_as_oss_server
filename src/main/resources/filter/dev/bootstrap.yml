@@ -42,7 +42,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   application:
-    name: polycis-as-main-server
+    name: polycis-as-oss-server
   aop:
     proxy-target-class: true
     auto: true

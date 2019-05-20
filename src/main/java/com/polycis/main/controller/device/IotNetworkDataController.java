@@ -37,7 +37,6 @@ public class IotNetworkDataController {
     public ApiResult DEvNetworkData(@RequestBody RequestVO requestVO) {
         ApiResult apiResult = new ApiResult<>(CommonCode.SUCCESS);
         try{
-
             Integer currentPage = requestVO.getPageInfo().getCurrentPage();
             Integer pageSize = requestVO.getPageInfo().getPageSize();
             Map<String, Object> data = requestVO.getData();

@@ -9,6 +9,7 @@ import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.interceptor.RequestHolder;
 import com.polycis.main.common.interceptor.role.RoleOfAdmin;
+import com.polycis.main.common.log.MyLog;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.Users;
@@ -53,6 +54,7 @@ public class OssAdminController {
     private IOssAdminService iOssAdminService;
 
     @ApiOperation(value = "oss用户登录", notes = "oss用户登录接口")
+    @MyLog(describe = "oss用户登录")
     @PostMapping("/login")
     public ApiResult login(@RequestBody Users uss, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         ApiResult apiResult = new ApiResult<>();
