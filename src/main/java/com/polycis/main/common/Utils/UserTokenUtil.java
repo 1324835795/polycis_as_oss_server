@@ -26,15 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 public class UserTokenUtil {
     protected static Logger Log = LoggerFactory.getLogger(UserTokenUtil.class);
 
-    @Autowired
-    private RedisFeignClient redisFeignClient;
-
-
     /**
      * 从cookie中获取用户信息
      * @param request
      * */
-    public OssAdmin getAccountFromToken(HttpServletRequest request) {
+    public OssAdmin getAccountFromToken(HttpServletRequest request,RedisFeignClient redisFeignClient) {
         Cookie[] cookieArray = request.getCookies();
         if (cookieArray == null || cookieArray.length == 0) {
             Log.info("当前请求中未包含任何cookie信息");

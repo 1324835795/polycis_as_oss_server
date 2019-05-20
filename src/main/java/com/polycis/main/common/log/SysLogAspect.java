@@ -1,6 +1,7 @@
 package com.polycis.main.common.log;
 
 import com.alibaba.fastjson.JSON;
+import com.polycis.main.client.redis.RedisFeignClient;
 import com.polycis.main.common.Utils.UserTokenUtil;
 import com.polycis.main.entity.SysLogoPO;
 import com.polycis.main.entity.admin.OssAdmin;
@@ -37,6 +38,9 @@ public class SysLogAspect {
 
     @Autowired
     private ISysLogService sysLogService;
+
+    @Autowired
+    private RedisFeignClient redisFeignClient;
 
     //定义切点 @Pointcut
     //在注解的位置切入代码
@@ -85,7 +89,7 @@ public class SysLogAspect {
         sysLog.setIp(remoteAddr);
 
         //获取用户信息
-        OssAdmin ossAdmin = userTokenUtil.getAccountFromToken(request);
+        OssAdmin ossAdmin = userTokenUtil.getAccountFromToken(request,redisFeignClient);
         if(ossAdmin != null){
             sysLog.setUsername(ossAdmin.getLoginname());
         }
