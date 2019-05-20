@@ -32,10 +32,10 @@ public class SysLogAspect {
     protected static Logger Log = LoggerFactory.getLogger(SysLogAspect.class);
 
     @Resource
-    UserTokenUtil userTokenUtil;
+    private UserTokenUtil userTokenUtil;
 
     @Resource
-    ISysLogService sysLogService;
+    private ISysLogService sysLogService;
 
     //定义切点 @Pointcut
     //在注解的位置切入代码
