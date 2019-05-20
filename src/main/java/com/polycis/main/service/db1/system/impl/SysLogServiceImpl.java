@@ -12,6 +12,7 @@ import com.polycis.main.service.db1.system.ISysLogService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
@@ -24,6 +25,7 @@ import javax.annotation.Resource;
  * @since 2019-04-19
  */
 @Service
+@Lazy
 public class SysLogServiceImpl  implements ISysLogService {
 
     protected static Logger LOG = LoggerFactory.getLogger(SysLogServiceImpl.class);
