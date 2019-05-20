@@ -4,7 +4,7 @@
     <select id="selectSysLog" resultType="java.util.Map">
         <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>
         select s.username,s.operation,d.`name` as 'operationName',s.params,s.create_time as 'createTime' from polycis_as_main.sys_log s
-        left join polycis_as_main.iot_dictionary d on s.operation = d.id
+        left join polycis_as_main.iot_dictionary d on s.operation = d.code and d.parent_id = 106
         where 1 = 1
         <if test="data.username !=null and data.username !='' ">
             and s.username like concat('%',#{data.username},'%')

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import com.polycis.main.entity.App;
 import com.polycis.main.entity.SysLogoPO;
+import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.entity.vo.AppVo;
 
 import java.util.List;
@@ -19,4 +20,6 @@ import java.util.Map;
  */
 public interface ISysLogService {
     void insertSysLog(SysLogoPO sysLogoPO);
+
+    OssAdmin getAccountByToken(String token);
 }

@@ -1,6 +1,8 @@
 package com.polycis.main.common.log;
 
 import com.alibaba.fastjson.JSON;
+import com.polycis.main.client.redis.RedisFeignClient;
+import com.polycis.main.common.Utils.SpringContextUtil;
 import com.polycis.main.common.Utils.UserTokenUtil;
 import com.polycis.main.entity.SysLogoPO;
 import com.polycis.main.entity.admin.OssAdmin;
@@ -12,6 +14,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -31,11 +34,8 @@ import java.util.Arrays;
 public class SysLogAspect {
     protected static Logger Log = LoggerFactory.getLogger(SysLogAspect.class);
 
-    @Resource
-    UserTokenUtil userTokenUtil;
-
-    @Resource
-    ISysLogService sysLogService;
+    @Autowired
+    private ISysLogService sysLogService;
 
     //定义切点 @Pointcut
     //在注解的位置切入代码
@@ -84,7 +84,8 @@ public class SysLogAspect {
         sysLog.setIp(remoteAddr);
 
         //获取用户信息
-        OssAdmin ossAdmin = userTokenUtil.getAccountFromToken(request);
+        String token = UserTokenUtil.getToken(request);
+        OssAdmin ossAdmin = sysLogService.getAccountByToken(token);
         if(ossAdmin != null){
             sysLog.setUsername(ossAdmin.getLoginname());
         }
