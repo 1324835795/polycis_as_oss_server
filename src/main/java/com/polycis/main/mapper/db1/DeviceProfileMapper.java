@@ -3,7 +3,6 @@ package com.polycis.main.mapper.db1;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.polycis.main.entity.lora.DeviceProfile;
-import com.polycis.main.entity.lora.DeviceProfile;
 
 import java.util.List;
 import java.util.Map;
