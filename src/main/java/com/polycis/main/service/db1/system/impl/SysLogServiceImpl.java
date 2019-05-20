@@ -5,6 +5,7 @@ import com.polycis.main.mapper.db1.SysLogMapper;
 import com.polycis.main.service.db1.system.ISysLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
@@ -21,8 +22,8 @@ public class SysLogServiceImpl  implements ISysLogService {
 
     protected static Logger LOG = LoggerFactory.getLogger(SysLogServiceImpl.class);
 
-    @Resource
-    SysLogMapper sysLogMapper;
+    @Autowired
+    private SysLogMapper sysLogMapper;
 
     @Override
     public void insertSysLog(SysLogoPO sysLogoPO) {
