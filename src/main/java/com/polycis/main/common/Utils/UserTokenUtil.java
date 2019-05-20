@@ -10,7 +10,6 @@ import com.polycis.main.entity.admin.OssAdmin;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class UserTokenUtil {
     protected static Logger Log = LoggerFactory.getLogger(UserTokenUtil.class);
-
     /**
      * 从cookie中获取用户信息
      * @param request
