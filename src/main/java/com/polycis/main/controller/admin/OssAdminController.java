@@ -249,7 +249,8 @@ public class OssAdminController {
         Users users = new Users();
         users.setLoginname("test");
         users.setPassword("123456");
-        iUsersService.insert(users);
+
+        iUsersService.insertTest(users);
 
         iMybatisPlusDB3Service.test();
         return objectApiResult;

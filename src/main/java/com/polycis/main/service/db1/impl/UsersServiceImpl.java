@@ -121,6 +121,12 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
 
 
+    @Override
+    public void insertTest(Users users) {
+        this.usersMapper.insertTest();
+    }
+
+
     public static final String WINDOWS_PROFILES_PATH = "C:/super_meeting/profiles/";
     public static final String LINUX_PROFILES_PATH = "/root/super_meeting/profiles/";
 
