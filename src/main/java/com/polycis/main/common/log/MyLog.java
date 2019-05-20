@@ -13,5 +13,6 @@ import java.lang.annotation.*;
 public @interface MyLog {
     String describe() default "";
     enum Operation {QUERY, ADD, UPDATE,DELETE,OTHER}
+    enum Query{QUERY,FIND,GET,SELECT}
     Operation operation() default Operation.QUERY;
 }

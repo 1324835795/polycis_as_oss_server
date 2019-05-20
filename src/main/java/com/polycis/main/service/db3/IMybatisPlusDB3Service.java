@@ -63,4 +63,6 @@ public interface IMybatisPlusDB3Service {
     List<Map<String,Object>> selectAWeekAPIOss();
 
     Integer aweekapisum();
+
+    void test();
 }

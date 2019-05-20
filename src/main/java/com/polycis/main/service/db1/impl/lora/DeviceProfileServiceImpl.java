@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.entity.lora.DeviceProfile;
-import com.polycis.main.entity.lora.DeviceProfile;
-import com.polycis.main.mapper.db1.DeviceProfileMapper;
 import com.polycis.main.mapper.db1.DeviceProfileMapper;
 import com.polycis.main.service.db1.lora.IDeviceProfileService;
 import org.springframework.beans.factory.annotation.Autowired;

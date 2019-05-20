@@ -9,6 +9,7 @@ import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.interceptor.RequestHolder;
 import com.polycis.main.common.interceptor.role.RoleOfAdmin;
+import com.polycis.main.common.log.MyLog;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.Device;
@@ -92,6 +93,7 @@ public class ProductController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "增加产品")
     @ApiOperation(value = "增加产品", notes = "增加产品")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ApiResult add(@RequestBody Product product) {
@@ -104,6 +106,7 @@ public class ProductController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "修改产品")
     @ApiOperation(value = "修改产品", notes = "修改产品")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ApiResult update(@RequestBody Product product) {
@@ -118,6 +121,7 @@ public class ProductController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "删除产品")
     @ApiOperation(value = "删除产品", notes = "删除产品")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ApiResult delete(@RequestBody Product product) {

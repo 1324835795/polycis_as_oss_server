@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.interceptor.role.RoleOfAdmin;
+import com.polycis.main.common.log.MyLog;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.lora.ServiceProfile;
@@ -38,7 +39,7 @@ public class ServiceProfileController {
     @Autowired
     private IServiceProfileService serviceProfileService;
 
-
+    @MyLog(describe = "添加服务配置文件")
     @ApiOperation(value = "添加服务配置文件", notes = "添加服务配置文件接口")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @RoleOfAdmin
@@ -77,7 +78,7 @@ public class ServiceProfileController {
     }
 
 
-
+    @MyLog(describe = "更新服务配置文件")
     @ApiOperation(value = "更新服务配置文件", notes = "更新服务配置文件")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @RoleOfAdmin
@@ -93,6 +94,7 @@ public class ServiceProfileController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "删除服务配置文件")
     @ApiOperation(value = "删除服务配置文件", notes = "删除服务配置文件")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ApiResult delete(@RequestBody ServiceProfile spFile) {

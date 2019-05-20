@@ -15,10 +15,13 @@ import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.Users;
 import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.service.admin.IOssAdminService;
+import com.polycis.main.service.db1.IUsersService;
+import com.polycis.main.service.db3.IMybatisPlusDB3Service;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -85,7 +89,7 @@ public class OssAdminController {
         return apiResult;
     }
 
-
+    @MyLog(describe = "oss用户登出")
     @ApiOperation(value = "用户登出", notes = "登录登出")
     @PostMapping("/logout")
     public ApiResult logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
@@ -114,29 +118,43 @@ public class OssAdminController {
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "oss添加用户")
     @ApiOperation(value = "oss添加用户", notes = "oss添加用户")
     @PostMapping("/add")
     public ApiResult add(@RequestBody OssAdmin ossAdmin) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
         // 添加的用户可以是用户,管理员
-            if (ossAdmin.getType() == 1)
-                ossAdmin.setRole(MainConstants.USER);
-            if (ossAdmin.getType() == 2)
-                ossAdmin.setRole(MainConstants.SYS);
-            ossAdmin.setStart(1);
-            boolean b = false;
-            try {
-                b = iOssAdminService.insert(ossAdmin);
-                return apiResult;
-            } catch (Exception e) {
-                apiResult.setMsg("用户登录名已注册");
-                apiResult.setCode(CommonCode.ERROR.getKey());
-                return apiResult;
-            }
+        if (ossAdmin.getType() == 1)
+            ossAdmin.setRole(MainConstants.USER);
+        if (ossAdmin.getType() == 2)
+            ossAdmin.setRole(MainConstants.SYS);
+        ossAdmin.setStart(1);
+        boolean b = false;
+
+        List<OssAdmin> ossAdmins = iOssAdminService.selectList(new EntityWrapper<OssAdmin>()
+                .eq("loginname", ossAdmin.getLoginname())
+                .eq("del", 1));
+        if(ossAdmins.size()>0){
+            apiResult.setMsg("用户登录名已注册");
+            apiResult.setCode(CommonCode.ERROR.getKey());
+            return apiResult;
+        }
+        iOssAdminService.insert(ossAdmin);
+        return apiResult;
+
+       /* try {
+            b = iOssAdminService.insert(ossAdmin);
+            return apiResult;
+        } catch (Exception e) {
+            apiResult.setMsg("用户登录名已注册");
+            apiResult.setCode(CommonCode.ERROR.getKey());
+            return apiResult;
+        }*/
     }
 
     @RoleOfAdmin
+    @MyLog(describe = "删除oss用户")
     @ApiOperation(value = "删除oss用户", notes = "删除oss用户")
     @PostMapping("/delete")
     public ApiResult delete(@RequestBody OssAdmin ossAdmin) {
@@ -148,12 +166,14 @@ public class OssAdminController {
         }
 
 
-            ossAdmin.setDel(MainConstants.DELETETED);
-            iOssAdminService.updateById(ossAdmin);
-            return apiResult;
+        ossAdmin.setDel(MainConstants.DELETETED);
+        iOssAdminService.updateById(ossAdmin);
+        return apiResult;
 
     }
+
     @RoleOfAdmin
+    @MyLog(describe = "修改oss用户")
     @ApiOperation(value = "修改oss用户", notes = "修改oss用户")
     @PostMapping("/update")
     public ApiResult update(@RequestBody OssAdmin ossAdmin) {
@@ -161,13 +181,19 @@ public class OssAdminController {
         ApiResult apiResult = new ApiResult<>();
         // 操作用户是管理员 且 被操作用户是type=1用户
 
-            boolean b = iOssAdminService.updateById(ossAdmin);
-            if (b) {
-                return apiResult;
-            }
+        if (ossAdmin.getId() == currentUser.getId() && ossAdmin.getType() == 0) {
             apiResult.setCode(CommonCode.ERROR.getKey());
-            apiResult.setMsg(CommonCode.ERROR.getValue());
+            apiResult.setMsg("管理员不能自己禁用自己");
             return apiResult;
+        }
+
+        boolean b = iOssAdminService.updateById(ossAdmin);
+        if (b) {
+            return apiResult;
+        }
+        apiResult.setCode(CommonCode.ERROR.getKey());
+        apiResult.setMsg(CommonCode.ERROR.getValue());
+        return apiResult;
     }
 
 
@@ -201,7 +227,7 @@ public class OssAdminController {
         return apiResult;
     }
 
-
+    @MyLog(describe = "oss用户个人密码修改")
     @ApiOperation(value = "oss用户个人密码修改", notes = "oss用户个人密码修改")
     @PostMapping("/selfpassword")
     public ApiResult selfpassword(@RequestBody OssAdmin ossAdmin) {
@@ -209,6 +235,28 @@ public class OssAdminController {
         ApiResult apiResult = new ApiResult<>();
         boolean b = iOssAdminService.update(ossAdmin, new EntityWrapper<OssAdmin>().eq("id", currentUser.getId()));
         return apiResult;
+    }
+
+
+    @Autowired
+    private IMybatisPlusDB3Service iMybatisPlusDB3Service;
+
+    @Autowired
+    private IUsersService iUsersService;
+
+    @Transactional
+    @ApiOperation(value = "事务测试", notes = "事务测试")
+    @PostMapping("/test")
+    public ApiResult test() {
+        ApiResult<Object> objectApiResult = new ApiResult<>();
+        Users users = new Users();
+        users.setLoginname("test");
+        users.setPassword("123456");
+
+        iUsersService.insertTest(users);
+
+        iMybatisPlusDB3Service.test();
+        return objectApiResult;
     }
 
 

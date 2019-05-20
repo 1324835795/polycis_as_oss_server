@@ -10,6 +10,7 @@ import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.interceptor.RequestHolder;
+import com.polycis.main.common.log.MyLog;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.Org;
 import com.polycis.main.entity.Users;
@@ -45,6 +46,7 @@ public class ConsumerController {
     @Autowired
     private RedisFeignClient redisFeignClient;
 
+    @MyLog(describe = "添加客户")
     @ApiOperation(value = "添加客户", notes = "添加客户")
     @PostMapping("/add")
     public ApiResult add(@RequestBody Org orgusers) throws IOException {
@@ -85,6 +87,7 @@ public class ConsumerController {
         return apiResult;
     }
 
+    @MyLog(describe = "修改客户名称密码")
     @ApiOperation(value = "修改客户名称密码", notes = "修改客户")
     @PostMapping("/update")
     public ApiResult update(@RequestBody Org orgusers) throws IOException {
@@ -140,6 +143,7 @@ public class ConsumerController {
     }
 
 
+    @MyLog(describe = "删除客户")
     @ApiOperation(value = "删除客户", notes = "删除客户")
     @PostMapping("/delete")
     public ApiResult delete(@RequestBody Org orgusers) throws IOException {

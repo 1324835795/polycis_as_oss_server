@@ -15,6 +15,8 @@ import com.polycis.main.entity.Device;
 import com.polycis.main.entity.db3.DevDownDataPO;
 import com.polycis.main.entity.db3.DevUpDataPO;
 import com.polycis.main.entity.vo.QueryTimePO;
+import com.polycis.main.mapper.db3.DevDataDownMapper;
+import com.polycis.main.mapper.db3.DevDataWarnMapper;
 import com.polycis.main.service.db1.IDeviceService;
 import com.polycis.main.service.db2.IDevUnionDeviceService;
 import com.polycis.main.service.db3.IDevDataDownService;
@@ -25,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -407,5 +410,19 @@ public class IMybatisPlusDB3ServiceImpl implements IMybatisPlusDB3Service {
     @Override
     public Integer aweekapisum() {
         return  iDevDataWarnService.aweekapisum();
+    }
+
+
+
+    @DataSourceSwitch(DBTypeEnum.db3)
+    @Override
+    public void test() {
+
+        DevUpDataPO devUpDataPO = new DevUpDataPO();
+        devUpDataPO.setDeviceUuid("test");
+        devUpDataPO.setPlatform(1);
+        devUpDataPO.setCreateTime(new Date());
+        iDevDataUpService.insert(devUpDataPO);
+     //   throw new RuntimeException();
     }
 }
