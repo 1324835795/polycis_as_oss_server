@@ -12,7 +12,6 @@ import com.polycis.main.service.db1.system.ISysLogService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
@@ -32,8 +31,8 @@ public class SysLogServiceImpl  implements ISysLogService {
     @Resource
     private SysLogMapper sysLogMapper;
 
-    @Resource
-    private RedisFeignClient redisFeignClient;
+//    @Resource
+//    private RedisFeignClient redisFeignClient;
 
     @Override
     public void insertSysLog(SysLogoPO sysLogoPO) {
@@ -43,7 +42,8 @@ public class SysLogServiceImpl  implements ISysLogService {
 
     @Override
     public OssAdmin getAccountByToken(String token) {
-        ApiResult apiResult = redisFeignClient.get(token);
+//        ApiResult apiResult = redisFeignClient.get(token);
+        ApiResult apiResult = null;
         if (apiResult.getCode() != CommonCode.SUCCESS.getKey()) {
             LOG.info(String.format("根据token:%s,从redis缓存中获取用户信息失败！",token));
             return null;
