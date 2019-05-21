@@ -2,10 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.polycis.main.mapper.db1.UsersMapper">
     <insert id="insertTest">
-
-
-
-
+       INSERT INTO iot_user (loginname, password) VALUES ("test", "123456")
     </insert>
 
     <update id="updateByOrg">

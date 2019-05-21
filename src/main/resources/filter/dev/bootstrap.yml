@@ -2,8 +2,7 @@
 #  application:
 #    name: polycis-as-main-server
 server:
-#  port: 10001
-  port: 7788
+  port: 10060
   tomcat:
     uri-encoding: UTF-8
     max-threads: 200
@@ -43,7 +42,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   application:
-    name: polycis-as-main-server_cg
+    name: polycis-as-oss-server
   aop:
     proxy-target-class: true
     auto: true

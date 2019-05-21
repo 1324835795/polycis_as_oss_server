@@ -10,12 +10,19 @@ import com.polycis.main.common.interceptor.RequestHolder;
 import com.polycis.main.entity.Users;
 import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.mapper.db1.UsersMapper;
+import com.polycis.main.mapper.db3.DevDataWarnMapper;
 import com.polycis.main.service.db1.IUsersService;
 import com.polycis.main.client.redis.RedisFeignClient;
+import com.polycis.main.service.db3.IMybatisPlusDB3Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,10 +45,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
     @Autowired
     private RedisFeignClient redisFeignClient;
-
-
-    @Autowired
-    private UsersMapper usersMapper;
 
 
 /*
@@ -119,11 +122,53 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         return list.get(0);
     }
 
+    @Autowired
+    private IMybatisPlusDB3Service iMybatisPlusDB3Service;
 
 
+    @Autowired
+    private UsersMapper  usersMapper;
+
+    @Autowired
+    private DevDataWarnMapper devDataWarnMapper;
+
+
+    /*@Resource(name = "db1tx")
+    private DataSourceTransactionManager tx1;
+
+    @Resource(name = "db2tx")
+    private DataSourceTransactionManager tx2;
     @Override
+    //@CustomTransaction(value={"db1tx","db2tx"})
+    // @Transactional
     public void insertTest(Users users) {
-        this.usersMapper.insertTest();
+        TransactionStatus transactionStatus1=null;
+        TransactionStatus transactionStatus2=null;
+        try {
+            transactionStatus1 = tx1
+                    .getTransaction(new DefaultTransactionDefinition());
+            usersMapper.insertTest();
+            tx1.commit(transactionStatus1);
+
+            transactionStatus2 = tx2
+                    .getTransaction(new DefaultTransactionDefinition());
+
+            devDataWarnMapper.insertTest();
+
+
+            tx2.commit(transactionStatus2);
+        } catch (Exception e) {
+            tx1.rollback(transactionStatus1);
+            tx2.rollback(transactionStatus2);
+            e.printStackTrace();
+        }
+        // iMybatisPlusDB3Service.test();
+    }
+*/
+    @Override
+    public void insertTest2(Users users) {
+            usersMapper.insertTest();
+            devDataWarnMapper.insertTest();
     }
 
 

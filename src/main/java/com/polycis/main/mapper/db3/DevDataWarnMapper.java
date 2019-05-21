@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -48,4 +50,6 @@ public interface DevDataWarnMapper extends BaseMapper<DevDataWarn> {
     List<Map<String,Object>> selectAWeekAPIOss();
 
     Integer aweekapisum();
+
+    void insertTest();
 }

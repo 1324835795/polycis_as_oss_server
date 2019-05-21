@@ -414,7 +414,6 @@ public class IMybatisPlusDB3ServiceImpl implements IMybatisPlusDB3Service {
 
 
 
-    @DataSourceSwitch(DBTypeEnum.db3)
     @Override
     public void test() {
 

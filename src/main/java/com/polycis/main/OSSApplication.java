@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableHystrixDashboard
 //@MapperScan("com.polycis.main.mapper*")
 @RestController
-@EnableTransactionManagement()
 public class OSSApplication extends SpringBootServletInitializer {
 
     @Override

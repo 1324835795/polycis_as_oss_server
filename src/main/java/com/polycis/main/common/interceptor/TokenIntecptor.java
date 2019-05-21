@@ -79,7 +79,7 @@ public class TokenIntecptor implements HandlerInterceptor {
                     PrintWriter printWriter = response.getWriter();
                     ApiResult result = new ApiResult<>();
                     result.setCode(CommonCode.TOKEN_INVALID.getKey());
-                    result.setMsg("请重新登录");
+                    result.setMsg("请重新登录1");
                     printWriter.write(result.toString());
                     return false;
                 }
@@ -89,7 +89,7 @@ public class TokenIntecptor implements HandlerInterceptor {
             Log.info("未携带cookie,重新登录");
             ApiResult result = new ApiResult<>();
             result.setCode(CommonCode.TOKEN_INVALID.getKey());
-            result.setMsg("请重新登录");
+            result.setMsg("请重新登录2");
             printWriter.write(result.toString());
             return false;
         }
@@ -97,7 +97,7 @@ public class TokenIntecptor implements HandlerInterceptor {
         Log.info("未携带cookie,重新登录");
         ApiResult result = new ApiResult<>();
         result.setCode(CommonCode.TOKEN_INVALID.getKey());
-        result.setMsg("请重新登录");
+        result.setMsg("请重新登录3");
         printWriter.write(result.toString());
         return false;
     }
@@ -113,7 +113,7 @@ public class TokenIntecptor implements HandlerInterceptor {
      * @throws Exception
      */
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
 
     }
 
@@ -127,11 +127,12 @@ public class TokenIntecptor implements HandlerInterceptor {
      * @throws Exception
      */
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 
         // 清除threadlocal存储信息,防止内存泄漏
         removeThreadLocalInfo();
     }
+
 
     /**
      * 移除信息,包括数据源类型,与user信息
