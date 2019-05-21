@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.entity.lora.Gateway;
-import com.polycis.main.entity.lora.Gateway;
 
 /**
  * <p>
