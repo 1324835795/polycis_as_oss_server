@@ -16,6 +16,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -65,6 +66,8 @@ public class MybatisPlusConfig {
     public DataSource db3 () {
         return DruidDataSourceBuilder.create().build();
     }
+
+
     /**
      * 动态数据源配置
      * @return

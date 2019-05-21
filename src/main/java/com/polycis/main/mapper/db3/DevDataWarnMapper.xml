@@ -6,6 +6,11 @@
         #{devTypeId},#{warnTypeId},#{warnLevelId},1,now(),now() from dual where not exists(
         select * from dev_warn_level where dev_type_id = #{devTypeId} and warn_type_id = #{warnTypeId})
     </insert>
+    <insert id="insertTest">
+
+      INSERT INTO  dev_data_warn(device_uuida,platform)  VALUES ("ffff001", 1)
+
+    </insert>
 
     <select id="selectWarnInfo" resultType="java.util.Map">
         <bind name="key_offset" value="(pageInfo.currentPage-1)*pageInfo.pageSize"/>

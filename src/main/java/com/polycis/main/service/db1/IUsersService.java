@@ -64,5 +64,7 @@ public interface IUsersService extends IService<Users> {
 
     Users selectAdminByOrg(Integer orgId);
 
-    void insertTest(Users users);
+  /*  void insertTest(Users users);*/
+
+    void insertTest2(Users users);
 }

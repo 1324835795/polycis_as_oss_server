@@ -21,12 +21,14 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -238,13 +240,9 @@ public class OssAdminController {
     }
 
 
-    @Autowired
-    private IMybatisPlusDB3Service iMybatisPlusDB3Service;
 
     @Autowired
     private IUsersService iUsersService;
-
-    @Transactional
     @ApiOperation(value = "事务测试", notes = "事务测试")
     @PostMapping("/test")
     public ApiResult test() {
@@ -252,10 +250,8 @@ public class OssAdminController {
         Users users = new Users();
         users.setLoginname("test");
         users.setPassword("123456");
-
-        iUsersService.insertTest(users);
-
-        iMybatisPlusDB3Service.test();
+        iUsersService.insertTest2(users);
+   //     iMybatisPlusDB3Service.test();
         return objectApiResult;
     }
 

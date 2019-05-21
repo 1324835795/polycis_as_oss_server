@@ -55,8 +55,6 @@ public class DataSourceSwitchAspect {
         setDataSource(joinPoint,DBTypeEnum.db3);
     }
 
-
-
     @After( "db1Aspect()" )
     public void db11(JoinPoint joinPoint) {
         log.info("清除数据源db1");
