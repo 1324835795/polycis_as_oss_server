@@ -20,8 +20,11 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+
         //注册自定义拦截器，添加拦截路径和排除拦截路径
-        registry.addInterceptor(new CommonInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new CommonInterceptor()).addPathPatterns("/**")
+                .excludePathPatterns("/ossadmin/login")
+                .excludePathPatterns("/ossadmin/logout");
 
         registry.addInterceptor(new TokenIntecptor(redisFeignClient)).addPathPatterns("/**")
                 // 排除用户登录
@@ -43,7 +46,8 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
 
 
     /**
-     *  排除swagger
+     * 排除swagger
+     *
      * @param registry
      */
     @Override
@@ -54,4 +58,4 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
 
     }
 
-   }
+}

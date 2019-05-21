@@ -69,7 +69,7 @@ public class AppController {
 
         ApiResult apiResult = new ApiResult<>();
 
-        app.setAppEui(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16));
+        app.setAppEui(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 8));
         ApiResult apiResult1 = appFeignClient.create(app);
         LOG.info(apiResult1.getMsg());
         if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
@@ -115,6 +115,12 @@ public class AppController {
                     .last("limit 1"));
             s.setOrganizationId(Integer.parseInt(o.toString()));
         });*/
+        page.getRecords().forEach(s->{
+            App app2 = iMybatisPlusDB2Service.appInfo(s);
+            s=app2;
+        });
+
+
         ApiResult apiResult = new ApiResult<>();
         apiResult.setData(page);
         return apiResult;

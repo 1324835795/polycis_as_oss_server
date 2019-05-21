@@ -56,7 +56,6 @@ public class OssAdminController {
     private IOssAdminService iOssAdminService;
 
     @ApiOperation(value = "oss用户登录", notes = "oss用户登录接口")
-    @MyLog(describe = "oss用户登录")
     @PostMapping("/login")
     public ApiResult login(@RequestBody Users uss, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         ApiResult apiResult = new ApiResult<>();
