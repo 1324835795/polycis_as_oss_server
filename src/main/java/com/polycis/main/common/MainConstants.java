@@ -8,10 +8,10 @@ public class MainConstants {
     public static final String SUSYS ="susys";
 
     // cookie过期时间
-    public static final int COOKIE_LIFETIME =3600;
+    public static final int COOKIE_LIFETIME =7200;
 
     // redis里token令牌过期时间
-    public static final int TOKEN_LIFETIME =3600;
+    public static final int TOKEN_LIFETIME =7200;
 
     // is_delete 字段 未删除
     public static final int UN_DELETE =1;
