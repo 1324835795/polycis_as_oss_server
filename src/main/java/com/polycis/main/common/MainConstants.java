@@ -24,7 +24,7 @@ public class MainConstants {
     /**
      * cookie名
      */
-    public static String COOKIE_NAME="cncompolycistoken";
+    public static String COOKIE_NAME="cncompolycistokenoss";
 
 
     public static final Integer HTTP_PUSH=1;
