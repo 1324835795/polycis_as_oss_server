@@ -60,35 +60,40 @@ public class OssAdminController {
     @PostMapping("/login")
     public ApiResult login(@RequestBody Users uss, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         ApiResult apiResult = new ApiResult<>();
-        OssAdmin ossAdmin = new OssAdmin();
-        ossAdmin.setLoginname(uss.getLoginname());
-        ossAdmin.setPassword(uss.getPassword());
-        OssAdmin ossAdmin1 = iOssAdminService.isossAdmin(ossAdmin);
-        if (ossAdmin1 != null) {
+        try {
+            OssAdmin ossAdmin = new OssAdmin();
+            ossAdmin.setLoginname(uss.getLoginname());
+            ossAdmin.setPassword(uss.getPassword());
+            OssAdmin ossAdmin1 = iOssAdminService.isossAdmin(ossAdmin);
+            if (ossAdmin1 != null) {
 
-            String key = UUID.randomUUID().toString().substring(0, 16);
-            LOG.info("往redis里塞值key:{},value:{}", key, ossAdmin1.toString());
-            ApiResult result = redisFeignClient.set(key, JSON.toJSONString(ossAdmin1), MainConstants.TOKEN_LIFETIME);
+                String key = UUID.randomUUID().toString().substring(0, 16);
+                LOG.info("往redis里塞值key:{},value:{}", key, ossAdmin1.toString());
+                ApiResult result = redisFeignClient.set(key, JSON.toJSONString(ossAdmin1), MainConstants.TOKEN_LIFETIME);
 
-            if (result.getCode() == CommonCode.SUCCESS.getKey()) {
-                Cookie cookie = new Cookie(MainConstants.COOKIE_NAME, key);
-                cookie.setMaxAge(MainConstants.COOKIE_LIFETIME);
-                cookie.setPath("/");
-                cookie.setDomain("");
-                // cookie.setHttpOnly(true);
-                httpServletResponse.addCookie(cookie);
-            } else {
-                apiResult.setMsg(CommonCode.ERROR.getValue());
-                apiResult.setCode(CommonCode.ERROR.getKey());
-                apiResult.setMsg("redis服务错误,请联系管理员");
+                if (result.getCode() == CommonCode.SUCCESS.getKey()) {
+                    Cookie cookie = new Cookie(MainConstants.COOKIE_NAME, key);
+                    cookie.setMaxAge(MainConstants.COOKIE_LIFETIME);
+                    cookie.setPath("/");
+                    cookie.setDomain("");
+                    // cookie.setHttpOnly(true);
+                    httpServletResponse.addCookie(cookie);
+                } else {
+                    apiResult.setMsg(CommonCode.ERROR.getValue());
+                    apiResult.setCode(CommonCode.ERROR.getKey());
+                    apiResult.setMsg("redis服务错误,请联系管理员");
+                    return apiResult;
+                }
+                apiResult.setData(ossAdmin1);
                 return apiResult;
             }
-            apiResult.setData(ossAdmin1);
+            apiResult.setMsg("用户账号密码错误");
+            apiResult.setCode(CommonCode.ERROR.getKey());
+            return apiResult;
+        } catch (Exception e) {
+            e.printStackTrace();
             return apiResult;
         }
-        apiResult.setMsg("用户账号密码错误");
-        apiResult.setCode(CommonCode.ERROR.getKey());
-        return apiResult;
     }
 
     @MyLog(describe = "oss用户登出")
