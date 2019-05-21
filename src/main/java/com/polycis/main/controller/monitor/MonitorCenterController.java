@@ -240,6 +240,17 @@ public class MonitorCenterController {
                 .eq("is_delete",MainConstants.UN_DELETE)
                 .groupBy("platform");
         List<Map<String, Object>> maps = iDeviceService.selectMaps(wrapper);
+        if(maps.size()==0){
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("platform",1);
+            map1.put("count",0);
+            maps.add(map1);
+            Map<String, Object> map2 = new HashMap<>();
+            map1.put("platform",2);
+            map1.put("count",0);
+            maps.add(map2);
+
+        }
         /*maps.forEach(s-> System.out.println(s.toString()));*/
         apiResult.setData(maps);
         return apiResult;
