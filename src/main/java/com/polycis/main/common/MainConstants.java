@@ -8,7 +8,8 @@ public class MainConstants {
     public static final String SUSYS ="susys";
 
     // cookie过期时间
-    public static final int COOKIE_LIFETIME =7200;
+    // 在浏览器中查看,发现时间小了7小时..不知道问题原因
+    public static final int COOKIE_LIFETIME =36000;
 
     // redis里token令牌过期时间
     public static final int TOKEN_LIFETIME =7200;

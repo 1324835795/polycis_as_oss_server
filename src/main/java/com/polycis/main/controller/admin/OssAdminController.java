@@ -72,6 +72,7 @@ public class OssAdminController {
 
                 if (result.getCode() == CommonCode.SUCCESS.getKey()) {
                     Cookie cookie = new Cookie(MainConstants.COOKIE_NAME, key);
+
                     cookie.setMaxAge(MainConstants.COOKIE_LIFETIME);
                     cookie.setPath("/");
                     cookie.setDomain("");
@@ -95,7 +96,6 @@ public class OssAdminController {
         }
     }
 
-    @MyLog(describe = "oss用户登出")
     @ApiOperation(value = "用户登出", notes = "登录登出")
     @PostMapping("/logout")
     public ApiResult logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
