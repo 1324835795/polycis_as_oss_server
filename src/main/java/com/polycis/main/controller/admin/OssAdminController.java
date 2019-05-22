@@ -72,6 +72,7 @@ public class OssAdminController {
 
                 if (result.getCode() == CommonCode.SUCCESS.getKey()) {
                     Cookie cookie = new Cookie(MainConstants.COOKIE_NAME, key);
+
                     cookie.setMaxAge(MainConstants.COOKIE_LIFETIME);
                     cookie.setPath("/");
                     cookie.setDomain("");
@@ -95,7 +96,6 @@ public class OssAdminController {
         }
     }
 
-    @MyLog(describe = "oss用户登出")
     @ApiOperation(value = "用户登出", notes = "登录登出")
     @PostMapping("/logout")
     public ApiResult logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
@@ -113,14 +113,10 @@ public class OssAdminController {
     public ApiResult active(@RequestBody OssAdmin ossAdmin) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
-        if (currentUser.getRole().contains(MainConstants.SYS)) {
+
             ossAdmin.setStart(0);
             iOssAdminService.updateById(ossAdmin);
             return apiResult;
-        }
-        apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
-        apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
-        return apiResult;
     }
 
     @RoleOfAdmin

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import sun.security.provider.DSAKeyFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -240,13 +241,24 @@ public class MonitorCenterController {
                 .eq("is_delete",MainConstants.UN_DELETE)
                 .groupBy("platform");
         List<Map<String, Object>> maps = iDeviceService.selectMaps(wrapper);
+        if(maps.size()==0){
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("platform",1);
+            map1.put("count",0);
+            maps.add(map1);
+            Map<String, Object> map2 = new HashMap<>();
+            map2.put("platform",2);
+            map2.put("count",0);
+            maps.add(map2);
+
+        }
         /*maps.forEach(s-> System.out.println(s.toString()));*/
         apiResult.setData(maps);
         return apiResult;
     }
 
 
-    @RoleOfAdmin
+
     @ApiOperation(value = "近七日上下行数据统计", notes = "近七日上下行数据统计")
     @RequestMapping(value = "aweekdata", method = RequestMethod.POST)
     public ApiResult aweekdata() {
@@ -257,7 +269,7 @@ public class MonitorCenterController {
     }
 
 
-    @RoleOfAdmin
+
     @ApiOperation(value = "api近七天数据查询", notes = "api近七天")
     @RequestMapping(value = "aweekapi", method = RequestMethod.POST)
     public ApiResult aweekapi() {
@@ -267,7 +279,7 @@ public class MonitorCenterController {
         return  apiResult;
     }
 
-    @RoleOfAdmin
+
     @ApiOperation(value = "api近七天总数查询", notes = "api近七天总数查询")
     @RequestMapping(value = "aweekapisum", method = RequestMethod.POST)
     public ApiResult aweekapisum() {

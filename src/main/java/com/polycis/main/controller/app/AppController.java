@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.Transient;
 import java.util.*;
 
 /*
@@ -100,7 +101,6 @@ public class AppController {
     @RequestMapping(value = "/applist", method = RequestMethod.POST)
     public ApiResult applist(@RequestBody RequestVO requestVO) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
-
         PageInfoVO pageInfo = requestVO.getPageInfo();
         Integer currentPage = pageInfo.getCurrentPage();
         Integer pageSize = pageInfo.getPageSize();
@@ -115,6 +115,9 @@ public class AppController {
                     .last("limit 1"));
             s.setOrganizationId(Integer.parseInt(o.toString()));
         });*/
+
+
+       // 塞入http/mq信息
         page.getRecords().forEach(s->{
             App app2 = iMybatisPlusDB2Service.appInfo(s);
             s=app2;

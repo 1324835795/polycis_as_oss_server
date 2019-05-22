@@ -32,7 +32,10 @@
     </select>
     <select id="selectDevicePage" resultType="com.polycis.main.entity.Device">
 
-        SELECT id.*
+        SELECT
+        id.*,
+        ia.name as appName,
+        ip.name as productName
         FROM iot_app_org_relation iaor
         INNER JOIN iot_app ia on ia.id=iaor.app_id and ia.is_delete=1
         INNER JOIN iot_device id on id.app_id =ia.id and id.is_delete=1

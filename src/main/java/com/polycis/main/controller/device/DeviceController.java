@@ -106,6 +106,7 @@ public class DeviceController {
             }
 
         }
+        apiResult1.setMsg("接入平台添加设备失败");
         return apiResult1;
 
     }

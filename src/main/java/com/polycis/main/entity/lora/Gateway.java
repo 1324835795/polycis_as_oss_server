@@ -1,11 +1,12 @@
 package com.polycis.main.entity.lora;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -114,6 +115,19 @@ public class Gateway implements Serializable {
     private Date createTime;
     private Date updateTime;
 
+    /**
+     * lora 中 网关配置文件id
+     */
+    @TableField(exist = false)
+    private String loraGwProfileId;
+
+    public String getLoraGwProfileId() {
+        return loraGwProfileId;
+    }
+
+    public void setLoraGwProfileId(String loraGwProfileId) {
+        this.loraGwProfileId = loraGwProfileId;
+    }
 
     public Integer getId() {
         return id;

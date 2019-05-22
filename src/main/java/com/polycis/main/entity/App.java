@@ -74,7 +74,16 @@ public class App implements Serializable {
     @TableField(exist = false)
     private String mq;
 
+    @TableField(exist = false)
+    private String username;
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Integer getPushType() {
         return pushType;
@@ -198,6 +207,7 @@ public class App implements Serializable {
                 ", pushType=" + pushType +
                 ", http='" + http + '\'' +
                 ", mq='" + mq + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 }
