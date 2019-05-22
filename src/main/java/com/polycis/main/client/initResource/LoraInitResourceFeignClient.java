@@ -28,49 +28,49 @@ public interface LoraInitResourceFeignClient {
     ApiResult<String> getInitNetworkId();
 
     /** loraServer服务器地址 */
-    @RequestMapping(value = "/getInitLoraServerHost", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getInitLoraServerHost", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> getInitLoraServerHost();
 
     /** lora http请求超时时间     单位s */
-    @RequestMapping(value = "/getInitLoraHttpTimeout", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getInitLoraHttpTimeout", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<Integer> getInitLoraHttpTimeout();
 
     /** lora帐号 */
-    @RequestMapping(value = "/getInitUsername", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getInitUsername", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> getInitUsername();
 
-    @RequestMapping(value = "/getInitUserPassword", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getInitUserPassword", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> getInitUserPassword();
 
     /** lora 组织 id */
-    @RequestMapping(value = "/getInitOrganizationId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getInitOrganizationId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> getInitOrganizationId();
 
     /** lora 默认service_profile_id */
-    @RequestMapping(value = "/getInitServiceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getInitServiceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> getInitServiceProfileId();
 
     /** lora 默认device_profile_id  ABP类型*/
-    @RequestMapping(value = "/getInit_ABP_A_DeviceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getInit_ABP_A_DeviceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> getInit_ABP_A_DeviceProfileId();
-    @RequestMapping(value = "/getInit_ABP_B_DeviceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getInit_ABP_B_DeviceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> getInit_ABP_B_DeviceProfileId();
-    @RequestMapping(value = "/getInit_ABP_C_DeviceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getInit_ABP_C_DeviceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> getInit_ABP_C_DeviceProfileId();
 
     /** lora 默认device_profile_id  OTAA类型*/
-    @RequestMapping(value = "/getInit_OTAA_A_DeviceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getInit_OTAA_A_DeviceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> getInit_OTAA_A_DeviceProfileId();
-    @RequestMapping(value = "/getInit_OTAA_B_DeviceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getInit_OTAA_B_DeviceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> getInit_OTAA_B_DeviceProfileId();
-    @RequestMapping(value = "/getInit_OTAA_C_DeviceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getInit_OTAA_C_DeviceProfileId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> getInit_OTAA_C_DeviceProfileId();
 
     /** app http 推送的地址  */
-    @RequestMapping(value = "/getUplinkDataURL", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getUplinkDataURL", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> getUplinkDataURL();
 
     /** token在redis 中的过期时间 单位 s */
-    @RequestMapping(value = "/getTokenTimeout", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "${API_V2}/initResource/getTokenTimeout", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<Long> getTokenTimeout();
 }
