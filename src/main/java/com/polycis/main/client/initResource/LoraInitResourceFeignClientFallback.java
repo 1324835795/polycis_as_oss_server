@@ -18,7 +18,7 @@ public class LoraInitResourceFeignClientFallback implements LoraInitResourceFeig
 
 
     @Override
-    public ApiResult<Integer> getInitNetworkId() {
+    public ApiResult<String> getInitNetworkId() {
         return apiResult;
     }
 

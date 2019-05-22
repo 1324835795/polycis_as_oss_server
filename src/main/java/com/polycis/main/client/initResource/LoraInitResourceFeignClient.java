@@ -25,7 +25,7 @@ public interface LoraInitResourceFeignClient {
 
     /** network server 第一个serverID */
     @RequestMapping(value = "${API_V2}/initResource/getInitNetworkId", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
-    ApiResult<Integer> getInitNetworkId();
+    ApiResult<String> getInitNetworkId();
 
     /** loraServer服务器地址 */
     @RequestMapping(value = "/getInitLoraServerHost", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
