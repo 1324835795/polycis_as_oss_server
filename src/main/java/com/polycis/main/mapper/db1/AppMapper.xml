@@ -59,7 +59,7 @@
     </select>-->
 
     <select id="queryAppList" resultType="com.polycis.main.entity.App">
-        SELECT ia.*
+        SELECT ia.*, io.name as username
         FROM iot_app ia
         INNER JOIN iot_app_org_relation iaor ON iaor.app_id=ia.id
         INNER JOIN  iot_org  io ON io.id =iaor.organization_id AND io.is_delete=1

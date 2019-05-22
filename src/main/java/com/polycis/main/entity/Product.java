@@ -83,6 +83,20 @@ public class Product implements Serializable {
      */
     private transient Integer devCount;
 
+    /**
+     * 设备数量
+     */
+    private transient String username;
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -212,6 +226,7 @@ public class Product implements Serializable {
                 ", activeWay=" + activeWay +
                 ", loraConfigId=" + loraConfigId +
                 ", devCount=" + devCount +
+                ", username=" + username +
                 '}';
     }
 }
