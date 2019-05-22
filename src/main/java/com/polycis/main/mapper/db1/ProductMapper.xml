@@ -5,7 +5,7 @@
 
     <select id="queryAppList" resultType="com.polycis.main.entity.Product">
 
-        SELECT ip.*
+        SELECT ip.*, io.name as username
         FROM iot_product ip
         INNER JOIN  iot_org  io ON io.id =ip.org AND io.is_delete=1
         WHERE ip.is_delete=1

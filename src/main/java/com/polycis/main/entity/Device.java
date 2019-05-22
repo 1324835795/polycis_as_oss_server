@@ -74,7 +74,19 @@ public class Device implements Serializable {
     private transient Date  reportTime;
 
 
+    /**
+     * 用户姓名
+     */
+    private transient String  username;
 
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Integer getPlatform() {
         return platform;
@@ -185,8 +197,9 @@ public class Device implements Serializable {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", isDelete=" + isDelete +
-                ", reportTime=" + reportTime +
                 ", platform=" + platform +
+                ", reportTime=" + reportTime +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

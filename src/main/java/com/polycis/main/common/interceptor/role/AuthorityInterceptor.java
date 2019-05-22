@@ -41,7 +41,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 
                 PrintWriter printWriter = response.getWriter();
                 ApiResult result = new ApiResult<>();
-                result.setCode(CommonCode.TOKEN_INVALID.getKey());
+                result.setCode(CommonCode.AUTH_LIMIT.getKey());
                 result.setMsg("用户无权限");
                 printWriter.write(result.toString());
                 return false;

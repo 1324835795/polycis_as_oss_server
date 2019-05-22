@@ -32,11 +32,12 @@
     </select>
     <select id="selectDevicePage" resultType="com.polycis.main.entity.Device">
 
-        SELECT id.*
+        SELECT id.*,io.name as username
         FROM iot_app_org_relation iaor
         INNER JOIN iot_app ia on ia.id=iaor.app_id and ia.is_delete=1
         INNER JOIN iot_device id on id.app_id =ia.id and id.is_delete=1
         INNER JOIN iot_product ip on ip.id=id.product_id and ip.is_delete=1
+        INNER JOIN  iot_org  io ON io.id =ip.org AND io.is_delete=1
         WHERE 1=1
         <if test="query != null and query != ''">
             AND (id.name LIKE "%"#{query}"%" or id.device_uuid  LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%"

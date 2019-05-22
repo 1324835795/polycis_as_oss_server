@@ -13,7 +13,7 @@ public enum CommonCode {
 	SUCCESS(10000,"服务调用成功"),
     NO_DATA(10001,"未查询到数据"),
 	ERROR(20000,"服务不可用"),
-	TOKEN_INVALID(20001,"授权权限不足"),
+	TOKEN_INVALID(20001,"token无效"),
 	PARAMETER_LOSE(40001,"缺少必选参数"),
 	PARAMETER_INVALID(40002,"非法的参数"),
 	AUTH_LIMIT(40006,"权限不足"),

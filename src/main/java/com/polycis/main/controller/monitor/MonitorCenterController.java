@@ -258,7 +258,7 @@ public class MonitorCenterController {
     }
 
 
-    @RoleOfAdmin
+
     @ApiOperation(value = "近七日上下行数据统计", notes = "近七日上下行数据统计")
     @RequestMapping(value = "aweekdata", method = RequestMethod.POST)
     public ApiResult aweekdata() {
@@ -269,7 +269,7 @@ public class MonitorCenterController {
     }
 
 
-    @RoleOfAdmin
+
     @ApiOperation(value = "api近七天数据查询", notes = "api近七天")
     @RequestMapping(value = "aweekapi", method = RequestMethod.POST)
     public ApiResult aweekapi() {
@@ -279,7 +279,7 @@ public class MonitorCenterController {
         return  apiResult;
     }
 
-    @RoleOfAdmin
+
     @ApiOperation(value = "api近七天总数查询", notes = "api近七天总数查询")
     @RequestMapping(value = "aweekapisum", method = RequestMethod.POST)
     public ApiResult aweekapisum() {

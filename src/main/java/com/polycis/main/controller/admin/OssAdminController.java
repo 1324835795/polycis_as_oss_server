@@ -113,14 +113,10 @@ public class OssAdminController {
     public ApiResult active(@RequestBody OssAdmin ossAdmin) {
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
-        if (currentUser.getRole().contains(MainConstants.SYS)) {
+
             ossAdmin.setStart(0);
             iOssAdminService.updateById(ossAdmin);
             return apiResult;
-        }
-        apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
-        apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
-        return apiResult;
     }
 
     @RoleOfAdmin
