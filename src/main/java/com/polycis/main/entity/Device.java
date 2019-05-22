@@ -79,6 +79,33 @@ public class Device implements Serializable {
      */
     private transient String  username;
 
+    /**
+     * 产品名称
+     */
+    private transient String  productName;
+
+
+    /**
+     * 应用姓名
+     */
+    private transient String  appName;
+
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
 
     public String getUsername() {
         return username;
@@ -200,6 +227,8 @@ public class Device implements Serializable {
                 ", platform=" + platform +
                 ", reportTime=" + reportTime +
                 ", username='" + username + '\'' +
+                ", productName='" + productName + '\'' +
+                ", appName='" + appName + '\'' +
                 '}';
     }
 }
