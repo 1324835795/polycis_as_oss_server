@@ -127,7 +127,6 @@ public class GatewayProController {
 
         Integer currentPage = requestVO.getPageInfo().getCurrentPage();
         Integer pageSize = requestVO.getPageInfo().getPageSize();
-
         Map<String, Object> params = (Map<String, Object>) requestVO.getData().get("gatewayPro");
         GatewayPro gatewayProfile = JSON.parseObject(JSON.toJSONString(params), GatewayPro.class);
         Page<GatewayPro> allGatewayPro = iGatewayProService.findAllGatewayPro(currentPage, pageSize, gatewayProfile);
