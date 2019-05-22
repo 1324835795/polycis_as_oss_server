@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
 
-import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -135,6 +134,11 @@ public class DeviceProfile implements Serializable {
     private String remark;
     private Date createTime;
     private Date updateTime;
+
+    /**
+     * 出厂预设频率列表（Hz），逗号分隔, LoraServer存储用的
+     */
+    private int[] factoryPresetFreqs;
 
     //查询条件 class 类型 0:class_a,1:class_b,2:class_c
     @TableField(exist=false)
@@ -350,6 +354,14 @@ public class DeviceProfile implements Serializable {
         this.deviceProfileID = deviceProfileID;
     }
 
+    public int[] getFactoryPresetFreqs() {
+        return factoryPresetFreqs;
+    }
+
+    public void setFactoryPresetFreqs(int[] factoryPresetFreqs) {
+        this.factoryPresetFreqs = factoryPresetFreqs;
+    }
+
     @Override
     public String toString() {
         return "DeviceProfile{" +
@@ -378,6 +390,7 @@ public class DeviceProfile implements Serializable {
         ", remark=" + remark +
         ", createTime=" + createTime +
         ", updateTime=" + updateTime +
+        ", factoryPresetFreqs=" + factoryPresetFreqs +
         "}";
     }
 }
