@@ -1,6 +1,9 @@
 package com.polycis.main.entity.lora;
 
+import com.polycis.main.entity.GatewayProChannel;
+
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,6 +42,15 @@ public class LoraGatewayProfileChannelDTO implements Serializable {
      */
     private String spreadingFactorsStr;
     private List<Integer> spreadingFactors;
+
+    public LoraGatewayProfileChannelDTO(GatewayProChannel dto){
+        this.bandwidth = dto.getBandwidth();
+        this.bitrate = dto.getBitrate();
+        this.frequency = dto.getFrequency();
+        this.modulation = dto.getModulation();
+        this.spreadingFactorsStr = dto.getSpreadFactors();
+    }
+
 
     public String getBandwidth() {
         return bandwidth;

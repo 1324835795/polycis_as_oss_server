@@ -5,9 +5,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.polycis.main.client.gatewayProfile.LoraGatewayProfileFeignClient;
+import com.polycis.main.common.ApiResult;
 import com.polycis.main.entity.GatewayPro;
 import com.polycis.main.entity.GatewayProChannel;
 import com.polycis.main.entity.lora.Gateway;
+import com.polycis.main.entity.lora.LoraGatewayProfileChannelDTO;
+import com.polycis.main.entity.lora.LoraGatewayProfileDTO;
 import com.polycis.main.entity.vo.GatewayProVO;
 import com.polycis.main.mapper.db1.GatewayProMapper;
 import com.polycis.main.service.db1.IGatewayProChannelService;
@@ -39,9 +43,19 @@ public class GatewayProServiceImpl extends ServiceImpl<GatewayProMapper, Gateway
     IGatewayService iGatewayService;
     @Autowired
     IGatewayProService iGatewayProService;
+    @Autowired
+    LoraGatewayProfileFeignClient loraGatewayProfileFeignClient;
 
     @Override
     public Boolean addGatewayPro(Integer orgId, GatewayProVO gatewayPro) {
+        //首先去GoService注册网关配置文件
+        //对象转换
+        LoraGatewayProfileDTO dto = this.transformation(gatewayPro);
+
+        ApiResult<String> post = loraGatewayProfileFeignClient.post(dto);
+        String data = post.getData();
+        System.out.println(data);
+
         UUID uuid = UUID.randomUUID();
         System.out.println(uuid);
         GatewayPro gp = new GatewayPro();
@@ -118,5 +132,24 @@ public class GatewayProServiceImpl extends ServiceImpl<GatewayProMapper, Gateway
         Page<GatewayPro> gateProPage = this.selectPage(page, dev);
         return gateProPage;
 
+    }
+
+
+    public LoraGatewayProfileDTO transformation(GatewayProVO gatewayPro){
+        LoraGatewayProfileDTO dto = new LoraGatewayProfileDTO;
+        dto.setName(gatewayPro.getName());
+        dto.setNetworkServerID();
+        dto.setChannelsStr(gatewayPro.getChannels().toString());
+        List<LoraGatewayProfileChannelDTO> list = new ArrayList<>();
+        String json2 = JSONArray.toJSONString(gatewayPro.getExtraChannels());
+        List<GatewayProChannel> test = JSON.parseArray(json2,GatewayProChannel.class);
+        for(int i = 0 ; i < test.size() ; i++) {
+            GatewayProChannel gatewayProChannel = test.get(0);
+            LoraGatewayProfileChannelDTO channelDTO = new LoraGatewayProfileChannelDTO(gatewayProChannel);
+            list.add(channelDTO);
+        }
+        dto.setExtraChannels(list);
+
+        return dto;
     }
 }

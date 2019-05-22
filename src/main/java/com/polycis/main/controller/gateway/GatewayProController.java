@@ -3,6 +3,7 @@ package com.polycis.main.controller.gateway;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.polycis.main.client.gatewayProfile.LoraGatewayProfileFeignClient;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
@@ -50,6 +51,7 @@ public class GatewayProController {
     @Autowired
     IGatewayProChannelService iGatewayProChannelService;
 
+
     /**
      * 对外增加网关配置接口
      *
@@ -70,6 +72,7 @@ public class GatewayProController {
             GatewayProVO gatewayPro = JSON.parseObject(JSON.toJSONString(params), GatewayProVO.class);
             List<GatewayProChannel> params2 = (List<GatewayProChannel>) ((Map<String, Object>) requestVO.getData().get("gatewayProfile")).get("extraChannels");
             gatewayPro.setExtraChannels(params2);
+
             Boolean b = iGatewayProService.addGatewayPro(userId, gatewayPro);
             if (b) {
                 return apiResult;
