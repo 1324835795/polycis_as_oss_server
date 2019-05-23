@@ -5,9 +5,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.polycis.main.client.gatewayProfile.LoraGatewayProfileFeignClient;
+import com.polycis.main.client.initResource.LoraInitResourceFeignClient;
+import com.polycis.main.common.ApiResult;
 import com.polycis.main.entity.GatewayPro;
 import com.polycis.main.entity.GatewayProChannel;
 import com.polycis.main.entity.lora.Gateway;
+import com.polycis.main.entity.lora.LoraGatewayProfileChannelDTO;
+import com.polycis.main.entity.lora.LoraGatewayProfileDTO;
 import com.polycis.main.entity.vo.GatewayProVO;
 import com.polycis.main.mapper.db1.GatewayProMapper;
 import com.polycis.main.service.db1.IGatewayProChannelService;
@@ -39,41 +44,55 @@ public class GatewayProServiceImpl extends ServiceImpl<GatewayProMapper, Gateway
     IGatewayService iGatewayService;
     @Autowired
     IGatewayProService iGatewayProService;
+    @Autowired
+    LoraGatewayProfileFeignClient loraGatewayProfileFeignClient;
+    @Autowired
+    LoraInitResourceFeignClient loraInitResourceFeignClient;
 
     @Override
     public Boolean addGatewayPro(Integer orgId, GatewayProVO gatewayPro) {
-        UUID uuid = UUID.randomUUID();
-        System.out.println(uuid);
-        GatewayPro gp = new GatewayPro();
-        gp.setName(gatewayPro.getName());
-        gp.setGatewayProfileId(uuid.toString());
-        gp.setCreateTime(new Date());
-        gp.setDel(1);
-        gp.setOtherServerId(gatewayPro.getNetworkServerID());
-        gp.setOrgId(orgId);
-        gp.setNetId(Integer.parseInt(gatewayPro.getNetId()));
-        boolean insert = this.insert(gp);
+        //首先去GoService注册网关配置文件
+        //对象转换
+        LoraGatewayProfileDTO dto = this.transformation(gatewayPro);
+        ApiResult<String> initNetworkId = loraInitResourceFeignClient.getInitNetworkId();
+        dto.setNetworkServerID(initNetworkId.getData());
+        ApiResult<String> post = loraGatewayProfileFeignClient.post(dto);
+        String proId = post.getData();
+        System.out.println(proId);
+        if(post.getCode()==10000){
 
-        List<GatewayProChannel> extraChannels = gatewayPro.getExtraChannels();
-        String json2 = JSONArray.toJSONString(gatewayPro.getExtraChannels());
-        List<GatewayProChannel> test = JSON.parseArray(json2,GatewayProChannel.class);
+            GatewayPro gp = new GatewayPro();
+            gp.setName(gatewayPro.getName());
+            gp.setGatewayProfileId(proId);
+            gp.setCreateTime(new Date());
+            gp.setDel(1);
+            gp.setOtherServerId(gatewayPro.getNetworkServerID());
+            gp.setOrgId(orgId);
+            gp.setNetId(Integer.parseInt(gatewayPro.getNetId()));
+            boolean insert = this.insert(gp);
 
-        if(test==null || test.isEmpty()) {
-            return insert;
-        }
-        for (int i=0;i<test.size();i++){
-            GatewayProChannel gatewayProfileChannel = test.get(i);
+            List<GatewayProChannel> extraChannels = gatewayPro.getExtraChannels();
+            String json2 = JSONArray.toJSONString(gatewayPro.getExtraChannels());
+            List<GatewayProChannel> test = JSON.parseArray(json2,GatewayProChannel.class);
+
+            if(test==null || test.isEmpty()) {
+                return insert;
+            }
+            for (int i=0;i<test.size();i++){
+                GatewayProChannel gatewayProfileChannel = test.get(i);
                    /* GatewayProfileChannel ch = new GatewayProfileChannel();
                     ch.setBandwidth(gatewayProfileChannel.getBandwidth());
                     ch.setGatewayProfileId(gwProID);
                     ch.setFrequency(gatewayProfileChannel.getFrequency());*/
-            System.out.println(test.get(i).getSpreadFactors());
-            gatewayProfileChannel.setIsDelete(1);
-            gatewayProfileChannel.setGatewayProfileId(uuid.toString());
-            gatewayProChannelService.insert(gatewayProfileChannel);
-        }
+                System.out.println(test.get(i).getSpreadFactors());
+                gatewayProfileChannel.setIsDelete(1);
+                gatewayProfileChannel.setGatewayProfileId(proId);
+                gatewayProChannelService.insert(gatewayProfileChannel);
+            }
 
-        return insert;
+            return insert;
+        }
+        return false;
     }
 
     @Override
@@ -88,14 +107,18 @@ public class GatewayProServiceImpl extends ServiceImpl<GatewayProMapper, Gateway
             Log.info("网关配置文件无网关");
             //调用第三方将接口
             /*boolean flag =otherGatewayService.deleteGatewayPro(user,GatewayPro);*/
-
-            Map<String,Object> pram2 =new HashMap<>();
-            pram2.put("gateway_profile_id",gatewayPro);
-            boolean b1 = iGatewayProService.deleteByMap(pram2);
-            boolean b = gatewayProChannelService.deleteByMap(pram2);
-            if(b&&b1){
-                //删除网关信息到数据库
-                return 200;
+            LoraGatewayProfileDTO dto = new LoraGatewayProfileDTO();
+            dto.setId(gatewayPro);
+            ApiResult<String> post = loraGatewayProfileFeignClient.delete(dto);
+            if(post.getCode()==10000){
+                Map<String,Object> pram2 =new HashMap<>();
+                pram2.put("gateway_profile_id",gatewayPro);
+                boolean b1 = iGatewayProService.deleteByMap(pram2);
+                boolean b = gatewayProChannelService.deleteByMap(pram2);
+                if(b&&b1){
+                    //删除网关信息到数据库
+                    return 200;
+                }
             }
             return 0;
         }
@@ -118,5 +141,29 @@ public class GatewayProServiceImpl extends ServiceImpl<GatewayProMapper, Gateway
         Page<GatewayPro> gateProPage = this.selectPage(page, dev);
         return gateProPage;
 
+    }
+
+
+    public LoraGatewayProfileDTO transformation(GatewayProVO gatewayPro){
+        //对象转换
+        LoraGatewayProfileDTO dto = new LoraGatewayProfileDTO();
+        dto.setName(gatewayPro.getName());
+
+        if(gatewayPro.getChannels()!=null&&gatewayPro.getChannels().length>0){
+            String Str =Arrays.toString(gatewayPro.getChannels());
+            Str = Str.substring(1,Str.length()-1);
+            dto.setChannelsStr(Str);
+        }
+        List<LoraGatewayProfileChannelDTO> list = new ArrayList<>();
+        String json2 = JSONArray.toJSONString(gatewayPro.getExtraChannels());
+        List<GatewayProChannel> test = JSON.parseArray(json2,GatewayProChannel.class);
+        for(int i = 0 ; i < test.size() ; i++) {
+            GatewayProChannel gatewayProChannel = test.get(0);
+            LoraGatewayProfileChannelDTO channelDTO = new LoraGatewayProfileChannelDTO(gatewayProChannel);
+            list.add(channelDTO);
+        }
+        dto.setExtraChannels(list);
+
+        return dto;
     }
 }
