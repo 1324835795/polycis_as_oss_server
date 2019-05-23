@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -20,6 +21,7 @@ import java.util.Map;
  * @email sunlightcs@gmail.com
  * @date 2017-04-01 11:29
  */
+@Component
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     //没被包装过的HttpServletRequest（特殊场景，需要自己过滤）
     HttpServletRequest orgRequest;
