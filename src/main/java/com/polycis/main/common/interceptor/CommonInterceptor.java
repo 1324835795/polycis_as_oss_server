@@ -1,5 +1,6 @@
 package com.polycis.main.common.interceptor;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+@Component
 public class CommonInterceptor implements HandlerInterceptor {
 
     /**

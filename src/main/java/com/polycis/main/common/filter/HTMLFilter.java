@@ -1,5 +1,7 @@
 package com.polycis.main.common.filter;
 
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -40,6 +42,7 @@ import java.util.regex.Pattern;
  * @author Cal Hendersen
  * @author Michael Semb Wever
  */
+@Component
 public final class HTMLFilter {
 
     /** regex flag union representing /si modifiers in php **/

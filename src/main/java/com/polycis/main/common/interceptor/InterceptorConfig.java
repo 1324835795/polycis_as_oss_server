@@ -14,26 +14,33 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class InterceptorConfig extends WebMvcConfigurerAdapter {
 
+
     @Autowired
-    RedisFeignClient redisFeignClient;
+    private CommonInterceptor commonInterceptor;
+
+    @Autowired
+    private TokenIntecptor tokenIntecptor;
+
+    @Autowired
+    private AuthorityInterceptor authorityInterceptor;
 
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
         //注册自定义拦截器，添加拦截路径和排除拦截路径
-        registry.addInterceptor(new CommonInterceptor()).addPathPatterns("/**")
+        registry.addInterceptor(commonInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/ossadmin/login")
                 .excludePathPatterns("/ossadmin/logout");
 
-        registry.addInterceptor(new TokenIntecptor(redisFeignClient)).addPathPatterns("/**")
+        registry.addInterceptor(tokenIntecptor).addPathPatterns("/**")
                 // 排除用户登录
                 .excludePathPatterns("/ossadmin/login")
                 .excludePathPatterns("/ossadmin/logout")
                 // 排除swagger
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**");
 
-        registry.addInterceptor(new AuthorityInterceptor()).addPathPatterns("/**")
+        registry.addInterceptor(authorityInterceptor).addPathPatterns("/**")
                 // 排除用户登录
                 .excludePathPatterns("/ossadmin/login")
                 .excludePathPatterns("/ossadmin/logout")

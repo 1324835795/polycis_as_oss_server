@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -26,14 +27,13 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+@Component
 public class TokenIntecptor implements HandlerInterceptor {
 
 
-    private RedisFeignClient redisFeignClient;
+    @Autowired
+    RedisFeignClient redisFeignClient;
 
-    public TokenIntecptor(RedisFeignClient redisFeignClient) {
-        this.redisFeignClient = redisFeignClient;
-    }
 
     private static final String START_TIME = "requestStartTime";
 

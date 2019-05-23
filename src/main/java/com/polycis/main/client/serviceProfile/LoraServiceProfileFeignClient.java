@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @auther cheng
  */
 @Component(value = "LoraServiceProfileFeignClient")
-@FeignClient(value = "polycis-ns-lora-server", fallback = LoraServiceProfileFeignClientFallback.class)
+@FeignClient(value = "${polycis-ns-lora-server}", fallback = LoraServiceProfileFeignClientFallback.class)
 public interface LoraServiceProfileFeignClient {
 
 
@@ -31,5 +31,8 @@ public interface LoraServiceProfileFeignClient {
 
     @RequestMapping(value = "${API_V2}/service/profile/delete",method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> delete(@RequestBody LoraServiceProfileDTO spFile);
+
+    @RequestMapping(value = "${API_V2}/service/profile/get",method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    ApiResult<LoraServiceProfileDTO> get(@RequestBody LoraServiceProfileDTO spFile);
 
 }

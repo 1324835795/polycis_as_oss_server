@@ -1,16 +1,11 @@
 package com.polycis.main.common.Utils;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.reflect.TypeToken;
-import com.polycis.main.client.redis.RedisFeignClient;
-import com.polycis.main.common.ApiResult;
-import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
-import com.polycis.main.entity.admin.OssAdmin;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 

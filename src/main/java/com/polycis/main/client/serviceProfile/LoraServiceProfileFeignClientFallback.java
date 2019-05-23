@@ -15,7 +15,7 @@ public class LoraServiceProfileFeignClientFallback implements LoraServiceProfile
     /**
      * 线程共享对象apiResult,不能再向里边塞值了
      */
-    ApiResult<String> apiResult = new ApiResult<>(CommonCode.ERROR);
+    ApiResult apiResult = new ApiResult<>(CommonCode.ERROR);
 
 
     @Override
@@ -30,6 +30,11 @@ public class LoraServiceProfileFeignClientFallback implements LoraServiceProfile
 
     @Override
     public ApiResult<String> delete(LoraServiceProfileDTO spFile) {
+        return apiResult;
+    }
+
+    @Override
+    public ApiResult<LoraServiceProfileDTO> get(LoraServiceProfileDTO spFile) {
         return apiResult;
     }
 }

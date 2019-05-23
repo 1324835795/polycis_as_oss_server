@@ -1,5 +1,7 @@
 package com.polycis.main.common.filter;
 
+import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -7,6 +9,7 @@ import java.io.IOException;
 /**
  * XSS过滤
  */
+@Component
 public class XssFilter implements Filter {
 
 	@Override
