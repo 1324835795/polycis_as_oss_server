@@ -2,6 +2,7 @@ package com.polycis.main.controller.lora;
 
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
@@ -16,6 +17,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,14 +46,14 @@ public class DeviceProfileController {
 
     @ApiOperation(value = "查询设备配置文件", notes = "查询设备配置文件接口")
     @RequestMapping(value = "/get", method = RequestMethod.POST)
-    @RoleOfAdmin
-    public ApiResult getDeviceProfile(@RequestBody DeviceProfile dpFile) {
+    public ApiResult<DeviceProfile> getDeviceProfile(@RequestBody DeviceProfile dpFile) {
         ApiResult<DeviceProfile> apiResult = new ApiResult<>(CommonCode.SUCCESS);
         try{
             DeviceProfile dp = this.deviceProfileService.selectById(dpFile);
             apiResult.setData(dp);
         }catch (Exception e){
             apiResult.setCodeMsg(CommonCode.ERROR);
+            apiResult.setMsg(e.getMessage());
             LOG.error(String.format("查询设备配置文件异常，异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
         }
         return apiResult;
@@ -64,9 +66,17 @@ public class DeviceProfileController {
     public ApiResult addDeviceProfile(@RequestBody DeviceProfile dpFile) {
         ApiResult<String> apiResult = new ApiResult<>(CommonCode.SUCCESS);
         try{
+            List<DeviceProfile> list = this.deviceProfileService.selectList(new EntityWrapper<DeviceProfile>()
+                .eq("name", dpFile.getName()));
+            if(!CollectionUtils.isEmpty(list)){
+                apiResult.setCodeMsg(CommonCode.ERROR);
+                apiResult.setMsg("名称已存在");
+                return apiResult;
+            }
             apiResult = this.deviceProfileService.add(dpFile);
         }catch (Exception e){
             apiResult.setCodeMsg(CommonCode.ERROR);
+            apiResult.setMsg(e.getMessage());
             LOG.error(String.format("新增设备配置文件异常，异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
         }
         return apiResult;
@@ -102,9 +112,21 @@ public class DeviceProfileController {
     public ApiResult update(@RequestBody DeviceProfile dpFile) {
         ApiResult<String> apiResult = new ApiResult<>(CommonCode.SUCCESS);
         try {
+            List<DeviceProfile> list = this.deviceProfileService.selectList(new EntityWrapper<DeviceProfile>()
+                    .eq("name", dpFile.getName()));
+            if(!CollectionUtils.isEmpty(list)){
+                for(DeviceProfile tempDpFile : list){
+                    if(tempDpFile.getId() != dpFile.getId()){
+                        apiResult.setCodeMsg(CommonCode.ERROR);
+                        apiResult.setMsg("名称已存在");
+                        return apiResult;
+                    }
+                }
+            }
             apiResult = this.deviceProfileService.updateDeviceProfile(dpFile);
         } catch (Exception e) {
             apiResult.setCodeMsg(CommonCode.ERROR);
+            apiResult.setMsg(e.getMessage());
             LOG.error(String.format("更新设备配置文件异常，异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
         }
         return apiResult;
@@ -120,6 +142,7 @@ public class DeviceProfileController {
             apiResult = this.deviceProfileService.deleteDeviceProfile(dpFile);
         } catch (Exception e){
             apiResult.setCodeMsg(CommonCode.ERROR);
+            apiResult.setMsg(e.getMessage());
             LOG.error(String.format("删除设备配置文件异常，异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
         }
         return apiResult;

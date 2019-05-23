@@ -49,7 +49,6 @@ public class GatewayController {
 
     @ApiOperation(value = "查询网关", notes = "查询网关接口")
     @RequestMapping(value = "/get", method = RequestMethod.POST)
-    @RoleOfAdmin
     public ApiResult getGateway(@RequestBody Gateway gw) {
         ApiResult<Gateway> apiResult = new ApiResult<>(CommonCode.SUCCESS);
         try{
