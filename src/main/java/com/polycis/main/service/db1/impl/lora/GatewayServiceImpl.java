@@ -45,6 +45,7 @@ public class GatewayServiceImpl extends ServiceImpl<GatewayMapper, Gateway> impl
      * @param gw
      * @return
      */
+    @Transactional
     @Override
     public ApiResult add(Gateway gw) {
         ApiResult<String> apiResult = new ApiResult<>(CommonCode.SUCCESS);
