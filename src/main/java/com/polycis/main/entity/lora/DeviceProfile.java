@@ -138,6 +138,7 @@ public class DeviceProfile implements Serializable {
     /**
      * 出厂预设频率列表（Hz），逗号分隔, LoraServer存储用的
      */
+    @TableField(exist=false)
     private int[] factoryPresetFreqs;
 
     //查询条件 class 类型 0:class_a,1:class_b,2:class_c

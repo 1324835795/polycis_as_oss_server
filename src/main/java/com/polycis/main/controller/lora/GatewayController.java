@@ -142,11 +142,11 @@ public class GatewayController {
                 Set<String> mindSet = new HashSet<>();
                 StringBuilder sb = new StringBuilder();
                 for(Gateway t : list){
-                    if(t.getName().equals(gw.getName()) && !mindSet.contains("name")){
+                    if(t.getName().equals(gw.getName()) && t.getId() != gw.getId() && !mindSet.contains("name")){
                         mindSet.add("name");
                         sb.append("网关名字已存在 ");
                     }
-                    if(t.getMac().equals(gw.getMac()) && !mindSet.contains("mac")){
+                    if(t.getMac().equals(gw.getMac()) && t.getId() != gw.getId() && !mindSet.contains("mac")){
                         sb.append("网关MAC已存在 ");
                         mindSet.add("mac");
                     }
