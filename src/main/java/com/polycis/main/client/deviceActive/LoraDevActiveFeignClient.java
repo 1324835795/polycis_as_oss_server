@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @auther cheng
  */
 @Component(value = "LoraDevActiveFeignClient")
-@FeignClient(value = "polycis-ns-lora-server", fallback = LoraDevActiveFeignClientFallback.class)
+@FeignClient(value = "${polycis-ns-lora-server}", fallback = LoraDevActiveFeignClientFallback.class)
 public interface LoraDevActiveFeignClient {
 
 

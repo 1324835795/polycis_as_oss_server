@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @auther cheng
  */
 @Component(value = "LoraGatewayFeignClient")
-@FeignClient(value = "polycis-ns-lora-server", fallback = LoraGatewayFeignClientFallback.class)
+@FeignClient(value = "${polycis-ns-lora-server}", fallback = LoraGatewayFeignClientFallback.class)
 public interface LoraGatewayFeignClient {
 
 
@@ -31,5 +31,8 @@ public interface LoraGatewayFeignClient {
 
     @RequestMapping(value = "${API_V2}/gateway/delete",method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult<String> delete(@RequestBody LoraGatewayDTO gw);
+
+    @RequestMapping(value = "${API_V2}/gateway/get",method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    ApiResult<LoraGatewayDTO> get(@RequestBody LoraGatewayDTO gw);
 
 }
