@@ -1,6 +1,10 @@
-#spring:
-#  application:
-#    name: polycis-as-main-server
+#配置各服务的名称
+polycis-ns-lora-server: polycis-ns-lora-server
+polycis-as-oss-server: polycis-as-oss-server
+
+
+
+
 server:
   port: 10060
   tomcat:
@@ -40,7 +44,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   application:
-    name: ${polycis-as-oss-server}
+    name: polycis-as-oss-server
   aop:
     proxy-target-class: true
     auto: true
