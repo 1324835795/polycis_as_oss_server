@@ -1,6 +1,10 @@
-#spring:
-#  application:
-#    name: polycis-as-main-server
+#配置各服务的名称
+polycis-ns-lora-server: polycis-ns-lora-server
+polycis-as-oss-server: polycis-as-oss-server
+
+
+
+
 server:
   port: 10060
   tomcat:

@@ -15,7 +15,7 @@ public class LoraGatewayFeignClientFallback implements LoraGatewayFeignClient {
     /**
      * 线程共享对象apiResult,不能再向里边塞值了
      */
-    ApiResult<String> apiResult = new ApiResult<>(CommonCode.ERROR);
+    ApiResult apiResult = new ApiResult<>(CommonCode.ERROR);
 
     @Override
     public ApiResult<String> post(LoraGatewayDTO gw) {
@@ -31,4 +31,11 @@ public class LoraGatewayFeignClientFallback implements LoraGatewayFeignClient {
     public ApiResult<String> delete(LoraGatewayDTO gw) {
         return apiResult;
     }
+
+    @Override
+    public ApiResult<LoraGatewayDTO> get(LoraGatewayDTO gw) {
+        return apiResult;
+    }
+
+
 }

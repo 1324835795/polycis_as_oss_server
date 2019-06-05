@@ -15,7 +15,7 @@ public class LoraDevProfileFeignClientFallback implements LoraDevProfileFeignCli
     /**
      * 线程共享对象apiResult,不能再向里边塞值了
      */
-    ApiResult<String> apiResult = new ApiResult<>(CommonCode.ERROR);
+    ApiResult apiResult = new ApiResult<>(CommonCode.ERROR);
 
     @Override
     public ApiResult<String> post(LoraDeviceProfileDTO dpFile) {
@@ -29,6 +29,11 @@ public class LoraDevProfileFeignClientFallback implements LoraDevProfileFeignCli
 
     @Override
     public ApiResult<String> delete(LoraDeviceProfileDTO dpFile) {
+        return apiResult;
+    }
+
+    @Override
+    public ApiResult<LoraDeviceProfileDTO> get(LoraDeviceProfileDTO dpFile) {
         return apiResult;
     }
 }

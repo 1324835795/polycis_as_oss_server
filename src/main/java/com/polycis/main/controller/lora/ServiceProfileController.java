@@ -2,6 +2,7 @@ package com.polycis.main.controller.lora;
 
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
@@ -16,6 +17,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,6 +41,21 @@ public class ServiceProfileController {
     @Autowired
     private IServiceProfileService serviceProfileService;
 
+    @MyLog(describe = "查询服务配置文件")
+    @ApiOperation(value = "查询服务配置文件", notes = "查询服务配置文件接口")
+    @RequestMapping(value = "/get", method = RequestMethod.POST)
+    public ApiResult get(@RequestBody ServiceProfile spFile) {
+        ApiResult<ServiceProfile> apiResult = new ApiResult<>(CommonCode.SUCCESS);
+        try{
+            ServiceProfile result_spFile = this.serviceProfileService.selectById(spFile.getId());
+            apiResult.setData(result_spFile);
+        }catch (Exception e){
+            apiResult.setCodeMsg(CommonCode.ERROR);
+            LOG.error(String.format("查询服务配置文件异常，异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
+        }
+        return apiResult;
+    }
+
     @MyLog(describe = "添加服务配置文件")
     @ApiOperation(value = "添加服务配置文件", notes = "添加服务配置文件接口")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -46,6 +63,13 @@ public class ServiceProfileController {
     public ApiResult addServiceProfile(@RequestBody ServiceProfile spFile) {
         ApiResult<String> apiResult = new ApiResult<>(CommonCode.SUCCESS);
         try{
+            List<ServiceProfile> list = this.serviceProfileService.selectList(new EntityWrapper<ServiceProfile>()
+                .eq("name", spFile.getName()));
+            if(!CollectionUtils.isEmpty(list)){
+                apiResult.setCodeMsg(CommonCode.ERROR);
+                apiResult.setMsg("名称已存在");
+                return apiResult;
+            }
             apiResult = this.serviceProfileService.add(spFile);
         }catch (Exception e){
             apiResult.setCodeMsg(CommonCode.ERROR);
@@ -72,8 +96,7 @@ public class ServiceProfileController {
     @ApiOperation(value = "查看全部服务配置文件列表", notes = "查看全部服务配置文件列表")
     @RequestMapping(value = "/listAll", method = RequestMethod.POST)
     public ApiResult listAll(@RequestBody RequestVO requestVO) {
-        ApiResult<List<ServiceProfile>> apiResult = new ApiResult<>(CommonCode.SUCCESS);
-        apiResult = this.serviceProfileService.findListAll();
+        ApiResult<List<ServiceProfile>> apiResult  = this.serviceProfileService.findListAll();
         return apiResult;
     }
 
@@ -85,6 +108,17 @@ public class ServiceProfileController {
     public ApiResult update(@RequestBody ServiceProfile spFile) {
         ApiResult<String> apiResult = new ApiResult<>(CommonCode.SUCCESS);
         try {
+            List<ServiceProfile> list = this.serviceProfileService.selectList(new EntityWrapper<ServiceProfile>()
+                    .eq("name", spFile.getName()));
+            if(!CollectionUtils.isEmpty(list)){
+                for(ServiceProfile tempSpFile : list){
+                    if(tempSpFile.getId() != spFile.getId()){
+                        apiResult.setCodeMsg(CommonCode.ERROR);
+                        apiResult.setMsg("名称已存在");
+                        return apiResult;
+                    }
+                }
+            }
             apiResult = this.serviceProfileService.updateServiceProfile(spFile);
         } catch (Exception e) {
             apiResult.setCodeMsg(CommonCode.ERROR);

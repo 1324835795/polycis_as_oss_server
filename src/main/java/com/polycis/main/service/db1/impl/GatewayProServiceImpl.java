@@ -50,7 +50,8 @@ public class GatewayProServiceImpl extends ServiceImpl<GatewayProMapper, Gateway
     LoraInitResourceFeignClient loraInitResourceFeignClient;
 
     @Override
-    public Boolean addGatewayPro(Integer orgId, GatewayProVO gatewayPro) {
+    public Boolean
+    addGatewayPro(Integer orgId, GatewayProVO gatewayPro) {
         //首先去GoService注册网关配置文件
         //对象转换
         LoraGatewayProfileDTO dto = this.transformation(gatewayPro);
@@ -154,11 +155,12 @@ public class GatewayProServiceImpl extends ServiceImpl<GatewayProMapper, Gateway
             Str = Str.substring(1,Str.length()-1);
             dto.setChannelsStr(Str);
         }
+
         List<LoraGatewayProfileChannelDTO> list = new ArrayList<>();
         String json2 = JSONArray.toJSONString(gatewayPro.getExtraChannels());
         List<GatewayProChannel> test = JSON.parseArray(json2,GatewayProChannel.class);
         for(int i = 0 ; i < test.size() ; i++) {
-            GatewayProChannel gatewayProChannel = test.get(0);
+            GatewayProChannel gatewayProChannel = test.get(i);
             LoraGatewayProfileChannelDTO channelDTO = new LoraGatewayProfileChannelDTO(gatewayProChannel);
             list.add(channelDTO);
         }
