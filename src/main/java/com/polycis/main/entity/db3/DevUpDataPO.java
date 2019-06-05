@@ -33,7 +33,7 @@ public class DevUpDataPO implements Serializable {
     /*推送时间*/
     private Date pushTime;
     /*推送状态 0 未推送 1 推送成功 1 推送失败*/
-    private Date pushStatus;
+    private Integer pushStatus;
     /*数据上报时间*/
     private Date reportTime;
     /*创建时间*/
@@ -105,11 +105,11 @@ public class DevUpDataPO implements Serializable {
         this.pushTime = pushTime;
     }
 
-    public Date getPushStatus() {
+    public Integer getPushStatus() {
         return pushStatus;
     }
 
-    public void setPushStatus(Date pushStatus) {
+    public void setPushStatus(Integer pushStatus) {
         this.pushStatus = pushStatus;
     }
 

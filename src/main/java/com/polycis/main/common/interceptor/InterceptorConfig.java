@@ -31,12 +31,15 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
         //注册自定义拦截器，添加拦截路径和排除拦截路径
         registry.addInterceptor(commonInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/ossadmin/login")
-                .excludePathPatterns("/ossadmin/logout");
+                .excludePathPatterns("/ossadmin/logout")
+                .excludePathPatterns("/callname/receive");
+
 
         registry.addInterceptor(tokenIntecptor).addPathPatterns("/**")
                 // 排除用户登录
                 .excludePathPatterns("/ossadmin/login")
                 .excludePathPatterns("/ossadmin/logout")
+                .excludePathPatterns("/callname/receive")
                 // 排除swagger
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**");
 
@@ -44,6 +47,7 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
                 // 排除用户登录
                 .excludePathPatterns("/ossadmin/login")
                 .excludePathPatterns("/ossadmin/logout")
+                .excludePathPatterns("/callname/receive")
                 // 排除swagger
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**");
 

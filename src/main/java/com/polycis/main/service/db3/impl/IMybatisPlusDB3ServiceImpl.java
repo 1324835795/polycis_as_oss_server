@@ -9,6 +9,7 @@ import com.polycis.main.common.datasource.DBTypeEnum;
 import com.polycis.main.common.datasource.DataSourceSwitch;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
+import com.polycis.main.controller.callname.DemoCallName;
 import com.polycis.main.entity.db2.DevUnionDevice;
 import com.polycis.main.entity.db3.DevDataWarn;
 import com.polycis.main.entity.Device;
@@ -423,5 +424,17 @@ public class IMybatisPlusDB3ServiceImpl implements IMybatisPlusDB3Service {
         devUpDataPO.setCreateTime(new Date());
         iDevDataUpService.insert(devUpDataPO);
      //   throw new RuntimeException();
+    }
+
+
+    @Override
+    public void receiveCallNameData(DemoCallName demoCallName) {
+
+        DevUpDataPO devUpDataPO = new DevUpDataPO();
+        devUpDataPO.setPushStatus(1);
+        devUpDataPO.setDeviceUuid(demoCallName.getDevid());
+        devUpDataPO.setPlatform(1);
+        devUpDataPO.setDataInfo(JSON.toJSONString(demoCallName));
+        iDevDataUpService.insert(devUpDataPO);
     }
 }

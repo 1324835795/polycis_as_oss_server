@@ -3,6 +3,7 @@ package com.polycis.main.service.db3;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
+import com.polycis.main.controller.callname.DemoCallName;
 import com.polycis.main.entity.db3.DevDataWarn;
 import com.polycis.main.entity.db3.DevDownDataPO;
 import com.polycis.main.entity.db3.DevUpDataPO;
@@ -65,4 +66,6 @@ public interface IMybatisPlusDB3Service {
     Integer aweekapisum();
 
     void test();
+
+    void receiveCallNameData(DemoCallName demoCallName);
 }
