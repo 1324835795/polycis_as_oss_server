@@ -12,6 +12,9 @@
         <if test="query != null and query != ''">
             AND (io.name LIKE "%"#{query}"%"or ip.name LIKE "%"#{query}"%" )
         </if>
+        <if test="orgId != null and orgId != ''">
+            AND io.id=#{orgId}
+        </if>
         ORDER BY ip.create_time DESC
         LIMIT #{pageNumber}, #{pageSize}
 
@@ -28,8 +31,9 @@
         <if test="query != null and query != ''">
             AND (io.name LIKE "%"#{query}"%"or ip.name LIKE "%"#{query}"%" )
         </if>
-
-
+        <if test="orgId != null and orgId != ''">
+            AND io.id=#{orgId}
+        </if>
 
     </select>
 </mapper>

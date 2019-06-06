@@ -68,4 +68,7 @@ public interface IMybatisPlusDB3Service {
     void test();
 
     void receiveCallNameData(DemoCallName demoCallName);
+
+
+
 }

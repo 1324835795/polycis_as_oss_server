@@ -74,6 +74,8 @@ public class Users  implements Serializable {
      */
     private Integer isStart;
 
+
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

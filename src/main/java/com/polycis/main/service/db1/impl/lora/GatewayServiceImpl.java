@@ -106,6 +106,7 @@ public class GatewayServiceImpl extends ServiceImpl<GatewayMapper, Gateway> impl
         param.put("pageSize", pageSize);
         param.put("gwName", gw.getName());
         param.put("gwMac", gw.getName());
+        param.put("gwOrgId", gw.getId());
         List<Gateway> list = this.gatewayMapper.findList(param);
         Integer count = this.gatewayMapper.findListCount(param);
         page.setTotal(count);

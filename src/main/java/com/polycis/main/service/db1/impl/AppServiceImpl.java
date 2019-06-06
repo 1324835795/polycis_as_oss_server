@@ -60,6 +60,12 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements IAppS
             param.put("query", null);
         }
 
+        if (null != app.getId() && !"".equals(app.getId())) {
+            param.put("orgId", app.getId());
+        } else {
+            param.put("orgId", null);
+        }
+
         List<App> list = appMapper.queryAppList(param);
 
         Integer count = appMapper.queryAppListCount(param);

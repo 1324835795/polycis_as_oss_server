@@ -11,6 +11,9 @@
                 OR
                 t.mac LIKE CONCAT('%', #{gwName}, '%')
             </if>
+            <if test="gwOrgId != null and gwOrgId != ''">
+               and  t.org_id=#{gwOrgId}
+            </if>
         </where>
         ORDER BY t.create_time DESC
         LIMIT #{pageNumber}, #{pageSize}
@@ -23,6 +26,9 @@
                 t.name LIKE CONCAT('%', #{gwName}, '%')
                 OR
                 t.mac LIKE CONCAT('%', #{gwName}, '%')
+            </if>
+            <if test="gwOrgId != null and gwOrgId != ''">
+                and  t.org_id=#{gwOrgId}
             </if>
         </where>
     </select>

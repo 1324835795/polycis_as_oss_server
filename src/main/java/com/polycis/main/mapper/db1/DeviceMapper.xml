@@ -45,6 +45,9 @@
             AND (id.name LIKE "%"#{query}"%" or id.device_uuid  LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%"
             or ip.name LIKE "%"#{query}"%")
         </if>
+        <if test="orgId != null and orgId != ''">
+            AND iaor.organization_id=#{orgId}
+        </if>
         ORDER BY id.create_time DESC
         LIMIT #{pageNumber}, #{pageSize}
     </select>
@@ -59,5 +62,14 @@
             AND (id.name LIKE "%"#{query}"%" or id.device_uuid LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%"
             or ip.name LIKE "%"#{query}"%")
         </if>
+        <if test="orgId != null and orgId != ''">
+            AND iaor.organization_id=#{orgId}
+        </if>
+    </select>
+    <select id="selectOrgDevList" resultType="java.lang.String">
+        SELECT device_uuid
+        FROM iot_device id
+        INNER JOIN iot_app_org_relation iaor ON iaor.app_id=id.app_id AND iaor.organization_id=#{id}
+        WHERE id.is_delete=1
     </select>
 </mapper>

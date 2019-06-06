@@ -57,4 +57,6 @@ public interface DeviceMapper extends BaseMapper<Device> {
     List<Device> selectDevicePage(Map<String, Object> param);
 
     Integer selectAppListCount(Map<String, Object> param);
+
+    List<String> selectOrgDevList(Integer id);
 }

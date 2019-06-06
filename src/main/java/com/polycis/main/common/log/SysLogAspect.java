@@ -1,12 +1,10 @@
 package com.polycis.main.common.log;
 
 import com.alibaba.fastjson.JSON;
-import com.polycis.main.client.redis.RedisFeignClient;
-import com.polycis.main.common.Utils.SpringContextUtil;
 import com.polycis.main.common.Utils.UserTokenUtil;
 import com.polycis.main.entity.SysLogoPO;
 import com.polycis.main.entity.admin.OssAdmin;
-import com.polycis.main.service.db1.system.ISysLogService;
+import com.polycis.main.service.db1.ISysLogService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -109,6 +106,8 @@ public class SysLogAspect {
         OssAdmin ossAdmin = sysLogService.getAccountByToken(token);
         if (ossAdmin != null) {
             sysLog.setUsername(ossAdmin.getLoginname());
+            // 1是运营用户
+            sysLog.setUserType(1);
         }
 
         //日志入库

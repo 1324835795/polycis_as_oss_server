@@ -1,7 +1,10 @@
 package com.polycis.main.service.db1;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.polycis.main.common.ApiResult;
 import com.polycis.main.entity.Org;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.polycis.main.entity.Org;
  */
 public interface IOrgService extends IService<Org> {
 
+    Map<String,Integer> selectConsumerCountInfo(Integer id);
+
+    ApiResult addOrgAndUser(Org orgusers);
 }

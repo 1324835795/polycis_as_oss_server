@@ -67,6 +67,12 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             param.put("query", null);
         }
 
+        if (null != product.getId() && !"".equals(product.getId())) {
+            param.put("orgId", product.getId());
+        } else {
+            param.put("orgId", null);
+        }
+
         List<Product> list = productMapper.queryAppList(param);
 
         Integer count = productMapper.queryAppListCount(param);

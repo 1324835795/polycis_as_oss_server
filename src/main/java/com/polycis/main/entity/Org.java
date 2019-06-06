@@ -64,6 +64,17 @@ public class Org implements Serializable {
 
     private Integer start;
 
+
+    private Integer orgClass;
+
+    public Integer getOrgClass() {
+        return orgClass;
+    }
+
+    public void setOrgClass(Integer orgClass) {
+        this.orgClass = orgClass;
+    }
+
     public Integer getIsDelete() {
         return isDelete;
     }

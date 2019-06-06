@@ -24,8 +24,59 @@ public class SysLogoPO implements Serializable {
     private  String method;
     private  String params;
     private  String ip;
-    private Date creteTime;
+    private Date createTime;
     private Date updateTime;
+
+    private transient String operationName;
+
+    public String getOperationName() {
+        return operationName;
+    }
+
+    public void setOperationName(String operation) {
+        this.operationName = operationName;
+    }
+
+    /**
+     * 用户类型 1运营 2客户
+     */
+    private Integer userType;
+
+    /**
+     * 用户的组织id
+     */
+    private Integer orgId;
+
+    public Integer getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
+    }
+
+    public void setOperation(int operation) {
+        this.operation = operation;
+        if(10601==operation){
+            this.operationName="增加";
+        }else if(10602==operation){
+            this.operationName="删除";
+        }else if(10603==operation){
+            this.operationName="修改";
+        }else if(10604==operation){
+            this.operationName="查询";
+        }else {
+            this.operationName="其他";
+        }
+    }
+
+    public Integer getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Integer userType) {
+        this.userType = userType;
+    }
 
     public String getParams() {
         return params;
@@ -93,13 +144,7 @@ public class SysLogoPO implements Serializable {
         this.ip = ip;
     }
 
-    public Date getCreteTime() {
-        return creteTime;
-    }
 
-    public void setCreteTime(Date creteTime) {
-        this.creteTime = creteTime;
-    }
 
     public Date getUpdateTime() {
         return updateTime;
@@ -107,5 +152,30 @@ public class SysLogoPO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "SysLogoPO{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", describe='" + describe + '\'' +
+                ", operation=" + operation +
+                ", method='" + method + '\'' +
+                ", params='" + params + '\'' +
+                ", ip='" + ip + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", userType=" + userType +
+                ", orgId=" + orgId +
+                '}';
     }
 }

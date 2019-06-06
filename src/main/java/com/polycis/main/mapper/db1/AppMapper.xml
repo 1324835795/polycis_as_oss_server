@@ -67,6 +67,9 @@
         <if test="query != null and query != ''">
             AND (io.name LIKE "%"#{query}"%" or ia.app_eui LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%" )
         </if>
+        <if test="orgId != null and orgId != ''">
+            AND iaor.organization_id=#{orgId}
+        </if>
         ORDER BY ia.create_time DESC
         LIMIT #{pageNumber}, #{pageSize}
     </select>
@@ -78,6 +81,9 @@
         WHERE ia.is_delete=1
         <if test="query != null and query != ''">
             AND (io.name LIKE "%"#{query}"%" or ia.app_eui LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%" )
+        </if>
+        <if test="orgId != null and orgId != ''">
+            AND iaor.organization_id=#{orgId}
         </if>
     </select>
 </mapper>

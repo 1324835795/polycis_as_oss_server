@@ -23,6 +23,7 @@
         polycis_as_main.iot_device dev
         left join polycis_as_main.iot_dictionary dic on dic.code = dev.platform and dic.parent_id = 107
         on d.device_uuid = dev.device_uuid
+        INNER JOIN polycis_as_main.iot_app_org_relation iaor ON dev.app_id =iaor.app_id
         where 1 = 1
         <if test="data.mac != null and data.mac !=''">
             and d.mac like concat('%',#{data.mac},'%') or dev.name like concat('%',#{data.mac},'%')
@@ -35,15 +36,18 @@
         </if>
         <if test="data.status !=null">
             and d.status = #{data.status}
+        </if>
+        <if test="data.id != null and data.id !=''">
+            and iaor.organization_id like concat('%',#{data.id},'%') or dev.id like concat('%',#{data.id},'%')
         </if>
         order by d.create_time desc
         LIMIT #{key_offset},#{pageInfo.pageSize}
     </select>
     <select id="selectWarnInfoCount" resultType="java.lang.Integer">
         select count(*)
-        from dev_data_warn d left join
-        polycis_as_main.iot_device dev
-        on d.device_uuid = dev.device_uuid
+        from dev_data_warn d
+        left join  polycis_as_main.iot_device dev on d.device_uuid = dev.device_uuid
+        INNER JOIN polycis_as_main.iot_app_org_relation iaor ON dev.app_id =iaor.app_id
         where 1 = 1
         <if test="data.mac != null and data.mac !=''">
             and d.mac like concat('%',#{data.mac},'%') or dev.name like concat('%',#{data.mac},'%')
@@ -56,6 +60,10 @@
         </if>
         <if test="data.status !=null">
             and d.status = #{data.status}
+        </if>
+
+        <if test="data.id != null and data.id !=''">
+            and iaor.organization_id like concat('%',#{data.id},'%') or dev.id like concat('%',#{data.id},'%')
         </if>
     </select>
     <update id="updateWarnRead">

@@ -123,6 +123,12 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         } else {
             param.put("query", null);
         }
+
+        if (null != device.getId() && !"".equals(device.getId())) {
+            param.put("orgId", device.getId());
+        } else {
+            param.put("orgId", null);
+        }
         List<Device> list = deviceMapper.selectDevicePage(param);
         Integer count = deviceMapper.selectAppListCount(param);
         page.setTotal(count);
