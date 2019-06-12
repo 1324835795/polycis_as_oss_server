@@ -2,7 +2,6 @@ package com.polycis.main.controller.app;
 
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.polycis.main.client.app.AppFeignClient;
@@ -21,8 +20,6 @@ import com.polycis.main.entity.db3.DevDownDataPO;
 import com.polycis.main.entity.db3.DevUpDataPO;
 import com.polycis.main.entity.vo.QueryTimePO;
 import com.polycis.main.service.db1.*;
-import com.polycis.main.service.db2.IDevHttpService;
-import com.polycis.main.service.db2.IDevMqQueueService;
 import com.polycis.main.service.db2.IMybatisPlusDB2Service;
 import com.polycis.main.service.db3.IMybatisPlusDB3Service;
 import io.swagger.annotations.ApiOperation;
@@ -30,8 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.beans.Transient;
 import java.util.*;
 
 /*
@@ -85,15 +80,6 @@ public class AppController {
 
         return apiResult1;
 
-        // 为了测试通过添加的代码,后续要删除并且解注上边的代码
-       /* boolean b = iAppService.addApp(app);
-        if (b) {
-            apiResult.setSub_code(app.getId());
-            return apiResult;
-        }
-        apiResult.setCode(CommonCode.ERROR.getKey());
-        return apiResult;*/
-
     }
 
 
@@ -107,23 +93,11 @@ public class AppController {
         Map<String, Object> data = requestVO.getData();
         App app = JSON.parseObject(JSON.toJSONString(data), App.class);
         Page<App> page = iAppService.queryAppList(currentPage, pageSize, app);
-        // 塞入组织信息,即运维平台用户信息. 这个app表的组织冗余字段,如果不被非法攻击,是可以与关联表组织字段保持一致的,
-        // 所以也没有必要进行查询操作,写了注掉说不定以后要用
-       /* page.getRecords().forEach(s -> {
-            Object o = iAppOrgRelationService.selectObj(new EntityWrapper<AppOrgRelation>().setSqlSelect("organization_id")
-                    .eq("app_id", s.getId())
-                    .last("limit 1"));
-            s.setOrganizationId(Integer.parseInt(o.toString()));
-        });*/
-
-
        // 塞入http/mq信息
         page.getRecords().forEach(s->{
             App app2 = iMybatisPlusDB2Service.appInfo(s);
             s=app2;
         });
-
-
         ApiResult apiResult = new ApiResult<>();
         apiResult.setData(page);
         return apiResult;
@@ -164,9 +138,6 @@ public class AppController {
         apiResult.setCode(CommonCode.ERROR.getKey());
         return apiResult;
 
-        // 为了测试通过添加的代码,后续要删除并且解注上边的代码
-     /*   iAppService.updateById(app);
-        return apiResult;*/
     }
 
     @RoleOfAdmin
@@ -194,10 +165,6 @@ public class AppController {
                 return apiResult;
             }
             return apiResult1;
-
-       /* // 为了测试通过添加的代码,后续要删除并且解注上边的代码
-        iAppService.deleteApp(app);
-        return apiResult;*/
 
     }
 
@@ -284,8 +251,6 @@ public class AppController {
     public ApiResult downlist() {
 
         EntityWrapper<AppOrgRelation> appOrgRelationEntityWrapper = new EntityWrapper<>();
-       /* OssAdmin currentUser = RequestHolder.getCurrentUser();
-        appOrgRelationEntityWrapper.eq("organization_id", currentUser.getOrg());*/
         appOrgRelationEntityWrapper.setSqlSelect("app_id");
         List<Object> objects = iAppOrgRelationService.selectObjs(appOrgRelationEntityWrapper);
 
@@ -321,72 +286,6 @@ public class AppController {
         return apiResult;
 
     }
-
-
-
-/*
-    @ApiOperation(value = "应用内产品数量占比", notes = "应用内产品数量占比")
-    @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public ApiResult product(@RequestBody App app) {
-        OssAdmin currentUser = RequestHolder.getCurrentUser();
-        List<Map<String, Object>> list = iAppService.selectProduct(app);
-        ApiResult apiResult = new ApiResult<>();
-        apiResult.setData(list);
-        return apiResult;
-
-    }
-
-
-
-    @ApiOperation(value = "设备在线率", notes = "设备在线率")
-    @RequestMapping(value = "/devonline", method = RequestMethod.POST)
-    public ApiResult devonline(@RequestBody App app) {
-        ApiResult apiResult = new ApiResult<>();
-        App app1 = iAppService.selectById(app);
-        List<Map<String, Integer>> list = iMybatisPlusDB2Service.selectDevonline(app1);
-        apiResult.setData(list);
-        return apiResult;
-    }
-
-    @ApiOperation(value = "应用上下行数据量占比", notes = "应用上下行数据量占比")
-    @RequestMapping(value = "/updownrate", method = RequestMethod.POST)
-    public ApiResult updownrate(@RequestBody App app) {
-        ApiResult apiResult = new ApiResult<>();
-
-        EntityWrapper<Device> deviceEntityWrapper = new EntityWrapper<>();
-        deviceEntityWrapper.eq("is_delete", MainConstants.UN_DELETE);
-        deviceEntityWrapper.eq("app_id", app.getId());
-        deviceEntityWrapper.setSqlSelect("device_uuid");
-        List<Object> objects = iDeviceService.selectObjs(deviceEntityWrapper);
-
-        Map<String, Object> map = iMybatisPlusDB3Service.selectAppUpDownDataCount(objects);
-        apiResult.setData(map);
-        return apiResult;
-    }
-
-
-    @ApiOperation(value = "测试", notes = "测试")
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ApiResult test() {
-        ApiResult apiResult = new ApiResult<>();
-        List<String> list = iAppService.selctTest();
-
-        return apiResult;
-    }
-
-
-    @ApiOperation(value = "应用内近七日上下行数据统计", notes = "应用内近七日上下行数据统计")
-    @RequestMapping(value = "/aweekdata", method = RequestMethod.POST)
-    public ApiResult aweekdata(@RequestBody App app) {
-
-        List<String> uuidlist = iDeviceService.selectDevList(app.getId());
-
-        List<Map<String, Object>> list = iMybatisPlusDB3Service.selectAWeekData(uuidlist);
-        ApiResult apiResult = new ApiResult<>();
-        apiResult.setData(list);
-        return apiResult;
-
-    }*/
 
 
 }

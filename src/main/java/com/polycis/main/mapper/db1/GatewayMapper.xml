@@ -3,8 +3,9 @@
 <mapper namespace="com.polycis.main.mapper.db1.GatewayMapper">
 
     <select id="findList" resultType="com.polycis.main.entity.lora.Gateway">
-        SELECT t.*
+        SELECT t.*, io.name as orgName
         FROM lora_gateway t
+        LEFT JOIN iot_org io ON io.id=t.org_id
         <where>
             <if test="gwName != null and gwName != ''">
                 t.name LIKE CONCAT('%', #{gwName}, '%')
