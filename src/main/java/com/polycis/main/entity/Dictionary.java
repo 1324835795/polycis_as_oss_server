@@ -1,10 +1,12 @@
 package com.polycis.main.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -23,10 +25,30 @@ public class Dictionary implements Serializable {
     private Integer id;
     private String name;
     private Integer parentId;
+    private Integer code;
     private String description;
     private Date createTime;
     private Date updateTime;
 
+    //二级字典
+    @TableField(exist=false)
+    private List<Dictionary> children;
+
+    public List<Dictionary> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Dictionary> children) {
+        this.children = children;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
 
     public Integer getId() {
         return id;

@@ -28,7 +28,7 @@ public class GeneratorServiceEntity {
 
         String packageName = "com.polycis.main";
         boolean serviceNameStartWithI = true;//user -> UserService, 设置成true: user -> IUserService
-        generateByTables(serviceNameStartWithI, packageName, "iot_gateway_pro_channel","iot_gateway_pro");
+        generateByTables(serviceNameStartWithI, packageName, "iot_dictionary");
     }
 
 

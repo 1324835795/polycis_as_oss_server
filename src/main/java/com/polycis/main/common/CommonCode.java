@@ -18,7 +18,9 @@ public enum CommonCode {
 	PARAMETER_INVALID(40002,"非法的参数"),
 	AUTH_LIMIT(40006,"权限不足"),
 	CODE_INVALID(0,"提示码参数非法"),
-
+    INSERT_ERROR(20000,"数据新增失败"),
+	DELETE_ERROR(20000,"数据删除失败"),
+	UPDATE_ERROR(20000,"数据修改失败"),
 	OPER_FAILURE(30000, "操作失败");
 
 
