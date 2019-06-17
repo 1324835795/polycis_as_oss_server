@@ -72,7 +72,7 @@ public class DictionaryController {
         Map<String, Object> data = requestVO.getData();
         Dictionary dictionary = JSON.parseObject(JSON.toJSONString(data), Dictionary.class);
 
-        Page<Dictionary> dictionaries = iDictionaryService.selectDicList(dictionary,currentPage,pageSize);
+        Page<Dictionary> dictionaries = iDictionaryService.selectDicList2(dictionary,currentPage,pageSize);
         apiResult.setData(dictionaries);
         return apiResult;
     }
@@ -176,6 +176,18 @@ public class DictionaryController {
         ApiResult apiResult = new ApiResult<>();
 
         List<Dictionary> list = iDictionaryService.selectDownList(dictionary);
+        apiResult.setData(list);
+        return apiResult;
+    }
+
+
+
+    @ApiOperation(value = "字典下拉列表通用", notes = "字典下拉列表")
+    @RequestMapping(value = "/dictionaryCommon", method = RequestMethod.POST)
+    public ApiResult dictionaryCommon(@RequestBody Dictionary dictionary) {
+        ApiResult apiResult = new ApiResult<>();
+
+        List<Dictionary> list = iDictionaryService.selectCommon(dictionary);
         apiResult.setData(list);
         return apiResult;
     }

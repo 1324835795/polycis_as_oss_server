@@ -29,13 +29,15 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
     @Override
     public  Page<Dictionary> selectDicList(Dictionary dictionary,Integer currentPage,Integer pageSize) {
 
-      
+
         //查询所有父类
         Page<Dictionary> page = new Page<>(currentPage, pageSize);
         EntityWrapper<Dictionary> dicParentWrapper = new EntityWrapper<>();
-        if(dictionary.getName()!=null){
-            dicParentWrapper.like("name",dictionary.getName());
+        if(dictionary.getName()!=null&&!dictionary.getName().equals("")){
+
+            dicParentWrapper.like("name",dictionary.getName()).or().eq("code",dictionary.getName());
         }
+
         if(dictionary.getParentId()!=null){
             dicParentWrapper.eq("parent_id",dictionary.getId());
         }else{
@@ -51,6 +53,7 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
 
     @Override
     public List<Dictionary> selectDownList(Dictionary dictionary) {
+
         List<Dictionary> list = this.selectList(dictionary);
         return list;
     }
@@ -114,9 +117,13 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
     public List<Dictionary> selectList(Dictionary dictionary) {
 
         List<Dictionary> list = new ArrayList<>();
+
         EntityWrapper<Dictionary> dicParentWrapper = new EntityWrapper<>();
-        if(dictionary.getName()!=null){
+        if(dictionary.getName()!=null&&!dictionary.getName().equals("")){
             dicParentWrapper.like("name",dictionary.getName());
+        }
+        if(dictionary.getName()!=null&&!dictionary.getName().equals("")){
+            dicParentWrapper.eq("code",dictionary.getName());
         }
         if(dictionary.getParentId()!=null){
             dicParentWrapper.eq("parent_id",dictionary.getId());
@@ -135,7 +142,61 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
             praent.setChildren(childrenList);
             list.add(praent);
         }
-        
+
         return list;
     }
+
+
+
+    @Override
+    public  Page<Dictionary> selectDicList2(Dictionary dictionary,Integer currentPage,Integer pageSize) {
+
+        List<Dictionary> list = new ArrayList<>();
+        //查询所有父类
+        Page<Dictionary> page = new Page<>(currentPage, pageSize);
+        EntityWrapper<Dictionary> dicParentWrapper = new EntityWrapper<>();
+
+        if(dictionary.getParentId()!=null){
+            dicParentWrapper.eq("parent_id",dictionary.getId());
+        }else{
+            dicParentWrapper.eq("parent_id",0);
+        }
+        if(dictionary.getName()!=null&&!dictionary.getName().equals("")){
+            dicParentWrapper.like("name",dictionary.getName());
+        }
+
+        dicParentWrapper.orderBy("id",true);
+
+        //查到所有一级菜单
+        Page<Dictionary> dictionaryPage = this.selectPage(page, dicParentWrapper);
+        List<Dictionary> parentList = dictionaryPage.getRecords();
+
+        //循环查二级菜单
+        for(int i=0;i<parentList.size();i++){
+            Dictionary praent = parentList.get(i);
+            EntityWrapper<Dictionary>  dicChildrenWrapper = new EntityWrapper<>();
+            dicChildrenWrapper.eq("parent_id",praent.getId());
+            List<Dictionary> childrenList = this.selectList(dicChildrenWrapper);
+            if(childrenList!=null&&childrenList.size()>0){
+                praent.setChildren(childrenList);
+            }
+            list.add(praent);
+        }
+        Page<Dictionary> dictionaryPage2 = this.selectPage(page, dicParentWrapper);
+        dictionaryPage2.setRecords(list);
+        return dictionaryPage2;
+    }
+
+    @Override
+    public List<Dictionary> selectCommon(Dictionary dictionary) {
+
+        EntityWrapper<Dictionary> dicParentWrapper = new EntityWrapper<>();
+        if(dictionary.getParentId()!=null&&!dictionary.getParentId().equals("")){
+            dicParentWrapper.eq("parent_id",dictionary.getParentId());
+        }
+        List<Dictionary> parentList = this.selectList(dicParentWrapper);
+
+        return parentList;
+    }
+
 }

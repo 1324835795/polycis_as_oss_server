@@ -30,4 +30,12 @@ public interface IDictionaryService extends IService<Dictionary> {
     ApiResult<String> deleteDictionary(Dictionary dictionary);
 
     ApiResult<String> updateDic(Dictionary dictionary);
+
+    /**
+     * 查询所有字典列表
+     * @prarm dictionary
+     **/
+    Page<Dictionary> selectDicList2(Dictionary dictionary, Integer currentPage, Integer pageSize);
+
+    List<Dictionary> selectCommon(Dictionary dictionary);
 }
