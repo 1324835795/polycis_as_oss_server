@@ -4,6 +4,8 @@ package com.polycis.main.controller.product;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.polycis.main.client.app.AppFeignClient;
+import com.polycis.main.client.product.ProductFeignClient;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.common.MainConstants;
@@ -13,11 +15,15 @@ import com.polycis.main.common.log.MyLog;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
 import com.polycis.main.entity.Device;
+import com.polycis.main.entity.Dictionary;
 import com.polycis.main.entity.Product;
 import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.service.db1.IDeviceService;
 import com.polycis.main.service.db1.IProductService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +54,7 @@ public class ProductController {
     @Autowired
     private IDeviceService iDeviceService;
 
+    Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @ApiOperation(value = "查看产品列表", notes = "查看产品列表")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -99,10 +106,30 @@ public class ProductController {
     public ApiResult add(@RequestBody Product product) {
 
         ApiResult apiResult = new ApiResult<>();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
 
-            iProductService.insert(product);
-            apiResult.setSub_code(product.getId());
-            return apiResult;
+        if (currentUser.getRole().contains(MainConstants.SYS)) {
+            try {
+                ApiResult<String>  result = iProductService.addProduct(product);
+                //判断是否入库成功
+                if(result.getCode() == CommonCode.SUCCESS.getKey()){
+                    apiResult.setData(true);
+                }else{
+                    apiResult.setData(false);
+                    apiResult.setCode(result.getCode());
+                    apiResult.setMsg(result.getMsg());
+                }
+                return apiResult;
+            } catch (Exception e) {
+                apiResult.setMsg(e.getMessage());
+                apiResult.setCode(CommonCode.ERROR.getKey());
+                logger.error(String.format("删除设备异常，异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
+                return apiResult;
+            }
+        }
+        apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
+        apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
+        return apiResult;
     }
 
     @RoleOfAdmin
@@ -110,36 +137,64 @@ public class ProductController {
     @ApiOperation(value = "修改产品", notes = "修改产品")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ApiResult update(@RequestBody Product product) {
+        ApiResult apiResult = new ApiResult<>();
         OssAdmin currentUser = RequestHolder.getCurrentUser();
 
-        ApiResult apiResult = new ApiResult<>();
-
-            product.setOrg(currentUser.getOrg());
-            iProductService.updateById(product);
-            return apiResult;
-
-    }
-
-    @RoleOfAdmin
-    @MyLog(describe = "删除产品")
-    @ApiOperation(value = "删除产品", notes = "删除产品")
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public ApiResult delete(@RequestBody Product product) {
-        ApiResult apiResult = new ApiResult<>();
-
-            List<Device> devices = iDeviceService.selectList(new EntityWrapper<Device>()
-                    .eq("is_delete", 1)
-                    .eq("product_id", product.getId()));
-            if(devices.size()>0){
-                apiResult.setMsg("产品下关联有设备,删除失败");
+        if (currentUser.getRole().contains(MainConstants.SYS)) {
+            try {
+                ApiResult<String>  result = iProductService.updateProduct(product);
+                //判断是否修改成功
+                if(result.getCode() == CommonCode.SUCCESS.getKey()){
+                    apiResult.setData(true);
+                }else{
+                    apiResult.setData(false);
+                    apiResult.setCode(result.getCode());
+                    apiResult.setMsg(result.getMsg());
+                }
+                return apiResult;
+            } catch (Exception e) {
+                apiResult.setMsg(CommonCode.ERROR.getValue());
                 apiResult.setCode(CommonCode.ERROR.getKey());
                 return apiResult;
             }
-            product.setIsDelete(MainConstants.DELETETED);
-            iProductService.updateById(product);
-            return apiResult;
+        }
+        apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
+        apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
+        return apiResult;
 
     }
+
+    @ApiOperation(value = "删除产品信息", notes = "删除字典信息")
+    @RequestMapping(value = "/deleteDictionary", method = RequestMethod.POST)
+    public ApiResult deleteDictionary(@RequestBody Product product) {
+        ApiResult apiResult = new ApiResult<>();
+        OssAdmin currentUser = RequestHolder.getCurrentUser();
+        if (currentUser.getRole().contains(MainConstants.SYS)) {
+            try {
+                ApiResult<String> result =  iProductService.deleteProduct(product);
+                if(result.getCode() == CommonCode.SUCCESS.getKey()){
+                    apiResult.setData(true);
+                }else{
+                    apiResult.setData(false);
+                    apiResult.setCode(result.getCode());
+                    apiResult.setMsg(result.getMsg());
+                }
+                //判断是否删除成功
+                return apiResult;
+            } catch (Exception e) {
+                //捕获异常打印异常信息
+                apiResult.setData(false);
+                apiResult.setCode(CommonCode.ERROR.getKey());
+                apiResult.setMsg(e.getMessage());
+                logger.error(String.format("删除设备异常，异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
+            }
+        }
+        //用户无权限
+        apiResult.setMsg(CommonCode.AUTH_LIMIT.getValue());
+        apiResult.setCode(CommonCode.AUTH_LIMIT.getKey());
+        return apiResult;
+    }
+
 
 
     @ApiOperation(value = "产品下拉列表", notes = "产品下拉列表")

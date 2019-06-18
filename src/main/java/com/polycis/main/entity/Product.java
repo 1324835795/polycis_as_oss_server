@@ -88,6 +88,15 @@ public class Product implements Serializable {
      */
     private transient String username;
 
+    private  String productEui;
+
+    public String getProductEui() {
+        return productEui;
+    }
+
+    public void setProductEui(String productEui) {
+        this.productEui = productEui;
+    }
 
     public String getUsername() {
         return username;
