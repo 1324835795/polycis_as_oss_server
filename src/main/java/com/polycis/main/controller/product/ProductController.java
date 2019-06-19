@@ -123,7 +123,7 @@ public class ProductController {
             } catch (Exception e) {
                 apiResult.setMsg(e.getMessage());
                 apiResult.setCode(CommonCode.ERROR.getKey());
-                logger.error(String.format("删除设备异常，异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
+                logger.error(String.format("增加设备异常，异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
                 return apiResult;
             }
         }

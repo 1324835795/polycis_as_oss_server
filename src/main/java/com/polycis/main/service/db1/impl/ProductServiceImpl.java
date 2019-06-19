@@ -94,10 +94,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public ApiResult<String> addProduct(Product product) {
 
         //去数据转发层添加设备
+        product.setProductEui(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 8));
         ApiResult apiResult = productFeignClient.create(product);
         if(apiResult.getCode()== CommonCode.SUCCESS.getKey()){
             //产品添加成功需要入库
-            product.setProductEui(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 8));
             boolean insert = this.insert(product);
             if(insert){
                 apiResult.setData(insert);
@@ -115,9 +115,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Override
     public ApiResult<String> updateProduct(Product product) {
         //去数据转发层修改设备
+        Product product1 = this.selectById(product.getId());
+        product.setProductEui(product1.getProductEui());
         ApiResult apiResult = productFeignClient.update(product);
         if(apiResult.getCode()== CommonCode.SUCCESS.getKey()){
-            //产品添加成功需要入库
             EntityWrapper<Product> wrapper = new EntityWrapper<>();
             boolean insert = this.updateById(product);
             if(insert){

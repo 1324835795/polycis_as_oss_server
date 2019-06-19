@@ -28,7 +28,7 @@ public interface ProductFeignClient {
     ApiResult create(Product product);
 
 
-    @RequestMapping(value = "/resource/product/update", produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/resource/product/update",method = {RequestMethod.POST},produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult update(Product product);
 
     @RequestMapping(value = "/resource/product/delete/{id}",method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
