@@ -136,7 +136,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Override
     public ApiResult<String> deleteProduct(Product product) {
 
-        ApiResult apiResult = productFeignClient.update(product);
+        ApiResult apiResult = new ApiResult();
         List<Device> devices = iDeviceService.selectList(new EntityWrapper<Device>()
                 .eq("is_delete", 1)
                 .eq("product_id", product.getId()));
@@ -146,23 +146,21 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             return apiResult;
         }
 
-        ApiResult apiResult2 = productFeignClient.delete(product.getProductEui());
+        Product product1 = this.selectById(product.getId());
+        ApiResult apiResult2 = productFeignClient.delete(product1.getProductEui());
         if(apiResult2.getCode()== CommonCode.SUCCESS.getKey()){
             //产品删除成功
             EntityWrapper<Product> wrapper = new EntityWrapper<>();
-            boolean b = this.delete(wrapper.eq("product_eui",product.getProductEui()));
+            boolean b = this.delete(wrapper.eq("product_eui",product1.getProductEui()));
             if(b){
                 apiResult2.setData(b);
                 return apiResult;
             }
-            apiResult2.setCode(CommonCode.UPDATE_ERROR.getKey());
-            apiResult2.setMsg(CommonCode.UPDATE_ERROR.getValue());
+            apiResult2.setCode(CommonCode.DELETE_ERROR.getKey());
+            apiResult2.setMsg(CommonCode.DELETE_ERROR.getValue());
             apiResult2.setData(false);
             return apiResult2;
         }
         return apiResult2;
-
     }
-
-
 }

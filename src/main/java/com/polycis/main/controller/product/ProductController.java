@@ -165,7 +165,7 @@ public class ProductController {
     }
 
     @ApiOperation(value = "删除产品信息", notes = "删除字典信息")
-    @RequestMapping(value = "/deleteDictionary", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ApiResult deleteDictionary(@RequestBody Product product) {
         ApiResult apiResult = new ApiResult<>();
         OssAdmin currentUser = RequestHolder.getCurrentUser();

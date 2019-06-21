@@ -66,6 +66,7 @@ public class DeviceController {
     private IMybatisPlusDB3Service iMybatisPlusDB3Service;
 
 
+
     @RoleOfAdmin
     @MyLog(describe = "设备添加")
     @ApiOperation(value = "设备添加", notes = "设备添加")
@@ -75,6 +76,8 @@ public class DeviceController {
         DeviceDTO deviceDTO = new DeviceDTO(device, product);
         // 给传输的包装类设置app_eui,接入层存储应用信息用的是app_eui
         deviceDTO.setAppEui(iAppService.selectById(device.getAppId()).getAppEui());
+        // 给传输的包装类设置product_eui,接入层存储应用信息用的是pro_eui
+        deviceDTO.setProductEui(iProductService.selectById(device.getProductId()).getProductEui());
         OssAdmin currentUser = RequestHolder.getCurrentUser();
         ApiResult apiResult = new ApiResult<>();
 
