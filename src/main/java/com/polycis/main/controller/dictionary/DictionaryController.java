@@ -10,11 +10,7 @@ import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.interceptor.RequestHolder;
 import com.polycis.main.common.page.PageInfoVO;
 import com.polycis.main.common.page.RequestVO;
-import com.polycis.main.controller.lora.DeviceProfileController;
-import com.polycis.main.entity.App;
 import com.polycis.main.entity.Dictionary;
-import com.polycis.main.entity.Product;
-import com.polycis.main.entity.Users;
 import com.polycis.main.entity.admin.OssAdmin;
 import com.polycis.main.service.db1.IDictionaryService;
 import io.swagger.annotations.ApiOperation;
@@ -24,12 +20,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
