@@ -4,12 +4,15 @@ package com.polycis.main.controller.script;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
+import com.polycis.main.common.MainConstants;
 import com.polycis.main.common.exception.MyException;
 import com.polycis.main.common.util.script.FileSizeUtil;
+import com.polycis.main.common.util.script.JSEngine;
 import com.polycis.main.entity.script.ProductRelScriptBO;
+import com.polycis.main.entity.script.ProductRelScriptVO;
 import com.polycis.main.service.db1.script.IProductRelScriptService;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,6 +129,42 @@ public class ProductRelScriptController {
         } catch (Exception e) {
             apiResult.setCodeMsg(CommonCode.ERROR);
             logger.error(String.format("jsscript delete 异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
+        }
+        return apiResult;
+    }
+
+    /**
+     * 删除js脚本
+     * @param productRelScriptVO
+     * @return
+     */
+    @RequestMapping(value = "/test", method = {RequestMethod.POST}, produces = {"application/json;charset=UTF-8"})
+    public ApiResult<String> test(@RequestBody ProductRelScriptVO productRelScriptVO) {
+        ApiResult<String> apiResult = new ApiResult<>(CommonCode.SUCCESS);
+        try {
+            if(StringUtils.isBlank(productRelScriptVO.getScriptContent())){
+                throw new MyException("脚本内容不能为空");
+            }
+            checkJsFileSize(productRelScriptVO.getScriptContent());
+            String result = null;
+            if(productRelScriptVO.getOperType().equals(MainConstants.DEVICE_DATA_TYPE_UPLINK)){
+                result = JSEngine.rawDataToProtocol(productRelScriptVO.getParam(),false, null, productRelScriptVO.getScriptContent());
+            }else if(productRelScriptVO.getOperType().equals(MainConstants.DEVICE_DATA_TYPE_DOWNLINK)){
+                result = JSEngine.protocolToRawData(productRelScriptVO.getParam(),false, null, productRelScriptVO.getScriptContent());
+            }else{
+                throw new MyException("请选择模拟类型");
+            }
+            apiResult.setData(result);
+        } catch (MyException me) {
+            apiResult.setCodeMsg(CommonCode.ERROR);
+            apiResult.setMsg(me.getMessage());
+        } catch (Exception e) {
+            apiResult.setCodeMsg(CommonCode.ERROR);
+            StackTraceElement[] se = e.getStackTrace();
+            if(se[0].getClassName().contains("nashorn")){
+                apiResult.setMsg(e.getMessage());
+            }
+            logger.error(String.format("jsscript test 异常信息：%s", ExceptionUtils.getFullStackTrace(e)));
         }
         return apiResult;
     }
