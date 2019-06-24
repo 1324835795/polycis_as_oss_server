@@ -1,6 +1,5 @@
 package com.polycis.main.controller.dataspecs;
 
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
  * @auhtor weitao
  * @create 2019-06-13:47
  */
-@Document(collection = "product_property")
 public class ProductPropertyDTO implements Serializable {
 
     /**属性唯一标识*/
