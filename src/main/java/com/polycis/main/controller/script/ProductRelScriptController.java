@@ -49,21 +49,11 @@ public class ProductRelScriptController {
      * @return
      */
     @RequestMapping(value = "/save", method = {RequestMethod.POST}, produces = {"application/json;charset=UTF-8"})
-    public ApiResult<String> save(@RequestBody ProductRelScriptDTO productRelScriptDTO) {
-        ApiResult<String> apiResult = this.productRelScriptFeignClient.save(productRelScriptDTO);
+    public ApiResult<ProductRelScriptBO> save(@RequestBody ProductRelScriptDTO productRelScriptDTO) {
+        ApiResult<ProductRelScriptBO> apiResult = this.productRelScriptFeignClient.save(productRelScriptDTO);
         return apiResult;
     }
 
-    /**
-     * 更新js脚本
-     * @param productRelScriptDTO
-     * @return
-     */
-    @RequestMapping(value = "/update", method = {RequestMethod.POST}, produces = {"application/json;charset=UTF-8"})
-    public ApiResult<String> update(@RequestBody ProductRelScriptDTO productRelScriptDTO) {
-        ApiResult<String> apiResult = this.productRelScriptFeignClient.update(productRelScriptDTO);
-        return apiResult;
-    }
 
     /**
      * 删除js脚本
