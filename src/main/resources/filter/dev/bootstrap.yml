@@ -2,7 +2,7 @@
 polycis-ns-lora-server: polycis-ns-lora-server-test
 polycis-as-oss-server: polycis-as-oss-server-test
 polycis-as-send-server: polycis-as-send-server-test
-
+polycis-data-process-server: polycis-data-process-server
 
 server:
   port: 10060
@@ -31,7 +31,7 @@ eureka:
       enable: true
     registryFetchIntervalSeconds: 30
     serviceUrl:
-      defaultZone: http://192.168.10.20:10035/eureka/
+      defaultZone: http://192.168.10.148:10035/eureka/
       #defaultZone: http://59.110.225.90:8761/eureka/
       #defaultZone: http://localhost:11000/eureka/
   instance:
@@ -42,7 +42,7 @@ eureka:
 
 spring:
   application:
-    name: ${polycis-as-oss-server}
+    name: polycis-as-oss-server
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
