@@ -1,6 +1,5 @@
 package com.polycis.main.client.dataspecs;
 
-import com.polycis.main.client.protocollib.ProtocolInfo;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.common.CommonCode;
 import com.polycis.main.controller.dataspecs.ProductPropertyDTO;

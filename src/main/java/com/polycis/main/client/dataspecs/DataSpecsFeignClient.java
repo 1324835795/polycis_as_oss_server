@@ -1,6 +1,5 @@
 package com.polycis.main.client.dataspecs;
 
-import com.polycis.main.client.protocollib.ProtocolInfo;
 import com.polycis.main.common.ApiResult;
 import com.polycis.main.controller.dataspecs.ProductPropertyDTO;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -16,7 +15,7 @@ import java.util.Map;
  * @author Wenyu Zhou
  */
 @Component(value = "DataSpecsFeignClient")
-@FeignClient(value = "${polycis-data-process-server}", fallback = DataSpecsFeignClientFallback.class)
+@FeignClient(value = "polycis-data-process-server", fallback = DataSpecsFeignClientFallback.class)
 public interface DataSpecsFeignClient {
 
 

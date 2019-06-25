@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Wenyu Zhou
  */
 @Component(value = "ProtocolFeignClient")
-@FeignClient(value = "${polycis-data-process-server}", fallback = ProtocolFeignClientFallback.class)
+@FeignClient(value = "polycis-data-process-server", fallback = ProtocolFeignClientFallback.class)
 public interface ProtocolFeignClient {
 
 
