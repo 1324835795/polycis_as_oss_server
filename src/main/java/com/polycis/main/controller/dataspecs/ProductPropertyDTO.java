@@ -7,9 +7,7 @@ import java.util.List;
 /**
  * 描述:
  * 设备扩展属性
- *
- * @auhtor weitao
- * @create 2019-06-13:47
+ * @author Wenyu Zhou
  */
 public class ProductPropertyDTO implements Serializable {
 
@@ -27,14 +25,24 @@ public class ProductPropertyDTO implements Serializable {
     private Object dataSpecs;
     /**数据规格-bool*/
     private List<Object> dataSpecsList;
-    /**属性名称*/
+    /**功能名称*/
     private  String name;
+    /**功能类型*/
+    private String functionType;
     /**读写模式*/
     private  String accessMode;
     /**是否必填*/
     private  Boolean required;
     /**描述*/
     private  String desc;
+
+    public String getFunctionType() {
+        return functionType;
+    }
+
+    public void setFunctionType(String functionType) {
+        this.functionType = functionType;
+    }
 
     public Integer getProductId() {
         return productId;
