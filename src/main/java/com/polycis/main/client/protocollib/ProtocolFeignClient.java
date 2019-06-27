@@ -16,7 +16,7 @@ import java.util.Map;
  * @author Wenyu Zhou
  */
 @Component(value = "ProtocolFeignClient")
-@FeignClient(value = "polycis-data-process-server-zwy", fallback = ProtocolFeignClientFallback.class)
+@FeignClient(value = "polycis-data-process-server", fallback = ProtocolFeignClientFallback.class)
 public interface ProtocolFeignClient {
 
 
