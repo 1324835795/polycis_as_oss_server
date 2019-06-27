@@ -5,6 +5,8 @@ import com.polycis.main.common.CommonCode;
 import com.polycis.main.entity.App;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 /**
  * @author qiaokai
  * @date 19/4/19
@@ -29,6 +31,11 @@ public class ProtocolFeignClientFallback implements ProtocolFeignClient {
 
     @Override
     public ApiResult delete(ProtocolInfo info) {
+        return apiResult;
+    }
+
+    @Override
+    public ApiResult detail(Map map) {
         return apiResult;
     }
 }

@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Map;
+
 
 /**
  * @author Wenyu Zhou
  */
 @Component(value = "ProtocolFeignClient")
-@FeignClient(value = "polycis-data-process-server", fallback = ProtocolFeignClientFallback.class)
+@FeignClient(value = "polycis-data-process-server-zwy", fallback = ProtocolFeignClientFallback.class)
 public interface ProtocolFeignClient {
 
 
@@ -29,4 +31,6 @@ public interface ProtocolFeignClient {
 
     @RequestMapping(value="/protocol/delete",method = {RequestMethod.POST},produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResult delete(ProtocolInfo info);
+    @RequestMapping(value="/protocol/detail",method = {RequestMethod.POST},produces = {"application/json;charset=UTF-8"},consumes = MediaType.APPLICATION_JSON_VALUE)
+    ApiResult detail(Map map);
 }
