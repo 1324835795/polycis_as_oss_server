@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * @author : Wenyu Zhou
@@ -43,5 +44,9 @@ public class ProtocolController {
     @PostMapping("/delete")
     public ApiResult delete(@RequestBody ProtocolInfo info) {
         return feign.delete(info);
+    }
+    @PostMapping("/detail")
+    public ApiResult detail(@RequestBody Map map){
+        return feign.detail(map);
     }
 }
