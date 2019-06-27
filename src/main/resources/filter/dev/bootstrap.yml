@@ -1,8 +1,9 @@
 #配置各服务的名称
-polycis-ns-lora-server: polycis-ns-lora-server-test
-polycis-as-oss-server: polycis-as-oss-server-test
-polycis-as-send-server: polycis-as-send-server-test
+polycis-ns-lora-server: polycis-ns-lora-server
+polycis-as-oss-server: polycis-as-oss-server
+polycis-as-send-server: polycis-as-send-server
 polycis-data-process-server: polycis-data-process-server
+
 
 server:
   port: 10060
@@ -42,7 +43,7 @@ eureka:
 
 spring:
   application:
-    name: polycis-as-oss-server
+    name: ${polycis-as-oss-server}
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
