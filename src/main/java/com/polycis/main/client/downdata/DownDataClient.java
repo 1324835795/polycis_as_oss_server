@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @auther cuiwenhao
  */
 @Component(value = "DevFeignClient")
-@FeignClient(value = "polycis-ns-send-server", fallback = DownDataClientFallback.class)
+@FeignClient(value = "${polycis-as-send-server}", fallback = DownDataClientFallback.class)
 public interface DownDataClient {
     /**
      * 编写Feign接口简便的方法：把具体需要远程调用的服务（如服务B）中的方法复制过来，去掉实现即可。

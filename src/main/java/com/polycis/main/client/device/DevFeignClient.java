@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * @auther qiaokai
  */
 @Component(value = "DevFeignClient")
-@FeignClient(value = "polycis-ns-send-server", fallback = DevFeignClientFallback.class)
+@FeignClient(value = "${polycis-as-send-server}", fallback = DevFeignClientFallback.class)
 public interface DevFeignClient {
 
 

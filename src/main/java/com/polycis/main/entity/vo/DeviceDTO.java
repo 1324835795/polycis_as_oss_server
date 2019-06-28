@@ -48,6 +48,7 @@ public class DeviceDTO implements Serializable {
      */
     private Integer activeWay;
 
+    private String productEui;
 
     public DeviceDTO(){
     }
@@ -65,6 +66,13 @@ public class DeviceDTO implements Serializable {
         this.platform=product.getPlatform();
     }
 
+    public String getProductEui() {
+        return productEui;
+    }
+
+    public void setProductEui(String productEui) {
+        this.productEui = productEui;
+    }
 
     public Integer getActiveWay() {
         return activeWay;

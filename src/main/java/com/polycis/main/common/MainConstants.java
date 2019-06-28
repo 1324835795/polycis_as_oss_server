@@ -33,6 +33,11 @@ public class MainConstants {
     public static final Integer DICTIONARY_PRODUCT=1;
 
 
+    /**
+     * 设备上行、下行类型
+     */
+    public static final String DEVICE_DATA_TYPE_UPLINK = "0";
+    public static final String DEVICE_DATA_TYPE_DOWNLINK = "1";
 
 
 

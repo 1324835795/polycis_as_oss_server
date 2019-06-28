@@ -64,7 +64,6 @@ public class AppController {
         // 用户id即组织id
 
         ApiResult apiResult = new ApiResult<>();
-
         app.setAppEui(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 8));
         ApiResult apiResult1 = appFeignClient.create(app);
         LOG.info(apiResult1.getMsg());

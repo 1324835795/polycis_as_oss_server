@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @auther qiaokai
  */
 @Component(value = "AppFeignClient")
-@FeignClient(value = "polycis-ns-send-server", fallback = AppFeignClientFallback.class)
+@FeignClient(value = "${polycis-as-send-server}", fallback = AppFeignClientFallback.class)
 public interface AppFeignClient {
 
 
