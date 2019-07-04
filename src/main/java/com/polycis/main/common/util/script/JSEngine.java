@@ -50,7 +50,7 @@ public class JSEngine {
             ScriptObjectMirror rtn = (ScriptObjectMirror)invoke.invokeFunction("rawDataToProtocol", rawData);
             Map<String,Object> tempMap = new HashMap<>();
             for(Map.Entry<String,Object> m : rtn.entrySet()){
-                tempMap.put(m.getKey(), m.getValue());
+                 tempMap.put(m.getKey(), m.getValue());
             }
             return JSONObject.toJSONString(tempMap);
         }
