@@ -90,6 +90,19 @@ public class Product implements Serializable {
 
     private  String productEui;
 
+    /**
+     * 协议标识
+     */
+    private Integer protocolId;
+
+    public Integer getProtocolId() {
+        return protocolId;
+    }
+
+    public void setProtocolId(Integer protocolId) {
+        this.protocolId = protocolId;
+    }
+
     public String getProductEui() {
         return productEui;
     }
