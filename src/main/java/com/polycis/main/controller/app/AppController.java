@@ -64,6 +64,8 @@ public class AppController {
         // 用户id即组织id
 
         ApiResult apiResult = new ApiResult<>();
+        // 设置默认的服务配置文件
+        app.setConfigId(1);
         app.setAppEui(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 8));
         ApiResult apiResult1 = appFeignClient.create(app);
         LOG.info(apiResult1.getMsg());
@@ -275,6 +277,12 @@ public class AppController {
         wrapper.eq("app_id", app.getId());
         wrapper.eq("is_delete", MainConstants.UN_DELETE);
         List<Device> list = iDeviceService.selectList(wrapper);
+        list.forEach(d -> {
+            if(d.getPlatform()==1)
+                d.setDescription("lora");
+            if(d.getPlatform()==2)
+                d.setDescription("nb");
+        });
         App app1 = iAppService.selectById(app);
         HashMap<String, Object> map = new HashMap<>();
         map.put("devlist", list);
