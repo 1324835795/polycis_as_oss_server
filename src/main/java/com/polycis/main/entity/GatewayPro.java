@@ -69,6 +69,21 @@ public class GatewayPro implements Serializable {
     @TableField(exist=false)
     private String total;
 
+
+    /**
+     * 组织 名字
+     */
+
+    private transient String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public List<GatewayProChannel> getGatewayProChannel() {
         return gatewayProChannel;
     }

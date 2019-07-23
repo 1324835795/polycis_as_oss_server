@@ -69,8 +69,6 @@ public class DevDataWarnServiceImpl extends ServiceImpl<DevDataWarnMapper, DevDa
         map0.put("label","未处理");
         map0.put("value",0);
         Map<String,Object> map1 = new HashMap<String,Object>();
-        map1.put("label","处理中");
-        map1.put("value",0);
         Map<String,Object> map2 = new HashMap<String,Object>();
         map2.put("label","已处理");
         map2.put("value",0);

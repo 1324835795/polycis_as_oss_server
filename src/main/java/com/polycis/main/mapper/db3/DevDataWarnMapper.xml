@@ -18,6 +18,7 @@
         dev.name,dic.name as 'type',
         d.event_type as 'eventType',
         d.`status`,
+        case when d.type = 1 then '设备' when d.type = 2 then '网关' end as 'type',
         d.create_time as 'createTime',d.modify_time as 'modifyTime'
         from dev_data_warn d left join
         polycis_as_main.iot_device dev
@@ -73,7 +74,7 @@
         </foreach>
     </update>
     <select id="warnStatusCal" resultType="java.util.Map">
-        select case when `status` = 0 then '未处理' when `status` = 1 then '处理中' when `status` = 2 then '已处理' end as 'label', count(id) as 'value' from dev_data_warn
+        select case when `status` = 0 then '未处理' when `status` = 2 then '已处理' end as 'label', count(id) as 'value' from dev_data_warn
         where 1 = 1
         <if test="data.beginTime !=null and data.beginTime !=''">
             and create_time &gt;= #{data.beginTime}

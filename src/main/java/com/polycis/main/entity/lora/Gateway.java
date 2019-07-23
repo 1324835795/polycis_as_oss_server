@@ -116,6 +116,19 @@ public class Gateway implements Serializable {
     private Date updateTime;
 
     /**
+     * 组织名字
+     */
+    private transient String orgName;
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    /**
      * lora 中 网关配置文件id
      */
     @TableField(exist = false)
