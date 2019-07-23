@@ -1,7 +1,7 @@
 #配置各服务的名称
 polycis-ns-lora-server: polycis-ns-lora-server
 polycis-as-oss-server: polycis-as-oss-server
-polycis-as-send-server: polycis-as-send-server
+polycis-as-send-server: polycis-ns-send-server
 polycis-data-process-server: polycis-data-process-server
 
 
@@ -85,4 +85,4 @@ mybatis-plus:
   global-config:
     id-type: 0
     refresh-mapper: true
-  typeAliasesPackage: com.polycis.main.entity
+  typeAliasesPackage: com.polycis.main.entity.*

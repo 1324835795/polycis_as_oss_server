@@ -30,6 +30,17 @@
 
 
     </select>
+
+    <select id="selectDevCountBypro" resultType="java.lang.Integer">
+
+        SELECT COUNT(id)
+        FROM iot_device
+        WHERE product_id=#{productId}
+        and is_delete=1
+
+    </select>
+
+
     <select id="selectDevicePage" resultType="com.polycis.main.entity.Device">
 
         SELECT
