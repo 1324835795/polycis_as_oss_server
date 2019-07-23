@@ -54,10 +54,14 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements IAppS
 
         param.put("pageSize", pageSize);
 
-        if (null != app.getDescription() && !"".equals(app.getDescription())) {
-            param.put("query", app.getDescription());
-        } else {
-            param.put("query", null);
+        if (null != app.getName() && !"".equals(app.getName())) {
+            param.put("name", app.getName());
+        }
+        if (null != app.getAppEui() && !"".equals(app.getAppEui())) {
+            param.put("appEui", app.getAppEui());
+        }
+        if (null != app.getUsername() && !"".equals(app.getUsername())) {
+            param.put("username", app.getUsername());
         }
 
         if (null != app.getId() && !"".equals(app.getId())) {

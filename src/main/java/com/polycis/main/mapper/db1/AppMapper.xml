@@ -64,8 +64,14 @@
         INNER JOIN iot_app_org_relation iaor ON iaor.app_id=ia.id
         INNER JOIN  iot_org  io ON io.id =iaor.organization_id AND io.is_delete=1
         WHERE ia.is_delete=1
-        <if test="query != null and query != ''">
-            AND (io.name LIKE "%"#{query}"%" or ia.app_eui LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%" )
+        <if test="name != null and name != ''">
+            AND (ia.name LIKE "%"#{name}"%" )
+        </if>
+        <if test="appEui != null and appEui != ''">
+            AND (ia.app_eui LIKE "%"#{appEui}"%" )
+        </if>
+        <if test="username != null and username != ''">
+            AND (io.name LIKE "%"#{username}"%" )
         </if>
         <if test="orgId != null and orgId != ''">
             AND iaor.organization_id=#{orgId}
@@ -79,8 +85,14 @@
         INNER JOIN iot_app_org_relation iaor ON iaor.app_id=ia.id
         INNER JOIN  iot_org  io ON io.id =iaor.organization_id AND io.is_delete=1
         WHERE ia.is_delete=1
-        <if test="query != null and query != ''">
-            AND (io.name LIKE "%"#{query}"%" or ia.app_eui LIKE "%"#{query}"%" or ia.name LIKE "%"#{query}"%" )
+        <if test="name != null and name != ''">
+            AND (ia.name LIKE "%"#{name}"%" )
+        </if>
+        <if test="appEui != null and appEui != ''">
+            AND (ia.app_eui LIKE "%"#{appEui}"%" )
+        </if>
+        <if test="username != null and username != ''">
+            AND (io.name LIKE "%"#{username}"%" )
         </if>
         <if test="orgId != null and orgId != ''">
             AND iaor.organization_id=#{orgId}
