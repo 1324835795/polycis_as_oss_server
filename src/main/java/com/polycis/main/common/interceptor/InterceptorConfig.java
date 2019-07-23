@@ -32,7 +32,10 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(commonInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/ossadmin/login")
                 .excludePathPatterns("/ossadmin/logout")
-                .excludePathPatterns("/callname/receive");
+                .excludePathPatterns("/callname/receive")
+                .excludePathPatterns("/business/**")
+                .excludePathPatterns("/warn/**")
+                .excludePathPatterns("/error");
 
 
         registry.addInterceptor(tokenIntecptor).addPathPatterns("/**")
@@ -40,6 +43,9 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/ossadmin/login")
                 .excludePathPatterns("/ossadmin/logout")
                 .excludePathPatterns("/callname/receive")
+                .excludePathPatterns("/business/**")
+                .excludePathPatterns("/warn/**")
+                .excludePathPatterns("/error")
                 // 排除swagger
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**");
 
@@ -48,10 +54,11 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/ossadmin/login")
                 .excludePathPatterns("/ossadmin/logout")
                 .excludePathPatterns("/callname/receive")
+                .excludePathPatterns("/business/**")
+                .excludePathPatterns("/warn/**")
+                .excludePathPatterns("/error")
                 // 排除swagger
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**");
-
-
 
     }
 

@@ -250,8 +250,7 @@
 					<include>mybatis/**/*.xml</include>
 				</includes>
 				<filtering>true</filtering>
-			</resource>
--->
+			</resource>-->
 			<resource>
 				<directory>src/main/java</directory>
 				<includes>

@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.beans.Transient;
@@ -74,6 +75,8 @@ public class AppController {
         LOG.info(apiResult1.getMsg());
         if (apiResult1.getCode() == CommonCode.SUCCESS.getKey()) {
             // 将用户信息的prg 添加到关联表中
+            LOG.info("这是资源返回的data"+apiResult1.getData().toString());
+            app.setAppKey(apiResult1.getData().toString());
             boolean b = iAppService.addApp(app);
             if (b) {
                 apiResult.setSub_code(app.getId());

@@ -46,6 +46,8 @@ public interface DeviceMapper extends BaseMapper<Device> {
             "        AND id.is_delete=1")*/
     List<String> selectDevList(Integer appId);
 
+    Integer selectDevCountBypro(Integer productId);
+
     @DataSourceSwitch()
     @Select("SELECT id.device_uuid\n" +
             "        FROM iot_app_org_relation iaor\n" +

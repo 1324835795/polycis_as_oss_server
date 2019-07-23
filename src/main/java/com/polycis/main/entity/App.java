@@ -77,6 +77,17 @@ public class App implements Serializable {
     @TableField(exist = false)
     private String username;
 
+
+    private String appKey;
+
+    public String getAppKey() {
+        return appKey;
+    }
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
+    }
+
     public String getUsername() {
         return username;
     }
