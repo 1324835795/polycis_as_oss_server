@@ -18,6 +18,7 @@
         dev.name,dic.name as 'type',
         d.event_type as 'eventType',
         d.`status`,
+        case when d.type = 1 then '设备' when d.type = 2 then '网关' end as 'type',
         d.create_time as 'createTime',d.modify_time as 'modifyTime'
         from dev_data_warn d left join
         polycis_as_main.iot_device dev

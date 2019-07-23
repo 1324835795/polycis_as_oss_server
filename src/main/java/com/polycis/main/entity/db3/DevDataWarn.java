@@ -87,6 +87,16 @@ public class DevDataWarn implements Serializable {
      */
     private Integer readStatus;
 
+    private Integer type;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public Integer getReadStatus() {
         return readStatus;
     }
@@ -234,6 +244,8 @@ public class DevDataWarn implements Serializable {
                 ", modifyTime=" + modifyTime +
                 ", status=" + status +
                 ", readStatus=" + readStatus +
+                ", type=" + type +
                 '}';
     }
 }
+
