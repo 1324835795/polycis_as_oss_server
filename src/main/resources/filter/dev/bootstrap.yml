@@ -1,6 +1,6 @@
 #配置各服务的名称
 polycis-ns-lora-server: polycis-ns-lora-server
-polycis-as-oss-server: polycis-as-oss-server
+polycis-as-oss-server: polycis-as-oss-server-cwh
 polycis-as-send-server: polycis-ns-send-server
 polycis-data-process-server: polycis-data-process-server
 
